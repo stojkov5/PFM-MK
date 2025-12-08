@@ -1,0 +1,180 @@
+/* src/components/Navbar/Navbar.css */
+
+.pfm-navbar-wrapper {
+  backdrop-filter: blur(18px);
+}
+
+.pfm-navbar {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+}
+
+/* Logo */
+.pfm-logo {
+  width: 42px;
+  height: 42px;
+}
+
+.pfm-logo-text {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #f9fafb;
+}
+
+/* Titles next to logo */
+.pfm-title-small {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.pfm-title-large {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* Responsive adjustments for titles */
+@media (min-width: 640px) {
+  .pfm-title-small {
+    font-size: 0.7rem;
+  }
+  .pfm-title-large {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .pfm-title-small {
+    font-size: 0.75rem;
+  }
+  .pfm-title-large {
+    font-size: 1.05rem;
+  }
+}
+
+/* === NAV LINKS – DESKTOP === */
+
+/* Base style shared by simple links and dropdown triggers */
+.nav-link-base {
+  position: relative;
+  padding-bottom: 0.12rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-weight: 500;
+  color: #0f172a;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 160ms ease-out;
+}
+
+/* Same font-size for all desktop links; adjusted per screen size */
+.nav-link-base {
+  font-size: 0.68rem;
+}
+
+@media (min-width: 640px) {
+  .nav-link-base {
+    font-size: 0.74rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .nav-link-base {
+    font-size: 0.8rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .nav-link-base {
+    font-size: 0.84rem;
+  }
+}
+
+/* Underline effect */
+.nav-link-base::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.08rem;
+  width: 0;
+  height: 2px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    90deg,
+    rgba(37, 99, 235, 1),
+    rgba(56, 189, 248, 1)
+  );
+  transition: width 180ms ease-out;
+}
+
+.nav-link-base:hover {
+  color: #1d4ed8;
+}
+
+.nav-link-base:hover::after,
+.nav-link-active::after {
+  width: 100%;
+}
+
+.nav-link-active {
+  color: #1d4ed8;
+}
+
+/* Dropdown trigger specific tweaks */
+.nav-trigger {
+  padding-bottom: 0.12rem;
+}
+
+.chevron-icon {
+  font-size: 0.8rem;
+}
+
+/* Dropdown links in the menu */
+.nav-dropdown-link {
+  color: #0f172a;
+}
+
+.nav-dropdown-link:hover {
+  color: #1d4ed8;
+}
+
+/* === MOBILE / TABLET NAV === */
+
+.nav-link-mobile {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #0f172a;
+}
+
+.nav-link-mobile-active {
+  font-weight: 600;
+  color: #1d4ed8;
+}
+
+.nav-mobile-section-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #6b7280;
+  margin-bottom: 0.15rem;
+}
+
+/* Mobile burger button (just to avoid weird AntD defaults) */
+.mobile-burger-btn {
+  color: #0f172a;
+}
+
+/* Slight tweak to Drawer body spacing */
+.ant-drawer-body {
+  padding-top: 0.75rem;
+}
