@@ -1,6 +1,8 @@
 import React from "react";
 import { Row, Col, Button } from "antd";
-import { FiArrowRight, FiDroplet, FiWind, FiCalendar } from "react-icons/fi";
+import { FiArrowRight } from "react-icons/fi";
+import { TbSwimming, TbWaterpolo } from "react-icons/tb";
+import { TiWaves } from "react-icons/ti";
 import { useNavigate } from "react-router-dom";
 import "./HomeDisciplines.css";
 
@@ -10,9 +12,9 @@ const HomeDisciplines = () => {
   const items = [
     {
       title: "SWIMMING",
-      icon: <FiDroplet />,
-      desc:
-        "Информации за програми, натпревари, национален и меѓународен календар, рекорди и критериуми за настап.",
+      image: "/Images/Swim.webp",
+      icon: <TbSwimming />,
+      desc: "Информации за програми, натпревари, национален и меѓународен календар, рекорди и критериуми за настап.",
       bullets: [
         "Национален календар и првенства",
         "Официјална листа на рекорди",
@@ -25,9 +27,9 @@ const HomeDisciplines = () => {
     },
     {
       title: "WATERPOLO",
-      icon: <FiWind />,
-      desc:
-        "Програми и официјални информации за ватерполо натпревари, како и календар за национални и меѓународни настани.",
+      image: "/Images/Waterpolo.webp",
+      icon: <TbWaterpolo />,
+      desc: "Програми и официјални информации за ватерполо натпревари, како и календар за национални и меѓународни настани.",
       bullets: [
         "Календар – Национален",
         "Календар – Меѓународен",
@@ -40,9 +42,9 @@ const HomeDisciplines = () => {
     },
     {
       title: "DISTANCE SWIMMING",
-      icon: <FiCalendar />,
-      desc:
-        "Далечинско пливање (open water) со календар на маратони, информации за настани и официјални новости.",
+      image: "/Images/Distance.webp",
+      icon: <TiWaves />,
+      desc: "Далечинско пливање (open water) со календар на маратони, информации за настани и официјални новости.",
       bullets: [
         "Календар на маратони",
         "Охридски пливачки маратон",
@@ -64,8 +66,8 @@ const HomeDisciplines = () => {
             Пливање, ватерполо и далечинско пливање
           </h2>
           <p className="pfm-disciplines-subtitle">
-            Брз пристап до најважните информации по дисциплина: програми, календари,
-            документи и официјални листи.
+            Брз пристап до најважните информации по дисциплина: програми,
+            календари, документи и официјални листи.
           </p>
         </div>
 
@@ -73,6 +75,12 @@ const HomeDisciplines = () => {
           {items.map((it) => (
             <Col xs={24} lg={8} key={it.title}>
               <div className="pfm-discipline-card">
+                <div
+                  className="pfm-discipline-image"
+                  style={{ backgroundImage: `url(${it.image})` }}
+                >
+                  <div className="pfm-discipline-image-overlay" />
+                </div>
                 <div className="pfm-discipline-top">
                   <div className="pfm-discipline-icon">{it.icon}</div>
                   <div className="pfm-discipline-title">{it.title}</div>
