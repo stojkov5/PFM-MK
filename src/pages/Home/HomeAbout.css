@@ -1,0 +1,197 @@
+.pfm-about-section {
+  padding: 64px 0 78px 0;
+  background: transparent;
+}
+
+.pfm-about-inner {
+  width: 100%;
+}
+
+/* LEFT card */
+.pfm-about-card {
+  border-radius: 28px;
+  padding: 22px 20px;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px);
+
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.34);
+}
+
+.pfm-about-kicker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 7px 12px;
+  border-radius: 9999px;
+
+  background: rgba(56, 189, 248, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+.pfm-about-title {
+  margin-top: 14px;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.94);
+  line-height: 1.15;
+  font-size: clamp(1.6rem, 2.4vw, 2.05rem);
+  text-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+}
+
+.pfm-about-text {
+  margin-top: 12px;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.75;
+  font-size: 1.02rem;
+  max-width: 72ch;
+}
+
+.pfm-about-actions {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Buttons in same style as Landing */
+.pfm-about-btn-primary {
+  border-radius: 9999px !important;
+  height: 44px !important;
+  padding: 0 18px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  box-shadow: 0 18px 45px rgba(37, 99, 235, 0.28);
+}
+
+.pfm-about-btn-ghost {
+  border-radius: 9999px !important;
+  height: 44px !important;
+  padding: 0 18px !important;
+
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(12px);
+
+  color: rgba(255, 255, 255, 0.92) !important;
+}
+
+.pfm-about-btn-ghost:hover {
+  border-color: rgba(56, 189, 248, 0.35) !important;
+  color: #ffffff !important;
+}
+
+.pfm-about-note {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: rgba(2, 6, 23, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* RIGHT stats */
+.pfm-stats-wrap {
+  display: grid;
+  gap: 12px;
+}
+
+.pfm-stat {
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  gap: 12px;
+  align-items: center;
+
+  padding: 14px;
+  border-radius: 20px;
+
+  background: rgba(2, 6, 23, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(12px);
+
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+}
+
+.pfm-stat-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(56, 189, 248, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 1.2rem;
+}
+
+.pfm-stat-title {
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.92);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.pfm-stat-desc {
+  margin-top: 4px;
+  color: rgba(255, 255, 255, 0.74);
+  line-height: 1.55;
+  font-size: 0.95rem;
+}
+
+/* Bottom CTA buttons */
+.pfm-stats-cta {
+  margin-top: 6px;
+  display: grid;
+  gap: 10px;
+}
+
+.pfm-stats-cta-btn {
+  width: 100%;
+  text-align: left;
+
+  padding: 14px 14px;
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(12px);
+
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 900;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  cursor: pointer;
+  transition:
+    transform 140ms ease,
+    border-color 140ms ease;
+}
+
+.pfm-stats-cta-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+/* Mobile spacing */
+@media (max-width: 1023px) {
+  .pfm-about-card {
+    padding: 18px 16px;
+  }
+}

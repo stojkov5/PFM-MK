@@ -1,105 +1,88 @@
 /* src/components/Navbar/Navbar.css */
 
+/* Wrapper blur stays, but now it’s dark glass */
 .pfm-navbar-wrapper {
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(16px);
 }
 
+/* Slightly stronger on home (Landing) */
+.pfm-navbar-home .pfm-navbar {
+  background: rgba(2, 6, 23, 0.55);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+/* Main container: dark glass to match Landing */
 .pfm-navbar {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(15, 23, 42, 0.06);
-  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+  margin-top: 0;
+  border-radius: 0;
+  background: rgba(2, 6, 23, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+}
+
+/* If you want rounded pill only on desktop */
+@media (min-width: 1024px) {
+  .pfm-navbar {
+    margin-top: 14px;
+    border-radius: 9999px;
+  }
 }
 
 /* Logo */
 .pfm-logo {
   width: 42px;
   height: 42px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(10px);
 }
 
-.pfm-logo-text {
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  color: #f9fafb;
+.pfm-logo-img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
 }
 
-/* Titles next to logo */
+/* Title */
 .pfm-title-small {
-  font-size: 0.62rem;
+  font-size: 0.7rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #6b7280;
-}
-
-.pfm-title-large {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #0f172a;
-}
-
-/* Responsive adjustments for titles */
-@media (min-width: 640px) {
-  .pfm-title-small {
-    font-size: 0.7rem;
-  }
-  .pfm-title-large {
-    font-size: 1rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .pfm-title-small {
-    font-size: 0.75rem;
-  }
-  .pfm-title-large {
-    font-size: 1.05rem;
-  }
+  color: rgba(255, 255, 255, 0.82);
 }
 
 /* === NAV LINKS – DESKTOP === */
-
-/* Base style shared by simple links and dropdown triggers */
 .nav-link-base {
   position: relative;
   padding-bottom: 0.12rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-weight: 500;
-  color: #0f172a;
+
+  color: rgba(255, 255, 255, 0.86);
   background: transparent;
   border: none;
   outline: none;
   cursor: pointer;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: color 160ms ease-out;
-}
 
-/* Same font-size for all desktop links; adjusted per screen size */
-.nav-link-base {
-  font-size: 0.68rem;
-}
-
-@media (min-width: 640px) {
-  .nav-link-base {
-    font-size: 0.74rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .nav-link-base {
-    font-size: 0.8rem;
-  }
+  transition:
+    color 160ms ease-out,
+    opacity 160ms ease-out;
+  font-size: 0.76rem;
 }
 
 @media (min-width: 1280px) {
   .nav-link-base {
-    font-size: 0.84rem;
+    font-size: 0.82rem;
   }
 }
 
-/* Underline effect */
+/* Underline effect (light blue to match Landing glow) */
 .nav-link-base::after {
   content: "";
   position: absolute;
@@ -110,14 +93,14 @@
   border-radius: 9999px;
   background: linear-gradient(
     90deg,
-    rgba(37, 99, 235, 1),
-    rgba(56, 189, 248, 1)
+    rgba(56, 189, 248, 1),
+    rgba(37, 99, 235, 1)
   );
   transition: width 180ms ease-out;
 }
 
 .nav-link-base:hover {
-  color: #1d4ed8;
+  color: #ffffff;
 }
 
 .nav-link-base:hover::after,
@@ -126,55 +109,124 @@
 }
 
 .nav-link-active {
-  color: #1d4ed8;
+  color: #ffffff;
 }
 
-/* Dropdown trigger specific tweaks */
+/* Dropdown trigger */
 .nav-trigger {
   padding-bottom: 0.12rem;
 }
 
 .chevron-icon {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
+  opacity: 0.9;
 }
 
-/* Dropdown links in the menu */
-.nav-dropdown-link {
-  color: #0f172a;
+/* ===== AntD Dropdown menu styling ===== */
+.pfm-dd-menu {
+  background: rgba(2, 6, 23, 0.92) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 14px !important;
+  padding: 8px !important;
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.45) !important;
+  backdrop-filter: blur(14px) !important;
 }
 
-.nav-dropdown-link:hover {
-  color: #1d4ed8;
+.pfm-dd-link {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.pfm-dd-link:hover {
+  background: rgba(56, 189, 248, 0.12);
+  color: #ffffff;
+}
+
+/* Fix AntD default item hover colors */
+.ant-dropdown-menu-item:hover,
+.ant-dropdown-menu-submenu-title:hover {
+  background: transparent !important;
 }
 
 /* === MOBILE / TABLET NAV === */
+.mobile-burger-btn {
+  color: rgba(255, 255, 255, 0.9);
+}
 
+/* Drawer dark glass */
+.pfm-drawer .ant-drawer-content {
+  background: rgba(2, 6, 23, 0.96) !important;
+}
+
+.pfm-drawer .ant-drawer-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.pfm-drawer .ant-drawer-close {
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+.pfm-drawer .ant-drawer-body {
+  padding-top: 0.9rem;
+}
+
+.pfm-drawer-title {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.95rem;
+}
+
+/* mobile links */
 .nav-link-mobile {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 400;
-  color: #0f172a;
+  color: rgba(255, 255, 255, 0.84);
+}
+
+.nav-link-mobile:hover {
+  color: #ffffff;
 }
 
 .nav-link-mobile-active {
-  font-weight: 600;
-  color: #1d4ed8;
+  font-weight: 700;
+  color: #38bdf8;
 }
 
 .nav-mobile-section-title {
-  font-size: 0.7rem;
-  font-weight: 600;
+  font-size: 0.72rem;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  color: #6b7280;
-  margin-bottom: 0.15rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 0.25rem;
+}
+/* ===== FIX: AntD Dropdown text is black ===== */
+.pfm-dd-menu .ant-dropdown-menu {
+  background: rgba(2, 6, 23, 0.92) !important;
 }
 
-/* Mobile burger button (just to avoid weird AntD defaults) */
-.mobile-burger-btn {
-  color: #0f172a;
+.pfm-dd-menu .ant-dropdown-menu-item,
+.pfm-dd-menu .ant-dropdown-menu-submenu-title {
+  color: rgba(255, 255, 255, 0.88) !important;
 }
 
-/* Slight tweak to Drawer body spacing */
-.ant-drawer-body {
-  padding-top: 0.75rem;
+.pfm-dd-menu .ant-dropdown-menu-title-content,
+.pfm-dd-menu .ant-dropdown-menu-item a,
+.pfm-dd-menu .ant-dropdown-menu-item a:visited {
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+/* Hover state */
+.pfm-dd-menu .ant-dropdown-menu-item:hover,
+.pfm-dd-menu .ant-dropdown-menu-submenu-title:hover {
+  background: rgba(56, 189, 248, 0.12) !important;
+}
+
+.pfm-dd-menu .ant-dropdown-menu-item:hover .ant-dropdown-menu-title-content,
+.pfm-dd-menu .ant-dropdown-menu-item:hover a {
+  color: #ffffff !important;
 }

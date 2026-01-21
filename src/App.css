@@ -1,0 +1,21 @@
+/* Whole site base background */
+.pfm-site {
+  min-height: 100vh;
+  background: radial-gradient(
+      900px 520px at 15% 10%,
+      rgba(56, 189, 248, 0.14),
+      transparent 55%
+    ),
+    radial-gradient(
+      900px 620px at 85% 25%,
+      rgba(37, 99, 235, 0.14),
+      transparent 60%
+    ),
+    linear-gradient(180deg, rgba(2, 6, 23, 1) 0%, rgba(3, 7, 18, 1) 100%);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* Important: because navbar is fixed */
+.pfm-site-main {
+  padding-top: 0; /* Landing already has pt-24 */
+}
