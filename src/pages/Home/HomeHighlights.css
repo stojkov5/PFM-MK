@@ -122,6 +122,7 @@
 /* TABLE styling */
 .pfm-table {
   margin-top: 6px;
+  overflow-x:auto !important;
 }
 
 .pfm-table .ant-table {

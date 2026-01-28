@@ -209,7 +209,7 @@ const CalendarInternational = () => {
               icon={<FiExternalLink />}
               onClick={() =>
                 window.open(
-                  "/docs/schedule-2021.pdf",
+                  "/Schedule.pdf",
                   "_blank",
                   "noopener,noreferrer",
                 )

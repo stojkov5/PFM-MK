@@ -153,6 +153,7 @@ const HomeHighlights = () => {
                 pagination={false}
                 className="pfm-table"
                 rowClassName={() => "pfm-table-row"}
+             
               />
 
               <div className="pfm-events-foot">

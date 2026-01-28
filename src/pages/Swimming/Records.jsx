@@ -15,13 +15,13 @@ const Records = () => {
         female: {
           title: "National Records — 25m Pool (Female)",
           subtitle: "Short Course Pool / 25 meters — по категории и дисциплини",
-          file: "/public/National-records-25m-pool-FEMALE.pdf",
+          file: "/National-records-25m-pool-FEMALE.pdf",
           tags: ["25m", "Female", "Short course"],
         },
         male: {
           title: "National Records — 25m Pool (Male)",
           subtitle: "Short Course Pool / 25 meters — по категории и дисциплини",
-          file: "/public/National-records-25m-pool-MALE.pdf",
+          file: "/National-records-25m-pool-MALE.pdf",
           tags: ["25m", "Male", "Short course"],
         },
       },
@@ -29,13 +29,13 @@ const Records = () => {
         female: {
           title: "National Records — 50m Pool (Female)",
           subtitle: "Long Course Pool / 50 meters — по категории и дисциплини",
-          file: "/public/National-records-50m-pool-FEMALE.pdf",
+          file: "/National-records-50m-pool-FEMALE.pdf",
           tags: ["50m", "Female", "Long course"],
         },
         male: {
           title: "National Records — 50m Pool (Male)",
           subtitle: "Long Course Pool / 50 meters — по категории и дисциплини",
-          file: "/public/National-records-50m-pool-MALE.pdf",
+          file: "/National-records-50m-pool-MALE.pdf",
           tags: ["50m", "Male", "Long course"],
         },
       },

@@ -247,11 +247,7 @@ const CalendarNational = () => {
               className="pfm-cal-open "
               icon={<FiExternalLink />}
               onClick={() =>
-                window.open(
-                  "/docs/schedule-2021.pdf",
-                  "_blank",
-                  "noopener,noreferrer",
-                )
+                window.open("/Schedule.pdf", "_blank", "noopener,noreferrer")
               }
             >
               Отвори PDF
