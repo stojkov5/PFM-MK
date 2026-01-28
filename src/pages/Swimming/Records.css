@@ -1,0 +1,284 @@
+.pfm-records {
+  display: grid;
+  gap: 18px;
+}
+
+.pfm-records-head {
+  max-width: 78ch;
+}
+
+.pfm-records-kicker {
+  display: inline-flex;
+  padding: 7px 12px;
+  border-radius: 9999px;
+  background: rgba(56, 189, 248, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+.pfm-records-title {
+  margin-top: 12px;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.94);
+  line-height: 1.15;
+  font-size: clamp(1.6rem, 2.2vw, 2rem);
+  text-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+}
+
+.pfm-records-sub {
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.76);
+  line-height: 1.7;
+  font-size: 1.02rem;
+}
+
+/* Controls */
+.pfm-records-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.pfm-control {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px);
+}
+
+.pfm-control-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+  font-weight: 900;
+}
+
+.pfm-record-list {
+  
+}
+
+/* Ant Segmented – dark */
+.ant-segmented {
+  background: rgba(2, 6, 23, 0.28) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  padding: 6px !important;
+  border-radius: 9999px !important;
+}
+
+.ant-segmented-item {
+  color: rgba(255, 255, 255, 0.72) !important;
+  font-weight: 900 !important;
+  border-radius: 9999px !important;
+}
+
+.ant-segmented-item-selected {
+  color: #fff !important;
+  background: rgba(37, 99, 235, 0.22) !important;
+  border: 1px solid rgba(37, 99, 235, 0.35) !important;
+}
+
+/* Document card shared look (same vibe as Criteria) */
+.pfm-doc-card {
+  height: 100%;
+  border-radius: 26px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.34);
+  display: grid;
+  gap: 12px;
+}
+
+.pfm-doc-top {
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.pfm-doc-ico {
+  width: 46px;
+  height: 46px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(56, 189, 248, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 1.2rem;
+}
+
+.pfm-doc-title {
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 1.02rem;
+  line-height: 1.25;
+}
+
+.pfm-doc-sub {
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.74);
+  line-height: 1.6;
+}
+
+.pfm-doc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pfm-doc-tag {
+  border-radius: 9999px !important;
+  padding: 4px 10px !important;
+  font-weight: 900 !important;
+  background: rgba(37, 99, 235, 0.18) !important;
+  color: rgba(255, 255, 255, 0.88) !important;
+  border: 1px solid rgba(37, 99, 235, 0.18) !important;
+}
+
+.pfm-doc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pfm-doc-btn {
+  border-radius: 9999px !important;
+  height: 44px !important;
+  padding: 0 16px !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  background: rgba(255, 255, 255, 0.10) !important;
+  backdrop-filter: blur(12px);
+  color: rgba(255, 255, 255, 0.92) !important;
+  font-weight: 900 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  text-decoration: none;
+}
+
+.pfm-doc-btn:hover {
+  border-color: rgba(56, 189, 248, 0.35) !important;
+  color: #ffffff !important;
+}
+
+.pfm-doc-btn-primary {
+  background: rgba(37, 99, 235, 0.22) !important;
+  border-color: rgba(37, 99, 235, 0.35) !important;
+}
+
+/* Highlights */
+.pfm-highlights {
+  margin-top: 4px;
+  display: grid;
+  gap: 10px;
+}
+
+.pfm-highlights-title {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+  font-weight: 900;
+}
+
+.pfm-highlights-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.pfm-highlight {
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: rgba(2, 6, 23, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.pfm-highlight-label {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.66);
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+
+.pfm-highlight-value {
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 900;
+}
+
+/* PDF Preview card */
+.pfm-pdf-card {
+  height: 100%;
+  border-radius: 26px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.34);
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.pfm-pdf-top {
+  padding: 16px 16px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.pfm-pdf-top-title {
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 900;
+  font-size: 1.02rem;
+}
+
+.pfm-pdf-top-sub {
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.70);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.pfm-pdf-frame {
+  width: 100%;
+  height: min(72vh, 760px);
+  background: rgba(2, 6, 23, 0.20);
+}
+
+.pfm-iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Collapse */
+.pfm-collapse {
+  background: transparent !important;
+}
+
+.pfm-collapse .ant-collapse-item {
+  border-radius: 18px !important;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.pfm-collapse .ant-collapse-header {
+  color: rgba(255, 255, 255, 0.88) !important;
+  font-weight: 900 !important;
+}
+
+.pfm-note {
+  color: rgba(255, 255, 255, 0.76);
+  line-height: 1.7;
+}

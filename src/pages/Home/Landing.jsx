@@ -13,7 +13,7 @@ const Landing = () => {
       title: "SWIMMING",
       desc: "Програми, календари, рекорди и критериуми.",
       icon: <FiDroplet />,
-      href: "/swimming/programs",
+      href: "/swimming",
       chips: ["Programs", "Calendar", "Records"],
     },
     {

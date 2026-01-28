@@ -1,0 +1,74 @@
+/* ===== SWIMMING BASE ===== */
+.pfm-swimming {
+  padding-top: 96px;
+}
+
+/* HERO */
+.pfm-swimming-hero {
+    min-height: 100vh;
+  padding: 54px 0 42px;
+  background: radial-gradient(
+      800px 400px at 20% 0%,
+      rgba(56, 189, 248, 0.18),
+      transparent 60%
+    ),
+    linear-gradient(180deg, rgba(2, 6, 23, 0.85), rgba(2, 6, 23, 0.6));
+}
+
+.pfm-swimming-kicker {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+  font-weight: 800;
+}
+
+.pfm-swimming-title {
+  margin-top: 10px;
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  font-weight: 900;
+  color: white;
+}
+
+.pfm-swimming-sub {
+  margin-top: 10px;
+  max-width: 70ch;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* TABS */
+.pfm-swimming-tabs {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pfm-swimming-tab {
+  padding: 10px 16px;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+
+  color: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.pfm-swimming-tab:hover {
+  color: white;
+  border-color: rgba(56, 189, 248, 0.35);
+}
+
+.pfm-swimming-tab.active {
+  color: white;
+  background: rgba(37, 99, 235, 0.25);
+  border-color: rgba(37, 99, 235, 0.4);
+}
+
+/* CONTENT */
+.pfm-swimming-content {
+  padding: 40px 0 80px;
+}

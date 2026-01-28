@@ -6,11 +6,13 @@ import AppLayout from "./layout/AppLayout.jsx";
 
 // --- page imports (for now just simple placeholders) ---
 import HomePage from "./pages/Home/HomePage.jsx";
-import SwimmingPrograms from "./pages/Swimming/SwimmingPrograms.jsx";
-import SwimmingCalendarNational from "./pages/Swimming/SwimmingCalendarNational.jsx";
-import SwimmingCalendarInternational from "./pages/Swimming/SwimmingCalendarInternational.jsx";
-import SwimmingRecords from "./pages/Swimming/SwimmingRecords.jsx";
-import SwimmingCriteria from "./pages/Swimming/SwimmingCriteria.jsx";
+
+import SwimmingLayout from "./pages/Swimming/SwimmingLayout.jsx";
+import SwimmingPrograms from "./pages/Swimming/Programs.jsx";
+import SwimmingCalendarNational from "./pages/Swimming/CalendarNational.jsx";
+import SwimmingCalendarInternational from "./pages/Swimming/CalendarInternational.jsx";
+import SwimmingRecords from "./pages/Swimming/Records.jsx";
+import SwimmingCriteria from "./pages/Swimming/Criteria.jsx";
 
 import WaterpoloPrograms from "./pages/Waterpolo/WaterpoloPrograms.jsx";
 import WaterpoloCalendarNational from "./pages/Waterpolo/WaterpoloCalendarNational.jsx";
@@ -32,6 +34,7 @@ export const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
 
       // SWIMMING
+      { path: "swimming", element: <SwimmingLayout /> },
       { path: "swimming/programs", element: <SwimmingPrograms /> },
       {
         path: "swimming/calendar-national",

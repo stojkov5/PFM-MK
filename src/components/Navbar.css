@@ -166,7 +166,7 @@
 }
 
 .pfm-drawer .ant-drawer-close {
-  color: rgba(255, 255, 255, 0.88) !important;
+  color: rgba(2, 6, 23, 0.96) !important;
 }
 
 .pfm-drawer .ant-drawer-body {
@@ -176,7 +176,7 @@
 .pfm-drawer-title {
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(2, 6, 23, 0.96);
   font-size: 0.95rem;
 }
 
@@ -184,11 +184,11 @@
 .nav-link-mobile {
   font-size: 0.95rem;
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.84);
+  color: rgba(2, 6, 23, 0.96);
 }
 
 .nav-link-mobile:hover {
-  color: #ffffff;
+  color: rgba(2, 6, 23, 0.75);
 }
 
 .nav-link-mobile-active {
@@ -201,7 +201,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(2, 6, 23, 0.96);
   margin-bottom: 0.25rem;
 }
 /* ===== FIX: AntD Dropdown text is black ===== */

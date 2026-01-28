@@ -22,6 +22,7 @@ const Navbar = () => {
       key: "swimming",
       label: "SWIMMING",
       children: [
+        { key: "swim-home", label: "Swimming", path: "/swimming" },
         { key: "swim-programs", label: "Programs", path: "/swimming/programs" },
         { key: "swim-cal-national", label: "Calendar – National", path: "/swimming/calendar-national" },
         { key: "swim-cal-international", label: "Calendar – International", path: "/swimming/calendar-international" },
