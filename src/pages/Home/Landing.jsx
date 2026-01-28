@@ -2,7 +2,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Row, Col, Button } from "antd";
-import { FiArrowRight, FiCalendar, FiDroplet, FiWind, FiAward } from "react-icons/fi";
+import { TbSwimming, TbWaterpolo } from "react-icons/tb";
+import { TiWaves } from "react-icons/ti";
+import { FiArrowRight, FiAward } from "react-icons/fi";
 import "./Landing.css";
 
 const Landing = () => {
@@ -12,21 +14,21 @@ const Landing = () => {
     {
       title: "SWIMMING",
       desc: "Програми, календари, рекорди и критериуми.",
-      icon: <FiDroplet />,
+      icon: <TbSwimming />,
       href: "/swimming",
       chips: ["Programs", "Calendar", "Records"],
     },
     {
       title: "WATERPOLO",
       desc: "Програми и официјални информации за ватерполо натпревари.",
-      icon: <FiWind />,
+      icon: <TbWaterpolo />,
       href: "/waterpolo/programs",
       chips: ["Programs", "Calendar", "Criteria"],
     },
     {
       title: "DISTANCE SWIMMING",
       desc: "Маратони и настани на отворени води, календар и новости.",
-      icon: <FiCalendar />,
+      icon: <TiWaves />,
       href: "/distance-swimming/calendar",
       chips: ["Calendar", "Ohrid Marathon", "News"],
     },

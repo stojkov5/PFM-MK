@@ -21,7 +21,7 @@ const HomeDisciplines = () => {
         "Критериуми и документи",
       ],
       primaryText: "Отвори Swimming",
-      primaryTo: "/swimming/programs",
+      primaryTo: "/swimming",
       secondaryText: "Рекорди",
       secondaryTo: "/swimming/records",
     },
