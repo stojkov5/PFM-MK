@@ -1,0 +1,379 @@
+{
+  "navbar": {
+    "brand": {
+      "fullName": "Swimming Federation of Macedonia",
+      "logoAlt": "PFM Logo"
+    },
+    "items": {
+      "home": "HOME",
+      "swimming": "SWIMMING",
+      "waterpolo": "WATERPOLO",
+      "news": "NEWS",
+      "distanceSwimming": "DISTANCE SWIMMING"
+    },
+    "swimming": {
+      "home": "Swimming",
+      "clubs": "Clubs"
+    },
+    "waterpolo": {
+      "programs": "Programs"
+    },
+    "distance": {
+      "calendar": "Calendar",
+      "ohridMarathon": "Ohrid Swimming Marathon"
+    },
+    "common": {
+      "calendarNational": "Calendar – National",
+      "calendarInternational": "Calendar – International",
+      "recordList": "Record List",
+      "criteria": "Criteria"
+    },
+    "actions": {
+      "openMenu": "Open navigation",
+      "goHome": "Go to home",
+      "changeLanguage": "Change language",
+      "language": "Language"
+    }
+  },
+  "landing": {
+    "badge": "Official sports federation",
+    "titleLine1": "Swimming Federation",
+    "titleLine2": "of Macedonia",
+    "subtitle": "National body for organizing, developing and improving aquatic sports — swimming, water polo and distance swimming. Here you can find calendars, criteria, records and official announcements.",
+    "actions": {
+      "news": "News & announcements",
+      "browse": "Browse content"
+    },
+    "meta": {
+      "focusLabel": "Focus",
+      "focusValue": "Competitions • Records • Development",
+      "infoLabel": "Information",
+      "infoValue": "Calendar • Documents • News"
+    },
+    "quickAccess": {
+      "title": "Quick access",
+      "subtitle": "Choose a section to continue."
+    },
+    "quickLinks": {
+      "swimming": {
+        "title": "SWIMMING",
+        "desc": "Programs, calendars, records and criteria."
+      },
+      "waterpolo": {
+        "title": "WATERPOLO",
+        "desc": "Programs and official information for water polo competitions."
+      },
+      "distance": {
+        "title": "DISTANCE SWIMMING",
+        "desc": "Open-water marathons and events, calendar and news."
+      },
+      "chips": {
+        "programs": "Programs",
+        "calendar": "Calendar",
+        "records": "Records",
+        "criteria": "Criteria",
+        "ohridMarathon": "Ohrid Marathon",
+        "news": "News"
+      }
+    }
+  },
+
+  "homeHighlights": {
+    "latestNews": "Latest news",
+    "viewMore": "View more",
+    "read": "Read",
+    "upcomingEvents": "Upcoming events",
+    "calendar": "Calendar",
+    "openNationalCalendar": "Open national calendar",
+    "table": {
+      "date": "Date",
+      "event": "Event",
+      "type": "Type"
+    },
+    "news": [
+      {
+        "title": "National calendar published – Swimming (2026)",
+        "excerpt": "A preliminary calendar has been published with national competitions, categories and locations.",
+        "tag": "SWIMMING"
+      },
+      {
+        "title": "Criteria for selections and international appearances",
+        "excerpt": "Updated criteria for selection and conditions for competing at international events.",
+        "tag": "DOCUMENT"
+      },
+      {
+        "title": "Information about the Ohrid Swimming Marathon",
+        "excerpt": "Information is available for distances, registration, safety rules and protocol.",
+        "tag": "OPEN WATER"
+      }
+    ]
+  },
+
+  "homeAbout": {
+    "kicker": "About the federation",
+    "title": "Official national body for swimming, water polo and distance swimming",
+    "text": "The Swimming Federation of Macedonia works on organizing, developing and improving aquatic sports at a national level. In cooperation with clubs, coaches and expert commissions, the Federation prepares competition calendars, regulations, criteria and official record lists, as well as activities related to national team selections.",
+    "note": "Official documents and criteria are published in the relevant sections by discipline (Swimming/Waterpolo/Distance Swimming).",
+    "actions": {
+      "nationalCalendar": "National calendar",
+      "nationalRecords": "National records",
+      "criteriaRules": "Criteria & regulations",
+      "announcements": "Announcements"
+    },
+    "stats": [
+      {
+        "value": "Clubs",
+        "label": "Registered clubs and active members working to develop swimming across the country."
+      },
+      {
+        "value": "Records",
+        "label": "Official national records by event, category and pool type (25m/50m)."
+      },
+      {
+        "value": "Competitions",
+        "label": "Organization and sanctioning of national competitions, championships and cups throughout the year."
+      }
+    ]
+  },
+
+  "homeDisciplines": {
+    "kicker": "Disciplines",
+    "title": "Swimming, water polo and distance swimming",
+    "subtitle": "Quick access to the most important information by discipline: programs, calendars, documents and official lists.",
+    "items": {
+      "swimming": {
+        "title": "SWIMMING",
+        "desc": "Information about programs, competitions, national and international calendars, records and participation criteria.",
+        "bullets": [
+          "National calendar and championships",
+          "Official record list",
+          "Criteria and documents"
+        ],
+        "primaryText": "Open Swimming",
+        "secondaryText": "Records"
+      },
+      "waterpolo": {
+        "title": "WATERPOLO",
+        "desc": "Programs and official information for water polo competitions, including national and international calendars.",
+        "bullets": [
+          "Calendar – National",
+          "Calendar – International",
+          "Criteria / regulations"
+        ],
+        "primaryText": "Open Water polo",
+        "secondaryText": "Calendar"
+      },
+      "distance": {
+        "title": "DISTANCE SWIMMING",
+        "desc": "Open-water (distance swimming) with a marathon calendar, event information and official news.",
+        "bullets": [
+          "Marathon calendar",
+          "Ohrid swimming marathon",
+          "News and updates"
+        ],
+        "primaryText": "Open Distance Swimming",
+        "secondaryText": "Ohrid marathon"
+      }
+    }
+  },
+  "common": {
+    "dash": "—"
+  },
+  "clubs": {
+    "kicker": "Clubs",
+    "title": "Registered clubs",
+    "subtitle": "List of registered clubs. Search by name, city or type.",
+    "searchPlaceholder": "Search… (example: Skopje, Kumanovo, Orion)",
+    "allCities": "All cities",
+    "total": "Total:",
+    "labels": {
+      "city": "City:",
+      "type": "Type:"
+    }
+  },
+  "calendar": {
+    "kicker": "Calendar",
+    "nationalTitle": "Calendar – National",
+    "internationalTitle": "Calendar – International",
+    "searchPlaceholderNational": "Search… (example: Skopje, 25m, National)",
+    "searchPlaceholderInternational": "Search… (example: Belgrade, 25m, TBC, Olympics)",
+    "total": "Total:",
+    "openPdf": "Open PDF",
+    "columns": {
+      "month": "Month",
+      "date": "Date",
+      "event": "Event",
+      "place": "Place",
+      "categories": "Categories",
+      "pool": "Pool",
+      "status": "Status"
+    },
+    "status": {
+      "tbc": "TBC",
+      "ok": "OK"
+    }
+  },
+  "records": {
+    "kicker": "Records",
+    "title": "National Records",
+    "intro": {
+      "p1": "Browse official national swimming records by pool length and gender. Use the controls to switch between 25m (short course) and 50m (long course).",
+      "mustInclude": "The official PDFs include:",
+      "list": {
+        "0": "All disciplines by age category",
+        "1": "Record holders and results",
+        "2": "Event breakdown per category",
+        "3": "The full official list (source of truth)"
+      },
+      "p2": "The highlights below are just a quick overview — always refer to the PDFs for the complete and official data."
+    },
+    "controls": {
+      "pool": "Pool",
+      "gender": "Gender",
+      "female": "Female",
+      "male": "Male"
+    },
+    "actions": {
+      "openPdf": "Open PDF",
+      "download": "Download"
+    },
+    "highlightsTitle": "Quick Highlights",
+    "noteTitle": "Note",
+    "noteText": "Highlights are informational only. In case of any mismatch, the official PDF document is always the authoritative source.",
+    "preview": {
+      "title": "PDF Preview",
+      "sub": "Use zoom and scroll inside the frame. If it doesn't load, open the PDF directly."
+    },
+    "tags": {
+      "25m": "25m",
+      "50m": "50m",
+      "female": "Female",
+      "male": "Male",
+      "shortCourse": "Short course",
+      "longCourse": "Long course"
+    },
+    "docs": {
+      "25": {
+        "female": {
+          "title": "National Records — 25m Pool (Female)",
+          "subtitle": "Short Course / 25 meters — by category and discipline"
+        },
+        "male": {
+          "title": "National Records — 25m Pool (Male)",
+          "subtitle": "Short Course / 25 meters — by category and discipline"
+        }
+      },
+      "50": {
+        "female": {
+          "title": "National Records — 50m Pool (Female)",
+          "subtitle": "Long Course / 50 meters — by category and discipline"
+        },
+        "male": {
+          "title": "National Records — 50m Pool (Male)",
+          "subtitle": "Long Course / 50 meters — by category and discipline"
+        }
+      }
+    }
+  },
+  "criteria": {
+    "kicker": "Criteria",
+    "title": "Selection Criteria",
+    "subtitle": "Download the official documents and review the preview tables for a quick understanding.",
+    "actions": {
+      "openPdf": "Open PDF",
+      "download": "Download"
+    },
+    "tags": {
+      "openWater": "Open Water",
+      "norms": "Norms",
+      "points": "Points",
+      "nationalTeam": "National Team"
+    },
+    "docs": {
+      "0": {
+        "title": "Selection Criteria — Open Water (DS)",
+        "subtitle": "Norms & requirements for open water selection",
+        "note": "These norms are summarized in the preview table below. For official rules and full details, open the PDF."
+      },
+      "1": {
+        "title": "Selection Criteria — Cup / Points",
+        "subtitle": "Points criteria and national team selection rules",
+        "note": "Points thresholds are summarized in the preview table below. Always confirm the details in the official PDF."
+      }
+    },
+    "preview": {
+      "1": {
+        "label": "Open Water — Norms Preview",
+        "p1": "Below is a quick preview of the time norms by discipline and category. The official PDF remains the source of truth.",
+        "li1": "Times are shown in minutes:seconds",
+        "li2": "Categories are split by age group and gender",
+        "li3": "A dash (—) means not defined / not applicable"
+      },
+      "2": {
+        "label": "Cup / Points — Preview",
+        "p1": "Below is a quick preview of points thresholds by category used for selection.",
+        "warn": "Important: Requirements may change. Always rely on the official PDF for final confirmation."
+      }
+    },
+    "tables": {
+      "openWater": {
+        "discipline": "Discipline",
+        "seniors": "Seniors",
+        "youth": "U20",
+        "juniors": "Juniors",
+        "cadets": "Cadets",
+        "m": "M",
+        "f": "F"
+      },
+      "points": {
+        "category": "Category",
+        "points": "Points",
+        "note": "Note"
+      }
+    },
+    "pointsData": {
+      "base": "Minimum points threshold",
+      "avg": "Average points threshold",
+      "b14": { "group": "Boys (2014)" },
+      "b16": { "group": "Boys (2016)" },
+      "b18": { "group": "Boys (2018)" },
+      "g13": { "group": "Girls (2013)" },
+      "g15": { "group": "Girls (2015)" },
+      "g17": { "group": "Girls (2017)" },
+      "avgB13": { "group": "Average (Boys 2013)" },
+      "avgB15": { "group": "Average (Boys 2015)" },
+      "avgG14": { "group": "Average (Girls 2014)" },
+      "avgG16": { "group": "Average (Girls 2016)" }
+    }
+  },
+  "swimming": {
+    "hero": {
+      "kicker": "Discipline",
+      "title": "Swimming",
+      "subtitle": "Official information about clubs, calendars, records, and criteria under the authority of the Swimming Federation."
+    },
+    "open": "Open",
+    "cards": {
+      "clubs": {
+        "title": "Clubs",
+        "desc": "Registered clubs and basic information."
+      },
+      "calendarNational": {
+        "title": "Calendar – National",
+        "desc": "Domestic competition calendar by month."
+      },
+      "calendarInternational": {
+        "title": "Calendar – International",
+        "desc": "International competitions and events (with TBC status)."
+      },
+      "criteria": {
+        "title": "Criteria",
+        "desc": "Standards and criteria for participation and selections."
+      },
+      "records": {
+        "title": "Record List",
+        "desc": "National records (25m / 50m; Female / Male)."
+      }
+    }
+  }
+}

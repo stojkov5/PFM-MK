@@ -1,0 +1,199 @@
+.pfm-clubs {
+  display: grid;
+  gap: 16px;
+}
+
+.pfm-clubs-head {
+  max-width: 84ch;
+}
+
+.pfm-clubs-kicker {
+  display: inline-flex;
+  padding: 7px 12px;
+  border-radius: 9999px;
+  background: rgba(56, 189, 248, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+.pfm-clubs-title {
+  margin-top: 12px;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.94);
+  line-height: 1.15;
+  font-size: clamp(1.6rem, 2.2vw, 2rem);
+  text-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+}
+
+.pfm-clubs-sub {
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.76);
+  line-height: 1.7;
+  font-size: 1.02rem;
+}
+
+.pfm-clubs-controls {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.pfm-clubs-search {
+  max-width: 520px;
+  border-radius: 9999px !important;
+  background: rgba(255, 255, 255, 0.10) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+.pfm-clubs-search input {
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+.pfm-clubs-select {
+  min-width: 190px;
+  border-radius: 9999px !important;
+}
+
+.pfm-clubs-select .ant-select-selector {
+  border-radius: 9999px !important;
+  background: rgba(255, 255, 255, 0.10) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+.pfm-clubs-select .ant-select-selection-item {
+  color: rgba(255, 255, 255, 0.88) !important;
+  font-weight: 800;
+}
+
+.pfm-clubs-tag {
+  border-radius: 9999px !important;
+  padding: 6px 12px !important;
+  background: rgba(2, 6, 23, 0.30) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: rgba(255, 255, 255, 0.76) !important;
+  font-weight: 900 !important;
+}
+
+/* Cards */
+.pfm-club-card {
+  height: 100%;
+  border-radius: 26px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.34);
+  display: grid;
+  gap: 12px;
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+
+.pfm-club-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 189, 248, 0.26);
+}
+
+.pfm-club-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pfm-club-badge {
+  width: 42px;
+  height: 42px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(56, 189, 248, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 900;
+}
+
+.pfm-club-name {
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.pfm-club-meta {
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: rgba(2, 6, 23, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: grid;
+  gap: 8px;
+}
+
+.pfm-club-line {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.pfm-club-label {
+  min-width: 54px;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.62);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+.pfm-club-value {
+  color: rgba(255, 255, 255, 0.86);
+  font-weight: 700;
+}
+
+.pfm-club-email {
+  margin-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.90);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.pfm-club-email:hover {
+  color: #ffffff;
+}
+
+.pfm-club-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pfm-tag {
+  
+  padding: 0.2rem 0.5rem !important;
+  font-weight: 900 !important;
+  background: rgba(37, 99, 235, 0.18) !important;
+  color: rgba(255, 255, 255, 0.88) !important;
+  border: 1px solid rgba(37, 99, 235, 0.18) !important;
+
+}
+
+.pfm-tag-alt {
+  background: rgba(56, 189, 248, 0.14) !important;
+  border-color: rgba(56, 189, 248, 0.18) !important;
+}
+
+.pfm-clubs-note {
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.7;
+  font-size: 0.95rem;
+}

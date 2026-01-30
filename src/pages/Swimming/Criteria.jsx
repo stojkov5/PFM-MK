@@ -1,65 +1,59 @@
 import React from "react";
 import { Row, Col, Button, Collapse, Table, Tag } from "antd";
 import { FiDownload, FiExternalLink, FiFileText } from "react-icons/fi";
+import { useTranslation } from "react-i18next";
 import "./Criteria.css";
 
-const { Panel } = Collapse;
-
 const Criteria = () => {
-  // ✅ Put PDFs in: public/docs/
+  const { t } = useTranslation();
+
+  // PDFs in public/
   const docs = [
     {
-      title: "Норми за далечинско пливање – 2023",
-      subtitle:
-        "Светско/Европско првенство (сениори) + младинци/јуниори/кадети + Комен куп.",
+      title: t("criteria.docs.0.title"),
+      subtitle: t("criteria.docs.0.subtitle"),
       file: "/Criteria-DS.pdf",
-      tags: ["Open Water", "2023", "Норми"],
-      note: "Времињата се однесуваат на резултати во 50-метарски базен и се изразени во минути.",
+      tags: [t("criteria.tags.openWater"), "2023", t("criteria.tags.norms")],
+      note: t("criteria.docs.0.note"),
     },
     {
-      title: "Критериуми за Комен Куп / ЦЕИ / Мултинации – 2023",
-      subtitle:
-        "Критериум за настап / статус репрезентативец преку бодови по возрасни категории.",
+      title: t("criteria.docs.1.title"),
+      subtitle: t("criteria.docs.1.subtitle"),
       file: "/Criteria-Cup.pdf",
-      tags: ["2023", "Бодови", "Репрезентација"],
-      note: "Во случаи со непарни/парни години се применува просек на бодови помеѓу годиштата.",
+      tags: ["2023", t("criteria.tags.points"), t("criteria.tags.nationalTeam")],
+      note: t("criteria.docs.1.note"),
     },
   ];
 
-  // ===== PDF #1: Open water norms (from your PDF) =====
+  // ===== Open water norms table =====
   const openWaterColumns = [
+    { title: t("criteria.tables.openWater.discipline"), dataIndex: "discipline", key: "discipline", width: 110 },
     {
-      title: "Дисциплина",
-      dataIndex: "discipline",
-      key: "discipline",
-      width: 110,
-    },
-    {
-      title: "Сениори",
+      title: t("criteria.tables.openWater.seniors"),
       children: [
-        { title: "М", dataIndex: "sen_m", key: "sen_m", width: 80 },
-        { title: "Ж", dataIndex: "sen_f", key: "sen_f", width: 80 },
+        { title: t("criteria.tables.openWater.m"), dataIndex: "sen_m", key: "sen_m", width: 80 },
+        { title: t("criteria.tables.openWater.f"), dataIndex: "sen_f", key: "sen_f", width: 80 },
       ],
     },
     {
-      title: "Младинци (2004–2005)",
+      title: t("criteria.tables.openWater.youth"),
       children: [
-        { title: "М", dataIndex: "u20_m", key: "u20_m", width: 90 },
-        { title: "Ж", dataIndex: "u20_f", key: "u20_f", width: 90 },
+        { title: t("criteria.tables.openWater.m"), dataIndex: "u20_m", key: "u20_m", width: 90 },
+        { title: t("criteria.tables.openWater.f"), dataIndex: "u20_f", key: "u20_f", width: 90 },
       ],
     },
     {
-      title: "Јуниори (2006–2007)",
+      title: t("criteria.tables.openWater.juniors"),
       children: [
-        { title: "М", dataIndex: "jun_m", key: "jun_m", width: 90 },
-        { title: "Ж", dataIndex: "jun_f", key: "jun_f", width: 90 },
+        { title: t("criteria.tables.openWater.m"), dataIndex: "jun_m", key: "jun_m", width: 90 },
+        { title: t("criteria.tables.openWater.f"), dataIndex: "jun_f", key: "jun_f", width: 90 },
       ],
     },
     {
-      title: "Кадети (2008–2009)",
+      title: t("criteria.tables.openWater.cadets"),
       children: [
-        { title: "М", dataIndex: "cad_m", key: "cad_m", width: 90 },
-        { title: "Ж", dataIndex: "cad_f", key: "cad_f", width: 90 },
+        { title: t("criteria.tables.openWater.m"), dataIndex: "cad_m", key: "cad_m", width: 90 },
+        { title: t("criteria.tables.openWater.f"), dataIndex: "cad_f", key: "cad_f", width: 90 },
       ],
     },
   ];
@@ -103,74 +97,25 @@ const Criteria = () => {
     },
   ];
 
-  // ===== PDF #2: Points criteria (from your PDF) =====
+  // ===== Points table =====
   const pointsColumns = [
-    { title: "Категорија", dataIndex: "group", key: "group", width: 170 },
-    { title: "Бодови", dataIndex: "points", key: "points", width: 130 },
-    { title: "Забелешка", dataIndex: "note", key: "note" },
+    { title: t("criteria.tables.points.category"), dataIndex: "group", key: "group", width: 170 },
+    { title: t("criteria.tables.points.points"), dataIndex: "points", key: "points", width: 130 },
+    { title: t("criteria.tables.points.note"), dataIndex: "note", key: "note" },
   ];
 
   const pointsData = [
-    {
-      key: "b14",
-      group: "Машки – до 14 год.",
-      points: "500",
-      note: "Основен праг",
-    },
-    {
-      key: "b16",
-      group: "Машки – до 16 год.",
-      points: "550",
-      note: "Основен праг",
-    },
-    {
-      key: "b18",
-      group: "Машки – до 18 год.",
-      points: "600",
-      note: "Основен праг",
-    },
-    {
-      key: "g13",
-      group: "Женски – до 13 год.",
-      points: "500",
-      note: "Основен праг",
-    },
-    {
-      key: "g15",
-      group: "Женски – до 15 год.",
-      points: "550",
-      note: "Основен праг",
-    },
-    {
-      key: "g17",
-      group: "Женски – до 17 год.",
-      points: "600",
-      note: "Основен праг",
-    },
-    {
-      key: "avgB13",
-      group: "Пример (машки – 13 год.)",
-      points: "525",
-      note: "Просек помеѓу годишта (пример од документ)",
-    },
-    {
-      key: "avgB15",
-      group: "Пример (машки – 15 год.)",
-      points: "575",
-      note: "Просек помеѓу годишта (пример од документ)",
-    },
-    {
-      key: "avgG14",
-      group: "Пример (женски – 14 год.)",
-      points: "525",
-      note: "Просек помеѓу годишта (пример од документ)",
-    },
-    {
-      key: "avgG16",
-      group: "Пример (женски – 16 год.)",
-      points: "575",
-      note: "Просек помеѓу годишта (пример од документ)",
-    },
+    { key: "b14", group: t("criteria.pointsData.b14.group"), points: "500", note: t("criteria.pointsData.base") },
+    { key: "b16", group: t("criteria.pointsData.b16.group"), points: "550", note: t("criteria.pointsData.base") },
+    { key: "b18", group: t("criteria.pointsData.b18.group"), points: "600", note: t("criteria.pointsData.base") },
+    { key: "g13", group: t("criteria.pointsData.g13.group"), points: "500", note: t("criteria.pointsData.base") },
+    { key: "g15", group: t("criteria.pointsData.g15.group"), points: "550", note: t("criteria.pointsData.base") },
+    { key: "g17", group: t("criteria.pointsData.g17.group"), points: "600", note: t("criteria.pointsData.base") },
+
+    { key: "avgB13", group: t("criteria.pointsData.avgB13.group"), points: "525", note: t("criteria.pointsData.avg") },
+    { key: "avgB15", group: t("criteria.pointsData.avgB15.group"), points: "575", note: t("criteria.pointsData.avg") },
+    { key: "avgG14", group: t("criteria.pointsData.avgG14.group"), points: "525", note: t("criteria.pointsData.avg") },
+    { key: "avgG16", group: t("criteria.pointsData.avgG16.group"), points: "575", note: t("criteria.pointsData.avg") },
   ];
 
   const openDoc = (url) => window.open(url, "_blank", "noopener,noreferrer");
@@ -179,14 +124,11 @@ const Criteria = () => {
     <div className="pfm-criteria pt-24">
       <div className="pfm-landing-inner max-w-6xl mx-auto px-4 md:px-6">
         <div className="pfm-criteria-head">
-          <div className="pfm-criteria-kicker">Criteria</div>
-          <h2 className="pfm-criteria-title">Критериуми и нормативи</h2>
-          <p className="pfm-criteria-sub">
-            Оваа секција ги содржи официјалните документи за критериуми и норми
-            за настап. Подолу имаш и брз преглед на клучните точки од PDF
-            документите.
-          </p>
+          <div className="pfm-criteria-kicker">{t("criteria.kicker")}</div>
+          <h2 className="pfm-criteria-title">{t("criteria.title")}</h2>
+          <p className="pfm-criteria-sub">{t("criteria.subtitle")}</p>
         </div>
+
         <div className="pfm-criteria-preview">
           <Collapse
             accordion
@@ -195,29 +137,16 @@ const Criteria = () => {
             items={[
               {
                 key: "1",
-                label: "Преглед: Норми за далечинско пливање (2023)",
+                label: t("criteria.preview.1.label"),
                 children: (
                   <div className="pfm-preview-block">
                     <div className="pfm-preview-text">
-                      <p>
-                        Табелата подолу ги прикажува нормативите по дисциплина и
-                        категорија. (минутaжа, базирана на резултати во 50м
-                        базен).
-                      </p>
+                      <p>{t("criteria.preview.1.p1")}</p>
+
                       <ul className="pfm-preview-ul">
-                        <li>
-                          Дополнителен критериум: влез во репрезентација преку{" "}
-                          <b>1.5%</b> од времето на победникот или пласман во
-                          првата половина на одредени натпревари.
-                        </li>
-                        <li>
-                          На 2.5км: 2-ро/3-то место да не е повеќе од{" "}
-                          <b>1:30</b> мин. зад победникот.
-                        </li>
-                        <li>
-                          На 5.0км: 2-ро/3-то место да не е повеќе од{" "}
-                          <b>3:00</b> мин. зад победникот.
-                        </li>
+                        <li>{t("criteria.preview.1.li1")}</li>
+                        <li>{t("criteria.preview.1.li2")}</li>
+                        <li>{t("criteria.preview.1.li3")}</li>
                       </ul>
                     </div>
 
@@ -237,20 +166,12 @@ const Criteria = () => {
               },
               {
                 key: "2",
-                label: "Преглед: Комен Куп / ЦЕИ / Мултинации (2023) – бодови",
+                label: t("criteria.preview.2.label"),
                 children: (
                   <div className="pfm-preview-block">
                     <div className="pfm-preview-text">
-                      <p>
-                        Критериумот за настап/статус репрезентативец е дефиниран
-                        преку бодови по возраст и пол. Во случаи со
-                        непарни/парни години се применува просек помеѓу
-                        годиштата (примерите се наведени во документот).
-                      </p>
-                      <p className="pfm-preview-warn">
-                        Забелешка: Одборот го задржува правото по интерес на
-                        пливањето да одлучи за настап и во специфични случаи.
-                      </p>
+                      <p>{t("criteria.preview.2.p1")}</p>
+                      <p className="pfm-preview-warn">{t("criteria.preview.2.warn")}</p>
                     </div>
 
                     <div className="pfm-table-wrap">
@@ -286,9 +207,9 @@ const Criteria = () => {
                 </div>
 
                 <div className="pfm-doc-tags">
-                  {d.tags.map((t) => (
-                    <Tag key={t} className="pfm-doc-tag">
-                      {t}
+                  {d.tags.map((tag) => (
+                    <Tag key={tag} className="pfm-doc-tag">
+                      {tag}
                     </Tag>
                   ))}
                 </div>
@@ -301,16 +222,12 @@ const Criteria = () => {
                     onClick={() => openDoc(d.file)}
                     icon={<FiExternalLink />}
                   >
-                    Отвори PDF
+                    {t("criteria.actions.openPdf")}
                   </Button>
 
-                  <a
-                    className="pfm-doc-btn pfm-doc-btn-primary"
-                    href={d.file}
-                    download
-                  >
+                  <a className="pfm-doc-btn pfm-doc-btn-primary" href={d.file} download>
                     <FiDownload />
-                    <span>Преземи</span>
+                    <span>{t("criteria.actions.download")}</span>
                   </a>
                 </div>
               </div>

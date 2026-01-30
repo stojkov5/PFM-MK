@@ -5,32 +5,31 @@ import { Row, Col, Button } from "antd";
 import { TbSwimming, TbWaterpolo } from "react-icons/tb";
 import { TiWaves } from "react-icons/ti";
 import { FiArrowRight, FiAward } from "react-icons/fi";
+import { useTranslation } from "react-i18next";
 import "./Landing.css";
 
 const Landing = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const quickLinks = [
     {
-      title: "SWIMMING",
-      desc: "Програми, календари, рекорди и критериуми.",
+      key: "swimming",
       icon: <TbSwimming />,
       href: "/swimming",
-      chips: ["Programs", "Calendar", "Records"],
+      chips: ["programs", "calendar", "records"],
     },
     {
-      title: "WATERPOLO",
-      desc: "Програми и официјални информации за ватерполо натпревари.",
+      key: "waterpolo",
       icon: <TbWaterpolo />,
       href: "/waterpolo/programs",
-      chips: ["Programs", "Calendar", "Criteria"],
+      chips: ["programs", "calendar", "criteria"],
     },
     {
-      title: "DISTANCE SWIMMING",
-      desc: "Маратони и настани на отворени води, календар и новости.",
+      key: "distance",
       icon: <TiWaves />,
       href: "/distance-swimming/calendar",
-      chips: ["Calendar", "Ohrid Marathon", "News"],
+      chips: ["calendar", "ohridMarathon", "news"],
     },
   ];
 
@@ -47,20 +46,16 @@ const Landing = () => {
             <div className="pfm-hero-left">
               <div className="pfm-hero-badge">
                 <FiAward className="pfm-hero-badge-icon" />
-                <span>Официјална спортска федерација</span>
+                <span>{t("landing.badge")}</span>
               </div>
 
               <h1 className="pfm-hero-title">
-                Пливачка Федерација
+                {t("landing.titleLine1")}
                 <br />
-                на Македонија
+                {t("landing.titleLine2")}
               </h1>
 
-              <p className="pfm-hero-subtitle">
-                Национално тело за организација, развој и унапредување на пливачките спортови —
-                пливање, ватерполо и далечинско пливање. Овде ќе ги најдеш календарите,
-                критериумите, рекордите и официјалните соопштенија.
-              </p>
+              <p className="pfm-hero-subtitle">{t("landing.subtitle")}</p>
 
               <div className="pfm-hero-actions">
                 <Button
@@ -69,28 +64,39 @@ const Landing = () => {
                   className="pfm-btn-primary"
                   onClick={() => navigate("/news")}
                 >
-                  Вести и соопштенија <FiArrowRight />
+                  {t("landing.actions.news")} <FiArrowRight />
                 </Button>
 
                 <Button
                   size="large"
                   className="pfm-btn-ghost"
                   onClick={() =>
-                    window.scrollTo({ top: window.innerHeight, behavior: "smooth" })
+                    window.scrollTo({
+                      top: window.innerHeight,
+                      behavior: "smooth",
+                    })
                   }
                 >
-                  Прегледај содржина
+                  {t("landing.actions.browse")}
                 </Button>
               </div>
 
               <div className="pfm-hero-meta">
                 <div className="pfm-hero-meta-item">
-                  <div className="pfm-hero-meta-label">Фокус</div>
-                  <div className="pfm-hero-meta-value">Натпревари • Рекорди • Развој</div>
+                  <div className="pfm-hero-meta-label">
+                    {t("landing.meta.focusLabel")}
+                  </div>
+                  <div className="pfm-hero-meta-value">
+                    {t("landing.meta.focusValue")}
+                  </div>
                 </div>
                 <div className="pfm-hero-meta-item">
-                  <div className="pfm-hero-meta-label">Информации</div>
-                  <div className="pfm-hero-meta-value">Календар • Документи • Новости</div>
+                  <div className="pfm-hero-meta-label">
+                    {t("landing.meta.infoLabel")}
+                  </div>
+                  <div className="pfm-hero-meta-value">
+                    {t("landing.meta.infoValue")}
+                  </div>
                 </div>
               </div>
             </div>
@@ -101,16 +107,18 @@ const Landing = () => {
             <div className="pfm-hero-right">
               <div className="pfm-hero-card">
                 <div className="pfm-hero-card-top">
-                  <div className="pfm-hero-card-title">Брз пристап</div>
+                  <div className="pfm-hero-card-title">
+                    {t("landing.quickAccess.title")}
+                  </div>
                   <div className="pfm-hero-card-sub">
-                    Избери област за да продолжиш.
+                    {t("landing.quickAccess.subtitle")}
                   </div>
                 </div>
 
                 <div className="pfm-quick-grid">
                   {quickLinks.map((q) => (
                     <button
-                      key={q.title}
+                      key={q.key}
                       type="button"
                       className="pfm-quick-item"
                       onClick={() => navigate(q.href)}
@@ -118,13 +126,17 @@ const Landing = () => {
                       <div className="pfm-quick-icon">{q.icon}</div>
 
                       <div className="pfm-quick-body">
-                        <div className="pfm-quick-title">{q.title}</div>
-                        <div className="pfm-quick-desc">{q.desc}</div>
+                        <div className="pfm-quick-title">
+                          {t(`landing.quickLinks.${q.key}.title`)}
+                        </div>
+                        <div className="pfm-quick-desc">
+                          {t(`landing.quickLinks.${q.key}.desc`)}
+                        </div>
 
                         <div className="pfm-quick-chips">
                           {q.chips.map((c) => (
                             <span key={c} className="pfm-chip">
-                              {c}
+                              {t(`landing.quickLinks.chips.${c}`)}
                             </span>
                           ))}
                         </div>

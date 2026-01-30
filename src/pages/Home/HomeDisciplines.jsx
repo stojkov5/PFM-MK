@@ -4,55 +4,36 @@ import { FiArrowRight } from "react-icons/fi";
 import { TbSwimming, TbWaterpolo } from "react-icons/tb";
 import { TiWaves } from "react-icons/ti";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import "./HomeDisciplines.css";
 
 const HomeDisciplines = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const items = [
     {
-      title: "SWIMMING",
+      key: "swimming",
       image: "/Images/Swim.webp",
       icon: <TbSwimming />,
-      desc: "Информации за програми, натпревари, национален и меѓународен календар, рекорди и критериуми за настап.",
-      bullets: [
-        "Национален календар и првенства",
-        "Официјална листа на рекорди",
-        "Критериуми и документи",
-      ],
-      primaryText: "Отвори Swimming",
+      bulletsCount: 3,
       primaryTo: "/swimming",
-      secondaryText: "Рекорди",
       secondaryTo: "/swimming/records",
     },
     {
-      title: "WATERPOLO",
+      key: "waterpolo",
       image: "/Images/Waterpolo.webp",
       icon: <TbWaterpolo />,
-      desc: "Програми и официјални информации за ватерполо натпревари, како и календар за национални и меѓународни настани.",
-      bullets: [
-        "Календар – Национален",
-        "Календар – Меѓународен",
-        "Критериуми / правилници",
-      ],
-      primaryText: "Отвори Waterpolo",
+      bulletsCount: 3,
       primaryTo: "/waterpolo/programs",
-      secondaryText: "Календар",
       secondaryTo: "/waterpolo/calendar-national",
     },
     {
-      title: "DISTANCE SWIMMING",
+      key: "distance",
       image: "/Images/Distance.webp",
       icon: <TiWaves />,
-      desc: "Далечинско пливање (open water) со календар на маратони, информации за настани и официјални новости.",
-      bullets: [
-        "Календар на маратони",
-        "Охридски пливачки маратон",
-        "Новости и известувања",
-      ],
-      primaryText: "Отвори Distance Swimming",
+      bulletsCount: 3,
       primaryTo: "/distance-swimming/calendar",
-      secondaryText: "Охрид маратон",
       secondaryTo: "/distance-swimming/ohrid-marathon",
     },
   ];
@@ -61,19 +42,14 @@ const HomeDisciplines = () => {
     <section className="pfm-disciplines-section">
       <div className="pfm-disciplines-inner max-w-6xl mx-auto px-4 md:px-6">
         <div className="pfm-disciplines-head">
-          <div className="pfm-disciplines-kicker">Дисциплини</div>
-          <h2 className="pfm-disciplines-title">
-            Пливање, ватерполо и далечинско пливање
-          </h2>
-          <p className="pfm-disciplines-subtitle">
-            Брз пристап до најважните информации по дисциплина: програми,
-            календари, документи и официјални листи.
-          </p>
+          <div className="pfm-disciplines-kicker">{t("homeDisciplines.kicker")}</div>
+          <h2 className="pfm-disciplines-title">{t("homeDisciplines.title")}</h2>
+          <p className="pfm-disciplines-subtitle">{t("homeDisciplines.subtitle")}</p>
         </div>
 
         <Row gutter={[18, 18]} align="stretch">
           {items.map((it) => (
-            <Col xs={24} lg={8} key={it.title}>
+            <Col xs={24} lg={8} key={it.key}>
               <div className="pfm-discipline-card">
                 <div
                   className="pfm-discipline-image"
@@ -81,18 +57,23 @@ const HomeDisciplines = () => {
                 >
                   <div className="pfm-discipline-image-overlay" />
                 </div>
+
                 <div className="pfm-discipline-top">
                   <div className="pfm-discipline-icon">{it.icon}</div>
-                  <div className="pfm-discipline-title">{it.title}</div>
+                  <div className="pfm-discipline-title">
+                    {t(`homeDisciplines.items.${it.key}.title`)}
+                  </div>
                 </div>
 
-                <div className="pfm-discipline-desc">{it.desc}</div>
+                <div className="pfm-discipline-desc">
+                  {t(`homeDisciplines.items.${it.key}.desc`)}
+                </div>
 
                 <ul className="pfm-discipline-list">
-                  {it.bullets.map((b) => (
-                    <li key={b} className="pfm-discipline-li">
+                  {Array.from({ length: it.bulletsCount }).map((_, idx) => (
+                    <li key={`${it.key}-${idx}`} className="pfm-discipline-li">
                       <span className="pfm-dot" />
-                      <span>{b}</span>
+                      <span>{t(`homeDisciplines.items.${it.key}.bullets.${idx}`)}</span>
                     </li>
                   ))}
                 </ul>
@@ -104,7 +85,7 @@ const HomeDisciplines = () => {
                     className="pfm-discipline-primary"
                     onClick={() => navigate(it.primaryTo)}
                   >
-                    {it.primaryText} <FiArrowRight />
+                    {t(`homeDisciplines.items.${it.key}.primaryText`)} <FiArrowRight />
                   </Button>
 
                   <Button
@@ -112,7 +93,7 @@ const HomeDisciplines = () => {
                     className="pfm-discipline-ghost"
                     onClick={() => navigate(it.secondaryTo)}
                   >
-                    {it.secondaryText} <FiArrowRight />
+                    {t(`homeDisciplines.items.${it.key}.secondaryText`)} <FiArrowRight />
                   </Button>
                 </div>
               </div>

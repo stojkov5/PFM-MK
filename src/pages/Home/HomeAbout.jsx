@@ -2,29 +2,32 @@ import React from "react";
 import { Row, Col, Button } from "antd";
 import { FiArrowRight, FiUsers, FiAward, FiMapPin } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import "./HomeAbout.css";
+import { Link } from "react-router-dom";
 
 const HomeAbout = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const stats = [
     {
       icon: <FiUsers />,
-      value: "Клубови",
-      label:
-        "Регистрирани клубови и активни членки кои работат на развој на пливањето низ државата.",
+      value: t("homeAbout.stats.0.value"),
+      label: t("homeAbout.stats.0.label"),
+      to: "/swimming/clubs",
     },
     {
       icon: <FiAward />,
-      value: "Рекорди",
-      label:
-        "Официјална евиденција на национални рекорди по дисциплини, категории и базени (25м/50м).",
+      value: t("homeAbout.stats.1.value"),
+      label: t("homeAbout.stats.1.label"),
+      to: "/swimming/records",
     },
     {
       icon: <FiMapPin />,
-      value: "Натпревари",
-      label:
-        "Организација и санкционирање на национални натпревари, првенства и купови во текот на годината.",
+      value: t("homeAbout.stats.2.value"),
+      label: t("homeAbout.stats.2.label"),
+      to: "/swimming/calendar-national",
     },
   ];
 
@@ -35,21 +38,11 @@ const HomeAbout = () => {
           {/* LEFT: About text */}
           <Col xs={24} lg={13}>
             <div className="pfm-about-card">
-              <div className="pfm-about-kicker">За федерацијата</div>
+              <div className="pfm-about-kicker">{t("homeAbout.kicker")}</div>
 
-              <h2 className="pfm-about-title">
-                Официјално национално тело за пливање, ватерполо и далечинско
-                пливање
-              </h2>
+              <h2 className="pfm-about-title">{t("homeAbout.title")}</h2>
 
-              <p className="pfm-about-text">
-                Пливачката Федерација на Македонија работи на организација,
-                развој и унапредување на пливачките спортови на национално ниво.
-                Во соработка со клубовите, тренерите и стручните комисии,
-                Федерацијата подготвува календар на натпревари, правилници,
-                критериуми и официјални листи на рекорди, како и активности
-                поврзани со репрезентативни селекции.
-              </p>
+              <p className="pfm-about-text">{t("homeAbout.text")}</p>
 
               <div className="pfm-about-actions">
                 <Button
@@ -58,7 +51,7 @@ const HomeAbout = () => {
                   className="pfm-about-btn-primary"
                   onClick={() => navigate("/swimming/calendar-national")}
                 >
-                  Национален календар <FiArrowRight />
+                  {t("homeAbout.actions.nationalCalendar")} <FiArrowRight />
                 </Button>
 
                 <Button
@@ -66,14 +59,11 @@ const HomeAbout = () => {
                   className="pfm-about-btn-ghost"
                   onClick={() => navigate("/swimming/records")}
                 >
-                  Национални рекорди <FiArrowRight />
+                  {t("homeAbout.actions.nationalRecords")} <FiArrowRight />
                 </Button>
               </div>
 
-              <div className="pfm-about-note">
-                Официјални документи и критериуми се објавуваат во соодветните
-                секции по дисциплина (Swimming/Waterpolo/Distance Swimming).
-              </div>
+              <div className="pfm-about-note">{t("homeAbout.note")}</div>
             </div>
           </Col>
 
@@ -81,13 +71,15 @@ const HomeAbout = () => {
           <Col xs={24} lg={11}>
             <div className="pfm-stats-wrap">
               {stats.map((s) => (
-                <div key={s.value} className="pfm-stat">
-                  <div className="pfm-stat-icon">{s.icon}</div>
-                  <div className="pfm-stat-body">
-                    <div className="pfm-stat-title">{s.value}</div>
-                    <div className="pfm-stat-desc">{s.label}</div>
+                <Link key={s.to} to={s.to} className="pfm-stat-link">
+                  <div className="pfm-stat">
+                    <div className="pfm-stat-icon">{s.icon}</div>
+                    <div className="pfm-stat-body">
+                      <div className="pfm-stat-title">{s.value}</div>
+                      <div className="pfm-stat-desc">{s.label}</div>
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
 
               <div className="pfm-stats-cta">
@@ -96,7 +88,7 @@ const HomeAbout = () => {
                   className="pfm-stats-cta-btn"
                   onClick={() => navigate("/swimming/criteria")}
                 >
-                  Критериуми и правилници <FiArrowRight />
+                  {t("homeAbout.actions.criteriaRules")} <FiArrowRight />
                 </button>
 
                 <button
@@ -104,7 +96,7 @@ const HomeAbout = () => {
                   className="pfm-stats-cta-btn"
                   onClick={() => navigate("/news")}
                 >
-                  Соопштенија <FiArrowRight />
+                  {t("homeAbout.actions.announcements")} <FiArrowRight />
                 </button>
               </div>
             </div>

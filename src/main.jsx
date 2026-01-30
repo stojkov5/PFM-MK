@@ -8,6 +8,7 @@ import { router } from "./routes.jsx";
 
 import "antd/dist/reset.css";
 import "./index.css";
+import "./i18n"; //
 
 const queryClient = new QueryClient();
 
@@ -16,5 +17,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
     </QueryClientProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

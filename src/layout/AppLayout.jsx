@@ -12,7 +12,7 @@ const AppLayout = () => {
     <div className=" pfm-site min-h-screen bg-slate-50 text-slate-900">
       <ScrollToTop />
       <Navbar />
-      <main className="pfm-site-main">
+      <main className="pfm-site-main ">
         <Outlet />
       </main>
       <Footer />

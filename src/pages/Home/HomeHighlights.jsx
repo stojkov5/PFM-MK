@@ -2,58 +2,57 @@ import React from "react";
 import { Row, Col, Button, Table, Tag } from "antd";
 import { FiArrowRight, FiCalendar, FiBell } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import "./HomeHighlights.css";
 
 const HomeHighlights = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   // ✅ Dummy data (replace later with API)
   const news = [
     {
       id: 1,
-      title: "Објава на национален календар – Пливање (2026)",
-      excerpt:
-        "Објавен е прелиминарниот календар за национални натпревари, категории и локации.",
+      title: t("homeHighlights.news.0.title"),
+      excerpt: t("homeHighlights.news.0.excerpt"),
       date: "12.01.2026",
-      tag: "SWIMMING",
+      tag: t("homeHighlights.news.0.tag"),
       link: "/news",
     },
     {
       id: 2,
-      title: "Критериуми за селекции и меѓународни настапи",
-      excerpt:
-        "Ажурирани критериуми за избор во селекции и услови за настап на меѓународни натпревари.",
+      title: t("homeHighlights.news.1.title"),
+      excerpt: t("homeHighlights.news.1.excerpt"),
       date: "08.01.2026",
-      tag: "DOCUMENT",
+      tag: t("homeHighlights.news.1.tag"),
       link: "/swimming/criteria",
     },
     {
       id: 3,
-      title: "Информации за Охридски Пливачки Маратон",
-      excerpt:
-        "Отворени се информациите за дистанци, пријавување, безбедносни правила и протокол.",
+      title: t("homeHighlights.news.2.title"),
+      excerpt: t("homeHighlights.news.2.excerpt"),
       date: "04.01.2026",
-      tag: "OPEN WATER",
+      tag: t("homeHighlights.news.2.tag"),
       link: "/distance-swimming/ohrid-marathon",
     },
   ];
 
   const columns = [
     {
-      title: "Датум",
+      title: t("homeHighlights.table.date"),
       dataIndex: "date",
       key: "date",
       width: 110,
       render: (v) => <span className="pfm-table-date">{v}</span>,
     },
     {
-      title: "Настан",
+      title: t("homeHighlights.table.event"),
       dataIndex: "event",
       key: "event",
       render: (v) => <span className="pfm-table-event">{v}</span>,
     },
     {
-      title: "Тип",
+      title: t("homeHighlights.table.type"),
       dataIndex: "type",
       key: "type",
       width: 140,
@@ -62,27 +61,6 @@ const HomeHighlights = () => {
           {v}
         </Tag>
       ),
-    },
-  ];
-
-  const data = [
-    {
-      key: "1",
-      date: "20.01.2026",
-      event: "Куп натпревар – Пливање (Кадети/Јуниори)",
-      type: "National",
-    },
-    {
-      key: "2",
-      date: "02.02.2026",
-      event: "Државно првенство – Зима (25m)",
-      type: "Championship",
-    },
-    {
-      key: "3",
-      date: "15.02.2026",
-      event: "Ватерполо коло – Национална лига",
-      type: "Waterpolo",
     },
   ];
 
@@ -95,14 +73,14 @@ const HomeHighlights = () => {
             <div className="pfm-card pfm-card-news">
               <div className="pfm-card-head">
                 <div className="pfm-card-title">
-                  <FiBell /> Најнови вести
+                  <FiBell /> {t("homeHighlights.latestNews")}
                 </div>
                 <Button
                   type="link"
                   className="pfm-link-btn"
                   onClick={() => navigate("/news")}
                 >
-                  Види повеќе <FiArrowRight />
+                  {t("homeHighlights.viewMore")} <FiArrowRight />
                 </Button>
               </div>
 
@@ -123,7 +101,7 @@ const HomeHighlights = () => {
                     <div className="pfm-news-excerpt">{n.excerpt}</div>
 
                     <div className="pfm-news-cta">
-                      Прочитај <FiArrowRight />
+                      {t("homeHighlights.read")} <FiArrowRight />
                     </div>
                   </button>
                 ))}
@@ -136,24 +114,21 @@ const HomeHighlights = () => {
             <div className="pfm-card pfm-card-events">
               <div className="pfm-card-head">
                 <div className="pfm-card-title">
-                  <FiCalendar /> Наредни настани
+                  <FiCalendar /> {t("homeHighlights.upcomingEvents")}
                 </div>
                 <Button
                   type="link"
                   className="pfm-link-btn"
                   onClick={() => navigate("/swimming/calendar-national")}
                 >
-                  Календар <FiArrowRight />
+                  {t("homeHighlights.calendar")} <FiArrowRight />
                 </Button>
               </div>
 
               <Table
                 columns={columns}
-                dataSource={data}
-                pagination={false}
                 className="pfm-table"
                 rowClassName={() => "pfm-table-row"}
-             
               />
 
               <div className="pfm-events-foot">
@@ -162,7 +137,7 @@ const HomeHighlights = () => {
                   className="pfm-btn-outline"
                   onClick={() => navigate("/swimming/calendar-national")}
                 >
-                  Отвори национален календар <FiArrowRight />
+                  {t("homeHighlights.openNationalCalendar")} <FiArrowRight />
                 </Button>
               </div>
             </div>

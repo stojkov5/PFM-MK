@@ -123,6 +123,11 @@
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
 }
 
+.pfm-stat:hover {
+   background: rgba(9, 25, 98, 0.34);
+  transition: 0.5s ease-in-out;
+}
+
 .pfm-stat-icon {
   width: 46px;
   height: 46px;

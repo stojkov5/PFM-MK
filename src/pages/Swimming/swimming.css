@@ -5,14 +5,13 @@
 
 /* HERO */
 .pfm-swimming-hero {
-    min-height: 100vh;
-  padding: 54px 0 42px;
+  padding: 46px 0 26px;
   background: radial-gradient(
       800px 400px at 20% 0%,
       rgba(56, 189, 248, 0.18),
       transparent 60%
     ),
-    linear-gradient(180deg, rgba(2, 6, 23, 0.85), rgba(2, 6, 23, 0.6));
+    linear-gradient(180deg, rgba(2, 6, 23, 0.88), rgba(2, 6, 23, 0.55));
 }
 
 .pfm-swimming-kicker {
@@ -28,47 +27,128 @@
   font-size: clamp(2rem, 4vw, 2.6rem);
   font-weight: 900;
   color: white;
+  text-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
 }
 
 .pfm-swimming-sub {
   margin-top: 10px;
-  max-width: 70ch;
+  max-width: 76ch;
   line-height: 1.7;
   color: rgba(255, 255, 255, 0.75);
 }
 
-/* TABS */
-.pfm-swimming-tabs {
-  margin-top: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+/* NAV CARDS GRID */
+.pfm-swimming-cardgrid {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
 }
 
-.pfm-swimming-tab {
-  padding: 10px 16px;
-  border-radius: 9999px;
-  font-weight: 700;
-  font-size: 0.9rem;
-  text-decoration: none;
+@media (min-width: 640px) {
+  .pfm-swimming-cardgrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+}
 
-  color: rgba(255, 255, 255, 0.75);
+@media (min-width: 1024px) {
+  .pfm-swimming-cardgrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+}
+
+.pfm-swimming-card {
+  text-decoration: none;
+  border-radius: 22px;
+  padding: 16px 16px 14px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.28);
+  display: grid;
+  gap: 10px;
+  transition: transform 160ms ease, border-color 160ms ease,
+    background 160ms ease;
 }
 
-.pfm-swimming-tab:hover {
-  color: white;
-  border-color: rgba(56, 189, 248, 0.35);
+.pfm-swimming-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 189, 248, 0.32);
+  background: rgba(255, 255, 255, 0.1);
 }
 
-.pfm-swimming-tab.active {
-  color: white;
-  background: rgba(37, 99, 235, 0.25);
-  border-color: rgba(37, 99, 235, 0.4);
+.pfm-swimming-card.active {
+  border-color: rgba(37, 99, 235, 0.45);
+  background: rgba(37, 99, 235, 0.16);
+}
+
+.pfm-swimming-card-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pfm-swimming-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(56, 189, 248, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 1.2rem;
+}
+
+.pfm-swimming-card.active .pfm-swimming-card-icon {
+  background: rgba(37, 99, 235, 0.22);
+  border-color: rgba(37, 99, 235, 0.35);
+}
+
+.pfm-swimming-card-title {
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 1.02rem;
+  line-height: 1.25;
+}
+
+.pfm-swimming-card-desc {
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.6;
+  font-size: 0.95rem;
+  min-height: 44px;
+}
+
+.pfm-swimming-card-cta {
+  margin-top: 2px;
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pfm-swimming-card-arrow {
+  font-size: 1.05rem;
+  line-height: 1;
 }
 
 /* CONTENT */
 .pfm-swimming-content {
-  padding: 40px 0 80px;
+  padding: 26px 0 80px;
+}
+
+.pfm-swimming-outlet-card {
+  border-radius: 26px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.34);
 }

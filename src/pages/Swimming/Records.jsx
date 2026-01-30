@@ -1,11 +1,14 @@
 import React, { useMemo, useState } from "react";
 import { Row, Col, Button, Segmented, Collapse, Tag } from "antd";
 import { FiDownload, FiExternalLink, FiFileText } from "react-icons/fi";
+import { useTranslation } from "react-i18next";
 import "./Records.css";
 
 const { Panel } = Collapse;
 
 const Records = () => {
+  const { t } = useTranslation();
+
   const [pool, setPool] = useState("25");
   const [gender, setGender] = useState("female");
 
@@ -13,56 +16,44 @@ const Records = () => {
     () => ({
       25: {
         female: {
-          title: "National Records — 25m Pool (Female)",
-          subtitle: "Short Course Pool / 25 meters — по категории и дисциплини",
+          title: t("records.docs.25.female.title"),
+          subtitle: t("records.docs.25.female.subtitle"),
           file: "/National-records-25m-pool-FEMALE.pdf",
-          tags: ["25m", "Female", "Short course"],
+          tags: [t("records.tags.25m"), t("records.tags.female"), t("records.tags.shortCourse")],
         },
         male: {
-          title: "National Records — 25m Pool (Male)",
-          subtitle: "Short Course Pool / 25 meters — по категории и дисциплини",
+          title: t("records.docs.25.male.title"),
+          subtitle: t("records.docs.25.male.subtitle"),
           file: "/National-records-25m-pool-MALE.pdf",
-          tags: ["25m", "Male", "Short course"],
+          tags: [t("records.tags.25m"), t("records.tags.male"), t("records.tags.shortCourse")],
         },
       },
       50: {
         female: {
-          title: "National Records — 50m Pool (Female)",
-          subtitle: "Long Course Pool / 50 meters — по категории и дисциплини",
+          title: t("records.docs.50.female.title"),
+          subtitle: t("records.docs.50.female.subtitle"),
           file: "/National-records-50m-pool-FEMALE.pdf",
-          tags: ["50m", "Female", "Long course"],
+          tags: [t("records.tags.50m"), t("records.tags.female"), t("records.tags.longCourse")],
         },
         male: {
-          title: "National Records — 50m Pool (Male)",
-          subtitle: "Long Course Pool / 50 meters — по категории и дисциплини",
+          title: t("records.docs.50.male.title"),
+          subtitle: t("records.docs.50.male.subtitle"),
           file: "/National-records-50m-pool-MALE.pdf",
-          tags: ["50m", "Male", "Long course"],
+          tags: [t("records.tags.50m"), t("records.tags.male"), t("records.tags.longCourse")],
         },
       },
     }),
-    [],
+    [t]
   );
 
   const current = docs[pool][gender];
 
   // Quick highlights (small, readable – the full truth is in the PDFs)
-  // These values are taken from your PDFs:
   const highlights = useMemo(() => {
-    // Female 25m sample: 50 free senior 0:26:08 Bogdanovska Anastasija :contentReference[oaicite:4]{index=4}
-    // Male 25m sample: 50 free senior 0:23:07 Blazhevski Marko :contentReference[oaicite:5]{index=5}
-    // Female 50m sample: 50 free senior 0:26:34 Bogdanovska Anastasija :contentReference[oaicite:6]{index=6}
-    // Male 50m sample: 50 free senior 0:23:70 Marko Blazhevski :contentReference[oaicite:7]{index=7}
-
     if (pool === "25" && gender === "female") {
       return [
-        {
-          label: "50m Free (Senior)",
-          value: "0:26:08 — Bogdanovska Anastasija",
-        },
-        {
-          label: "100m Free (Senior)",
-          value: "0:55.60 — Blazevska Eminova Mia",
-        },
+        { label: "50m Free (Senior)", value: "0:26:08 — Bogdanovska Anastasija" },
+        { label: "100m Free (Senior)", value: "0:55.60 — Blazevska Eminova Mia" },
         { label: "50m Fly (Senior)", value: "0:27.61 — Blazevska Eminova Mia" },
       ];
     }
@@ -75,14 +66,8 @@ const Records = () => {
     }
     if (pool === "50" && gender === "female") {
       return [
-        {
-          label: "50m Free (Senior)",
-          value: "0:26:34 — Bogdanovska Anastasija",
-        },
-        {
-          label: "100m Free (Senior)",
-          value: "0:56:12 — Bogdanovska Anastasija",
-        },
+        { label: "50m Free (Senior)", value: "0:26:34 — Bogdanovska Anastasija" },
+        { label: "100m Free (Senior)", value: "0:56:12 — Bogdanovska Anastasija" },
         { label: "50m Breast (Senior)", value: "0:33.74 — Jankovik Sara" },
       ];
     }
@@ -97,35 +82,32 @@ const Records = () => {
 
   return (
     <div className="pfm-records pt-24">
-      {/* Header */}
       <div className="pfm-landing-inner max-w-6xl mx-auto px-4 md:px-6">
         <div className="pfm-records-head">
-          <div className="pfm-records-kicker">Record List</div>
-          <h2 className="pfm-records-title">Национални рекорди</h2>
-          <p className="pfm-records-sub">
-            Пријавувањето на Национален рекорд се прави исклучиво на
-            официјалната електронска пошта на Националната пливачка федерација.
-            Клубот чиј пливач го испливал рекордот мора да го пријави истото на
-            официјален меморандум од клубот и треба да ги содржи следните
-            работи:
-            <ol className="pfm-records-list">
-              <li> Име и Презиме на пливачот</li>
-              <li> Година на раѓање</li>
-              <li> Испливано време</li>
-              <li>
-                {" "}
-                Линк од натпреварот и дисциплината за проверка на резултат
-              </li>
-            </ol>
-            Доколку не се почитуваа горенаведените работи,рекордот нема да биде
-            внесен во рекордерска листа.
-          </p>
+          <div className="pfm-records-kicker">{t("records.kicker")}</div>
+          <h2 className="pfm-records-title">{t("records.title")}</h2>
+
+          <div className="pfm-records-sub">
+            <p>{t("records.intro.p1")}</p>
+
+            <div className="pfm-records-sub-list-wrap">
+              <div className="pfm-records-sub-list-title">{t("records.intro.mustInclude")}</div>
+              <ol className="pfm-records-list">
+                <li>{t("records.intro.list.0")}</li>
+                <li>{t("records.intro.list.1")}</li>
+                <li>{t("records.intro.list.2")}</li>
+                <li>{t("records.intro.list.3")}</li>
+              </ol>
+            </div>
+
+            <p>{t("records.intro.p2")}</p>
+          </div>
         </div>
 
         {/* Controls */}
-        <div className="pfm-records-controls pb-3 ">
+        <div className="pfm-records-controls pb-3">
           <div className="pfm-control">
-            <div className="pfm-control-label">Pool</div>
+            <div className="pfm-control-label">{t("records.controls.pool")}</div>
             <Segmented
               options={[
                 { label: "25m", value: "25" },
@@ -137,11 +119,11 @@ const Records = () => {
           </div>
 
           <div className="pfm-control">
-            <div className="pfm-control-label">Competition</div>
+            <div className="pfm-control-label">{t("records.controls.gender")}</div>
             <Segmented
               options={[
-                { label: "Female", value: "female" },
-                { label: "Male", value: "male" },
+                { label: t("records.controls.female"), value: "female" },
+                { label: t("records.controls.male"), value: "male" },
               ]}
               value={gender}
               onChange={setGender}
@@ -164,9 +146,9 @@ const Records = () => {
               </div>
 
               <div className="pfm-doc-tags">
-                {current.tags.map((t) => (
-                  <Tag key={t} className="pfm-doc-tag">
-                    {t}
+                {current.tags.map((tag) => (
+                  <Tag key={tag} className="pfm-doc-tag">
+                    {tag}
                   </Tag>
                 ))}
               </div>
@@ -177,7 +159,7 @@ const Records = () => {
                   onClick={() => openDoc(current.file)}
                   icon={<FiExternalLink />}
                 >
-                  Отвори PDF
+                  {t("records.actions.openPdf")}
                 </Button>
 
                 <a
@@ -186,12 +168,13 @@ const Records = () => {
                   download
                 >
                   <FiDownload />
-                  <span>Преземи</span>
+                  <span>{t("records.actions.download")}</span>
                 </a>
               </div>
 
               <div className="pfm-highlights">
-                <div className="pfm-highlights-title">Quick highlights</div>
+                <div className="pfm-highlights-title">{t("records.highlightsTitle")}</div>
+
                 <div className="pfm-highlights-grid">
                   {highlights.map((h) => (
                     <div className="pfm-highlight" key={h.label}>
@@ -202,11 +185,8 @@ const Records = () => {
                 </div>
 
                 <Collapse className="pfm-collapse" bordered={false}>
-                  <Panel header="Забелешка" key="note">
-                    <div className="pfm-note">
-                      За целосни листи (сите дисциплини, категории, штафети)
-                      користи PDF прегледот десно или преземи документ.
-                    </div>
+                  <Panel header={t("records.noteTitle")} key="note">
+                    <div className="pfm-note">{t("records.noteText")}</div>
                   </Panel>
                 </Collapse>
               </div>
@@ -217,11 +197,8 @@ const Records = () => {
           <Col xs={24} lg={15}>
             <div className="pfm-pdf-card">
               <div className="pfm-pdf-top">
-                <div className="pfm-pdf-top-title">Preview</div>
-                <div className="pfm-pdf-top-sub">
-                  Ако прегледот не се прикажува во некој browser, користи
-                  “Отвори PDF”.
-                </div>
+                <div className="pfm-pdf-top-title">{t("records.preview.title")}</div>
+                <div className="pfm-pdf-top-sub">{t("records.preview.sub")}</div>
               </div>
 
               <div className="pfm-pdf-frame">

@@ -8,7 +8,7 @@ import AppLayout from "./layout/AppLayout.jsx";
 import HomePage from "./pages/Home/HomePage.jsx";
 
 import SwimmingLayout from "./pages/Swimming/SwimmingLayout.jsx";
-import SwimmingPrograms from "./pages/Swimming/Programs.jsx";
+import Clubs from "./pages/Swimming/Clubs.jsx";
 import SwimmingCalendarNational from "./pages/Swimming/CalendarNational.jsx";
 import SwimmingCalendarInternational from "./pages/Swimming/CalendarInternational.jsx";
 import SwimmingRecords from "./pages/Swimming/Records.jsx";
@@ -35,7 +35,7 @@ export const router = createBrowserRouter([
 
       // SWIMMING
       { path: "swimming", element: <SwimmingLayout /> },
-      { path: "swimming/programs", element: <SwimmingPrograms /> },
+      { path: "swimming/clubs", element: <Clubs /> },
       {
         path: "swimming/calendar-national",
         element: <SwimmingCalendarNational />,
