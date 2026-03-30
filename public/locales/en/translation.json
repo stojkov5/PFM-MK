@@ -192,27 +192,35 @@
     }
   },
   "calendar": {
-    "kicker": "Calendar",
-    "nationalTitle": "Calendar – National",
-    "internationalTitle": "Calendar – International",
-    "searchPlaceholderNational": "Search… (example: Skopje, 25m, National)",
-    "searchPlaceholderInternational": "Search… (example: Belgrade, 25m, TBC, Olympics)",
-    "total": "Total:",
-    "openPdf": "Open PDF",
-    "columns": {
-      "month": "Month",
-      "date": "Date",
-      "event": "Event",
-      "place": "Place",
-      "categories": "Categories",
-      "pool": "Pool",
-      "status": "Status"
-    },
-    "status": {
-      "tbc": "TBC",
-      "ok": "OK"
-    }
+  "kicker": "Calendar",
+  "nationalTitle": "Calendar – National",
+  "internationalTitle": "Calendar – International",
+  "searchPlaceholderNational": "Search… (example: Skopje, 25m, National)",
+  "searchPlaceholderInternational": "Search… (example: Belgrade, 25m, TBC, Olympics)",
+  "total": "Total:",
+  "openPdf": "Open PDF",
+  "noResults": "No events found",
+  "eventsLabel": "events",
+  "columns": {
+    "month": "Month",
+    "week": "Week",
+    "date": "Date",
+    "event": "Event",
+    "location": "Location",
+    "organizer": "Organizer",
+    "competition": "Competition",
+    "category": "Category",
+    "place": "Place",
+    "categories": "Categories",
+    "pool": "Pool",
+    "status": "Status"
   },
+  "status": {
+    "tbc": "TBC",
+    "ok": "OK"
+  }
+},
+
   "records": {
     "kicker": "Records",
     "title": "National Records",

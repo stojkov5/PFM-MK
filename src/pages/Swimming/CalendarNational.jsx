@@ -1,75 +1,264 @@
-// src/pages/Swimming/CalendarNational.jsx
-import React, { useMemo, useState } from "react";
-import { Input, Table, Tag, Button } from "antd";
+import React, { useState } from "react";
+import { Input, Button, Tag } from "antd";
 import { FiSearch, FiExternalLink } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import "./Calendar.css";
 
+const MONTH_ORDER = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+const WEEK_ORDER = ["Week 1", "Week 2", "Week 3", "Week 4"];
+
+const DATA = [
+  {
+    key: "feb-1",
+    month: "February",
+    week: "Week 3",
+    event: "Delfin Kup",
+    date: "21-22",
+    location: "Skopje (MKD)",
+    organizer: "Delfin",
+    competition: "SC",
+    category: "SW",
+  },
+  {
+    key: "feb-2",
+    month: "February",
+    week: "Week 4",
+    event: "Neptun Kup",
+    date: "28-01.03",
+    location: "Skopje (MKD)",
+    organizer: "Neptun",
+    competition: "SC",
+    category: "SW",
+  },
+  {
+    key: "may-1",
+    month: "May",
+    week: "Week 3",
+    event: "Orion Kup",
+    date: "24",
+    location: "Skopje (MKD)",
+    organizer: "Orion",
+    competition: "LC",
+    category: "SW",
+  },
+  {
+    key: "jul-1",
+    month: "July",
+    week: "Week 1",
+    event: "Nacionalno prvenstvo plivanje",
+    date: "",
+    location: "",
+    organizer: "NPF",
+    competition: "SW",
+    category: "SW",
+  },
+  {
+    key: "jul-2",
+    month: "July",
+    week: "Week 4",
+    event: "Ohrid Open 2026",
+    date: "25",
+    location: "Ohrid (MKD)",
+    organizer: "Aqua Spirit",
+    competition: "LC",
+    category: "SW",
+  },
+  {
+    key: "aug-1",
+    month: "August",
+    week: "Week 4",
+    event: "Ohrid Water Festival 2026",
+    date: "22",
+    location: "Ohrid (MKD)",
+    organizer: "Aqua Spirit",
+    competition: "LC",
+    category: "SW",
+  },
+  {
+    key: "aug-2",
+    month: "August",
+    week: "Week 4",
+    event: "Imperator cup 2026",
+    date: "23",
+    location: "Bitola (MKD)",
+    organizer: "Imperator",
+    competition: "LC",
+    category: "SW",
+  },
+  {
+    key: "sep-1",
+    month: "September",
+    week: "Week 4",
+    event: "Orion mini",
+    date: "27",
+    location: "Skopje (MKD)",
+    organizer: "Orion",
+    competition: "SC",
+    category: "SW",
+  },
+  {
+    key: "oct-1",
+    month: "October",
+    week: "Week 3",
+    event: 'ISM "13 Noemvri"',
+    date: "17-18",
+    location: "Skopje (MKD)",
+    organizer: "Beta Sharks",
+    competition: "SC",
+    category: "SW",
+  },
+  {
+    key: "oct-2",
+    month: "October",
+    week: "Week 4",
+    event: "Nemo kup",
+    date: "24-25",
+    location: "Skopje (MKD)",
+    organizer: "Delfin",
+    competition: "SC",
+    category: "SW",
+  },
+  {
+    key: "nov-1",
+    month: "November",
+    week: "Week 1",
+    event: "Skopje Open",
+    date: "07-08",
+    location: "Skopje (MKD)",
+    organizer: "Skopje",
+    competition: "SC",
+    category: "SW",
+  },
+  {
+    key: "nov-2",
+    month: "November",
+    week: "Week 2",
+    event: 'ISM "13 Noemvri"',
+    date: "14-15",
+    location: "Skopje (MKD)",
+    organizer: "Beta Sharks",
+    competition: "SC",
+    category: "SW",
+  },
+  {
+    key: "dec-1",
+    month: "December",
+    week: "Week 2",
+    event: "Atlas Winter Cup",
+    date: "12-13",
+    location: "Skopje (MKD)",
+    organizer: "Atlantida",
+    competition: "SC",
+    category: "SW",
+  },
+  {
+    key: "dec-2",
+    month: "December",
+    week: "Week 3",
+    event: "Nacionalno prvenstvo plivanje",
+    date: "18-20",
+    location: "",
+    organizer: "NPF",
+    competition: "SC",
+    category: "SW",
+  },
+  {
+    key: "dec-3",
+    month: "December",
+    week: "Week 4",
+    event: "Talent Cup",
+    date: "27",
+    location: "Skopje (MKD)",
+    organizer: "Aqua Pro",
+    competition: "SC",
+    category: "SW",
+  },
+];
+
 const CalendarNational = () => {
   const { t } = useTranslation();
-  const [q, setQ] = useState("");
+  const [q] = useState("");
 
-  const data = useMemo(
-    () => [
-      { key: "n1", month: "Февруари", date: "20-21.02", event: "Нептун Куп", place: "Скопје", categories: "", pool: "25м", status: "Confirmed" },
-      { key: "n2", month: "Февруари", date: "27.02", event: "Бета Спринт", place: "Скопје", categories: "", pool: "25м", status: "Confirmed" },
-      { key: "n3", month: "Март", date: "13-14.03", event: "Grand prix Macedonia (LEN критериумски натпревар)", place: "Скопје", categories: "м: 03 и помлади: 01-02: апсолутна; ж: 04 и помлади: 02-03: апсолутна", pool: "50м", status: "Confirmed" },
-      { key: "n4", month: "Март", date: "27-28.03", event: "Вардар 2018", place: "Скопје", categories: "", pool: "50м", status: "Confirmed" },
-      { key: "n5", month: "Април", date: "24-25.04", event: "Младост Куп", place: "Скопје", categories: "", pool: "50м", status: "Confirmed" },
-      { key: "n6", month: "Мај", date: "15-16.05", event: "Орион куп", place: "Скопје", categories: "", pool: "50м", status: "Confirmed" },
-      { key: "n7", month: "Јуни", date: "11-12.06", event: "Делфин куп", place: "Скопје", categories: "сите категории", pool: "50м", status: "Confirmed" },
-      { key: "n8", month: "Јули", date: "03-04.07", event: "Летно Национално Првенство во пливање", place: "Скопје", categories: "Сите", pool: "50м", status: "Confirmed" },
-      { key: "n9", month: "Јули", date: "10.07", event: "Работнички Куп", place: "Скопје", categories: "Мастерс", pool: "50м", status: "Confirmed" },
-      { key: "n10", month: "Август", date: "14.08", event: "Охрид Опен", place: "Охрид", categories: "", pool: "50м", status: "Confirmed" },
-      { key: "n11", month: "Септември", date: "18.09", event: "Делфин Спринт", place: "Скопје", categories: "", pool: "50м", status: "Confirmed" },
-      { key: "n12", month: "Октомври", date: "02.10", event: "Орион Куп Мини", place: "Скопје", categories: "М и Ж 09-12", pool: "25м", status: "Confirmed" },
-      { key: "n13", month: "Ноември", date: "13-14.11", event: "13 Ноември", place: "Скопје", categories: "", pool: "25м", status: "Confirmed" },
-      { key: "n14", month: "Ноември", date: "20-21.11", event: "Немо куп", place: "Скопје", categories: "сите категории", pool: "25м", status: "Confirmed" },
-      { key: "n15", month: "Декември", date: "04-05.12", event: "Зимско Национално првенство во пливање", place: "Скопје", categories: "", pool: "25м", status: "Confirmed" },
-      { key: "n16", month: "Декември", date: "19.12", event: "Дедо Мраз – Аква Про", place: "Скопје", categories: "", pool: "25м", status: "Confirmed" },
-    ],
-    []
-  );
-
-  const filtered = useMemo(() => {
+  const filtered = DATA.filter((item) => {
     const s = q.trim().toLowerCase();
-    if (!s) return data;
-    return data.filter((r) =>
-      [r.month, r.date, r.event, r.place, r.categories, r.pool]
-        .join(" ")
-        .toLowerCase()
-        .includes(s)
-    );
-  }, [q, data]);
+    if (!s) return true;
 
-  const columns = [
-    {
-      title: "#",
-      key: "idx",
-      width: 60,
-      fixed: "left",
-      render: (_text, _record, idx) => (
-        <span className="pfm-cal-index">{idx + 1}</span>
-      ),
-    },
-    { title: t("calendar.columns.month"), dataIndex: "month", key: "month", width: 120 },
-    {
-      title: t("calendar.columns.date"),
-      dataIndex: "date",
-      key: "date",
-      width: 110,
-      render: (v) => <span className="pfm-cal-date">{v}</span>,
-    },
-    {
-      title: t("calendar.columns.event"),
-      dataIndex: "event",
-      key: "event",
-      render: (v) => <span className="pfm-cal-event">{v}</span>,
-    },
-    { title: t("calendar.columns.place"), dataIndex: "place", key: "place", width: 140 },
-    { title: t("calendar.columns.categories"), dataIndex: "categories", key: "categories" },
-    { title: t("calendar.columns.pool"), dataIndex: "pool", key: "pool", width: 90 },
-  ];
+    return [
+      item.month,
+      item.week,
+      item.event,
+      item.date,
+      item.location,
+      item.organizer,
+      item.competition,
+      item.category,
+    ]
+      .join(" ")
+      .toLowerCase()
+      .includes(s);
+  });
+
+  const groupedMonths = MONTH_ORDER.map((month) => {
+    const monthRows = [];
+
+    WEEK_ORDER.forEach((week, index) => {
+      const weekEvents = filtered.filter(
+        (item) => item.month === month && item.week === week
+      );
+
+      if (weekEvents.length > 0) {
+        weekEvents.forEach((eventItem, eventIndex) => {
+          monthRows.push({
+            ...eventItem,
+            key: eventItem.key || `${month}-${week}-${eventIndex}`,
+            week: eventIndex === 0 ? week : "",
+            isEmpty: false,
+          });
+        });
+      } else {
+        monthRows.push({
+          key: `${month}-${week}-${index}`,
+          month,
+          week,
+          event: "",
+          date: "",
+          location: "",
+          organizer: "",
+          competition: "",
+          category: "",
+          isEmpty: true,
+        });
+      }
+    });
+
+    return {
+      month,
+      rows: monthRows,
+    };
+  });
+
+  const renderCell = (value, className = "") => {
+    return <span className={className}>{value || ""}</span>;
+  };
+
+  const renderBadge = (value, type = "") => {
+    if (!value) return "";
+    return <span className={`pfm-mini-badge ${type}`}>{value}</span>;
+  };
 
   return (
     <div className="pfm-cal pt-24">
@@ -79,24 +268,13 @@ const CalendarNational = () => {
           <h2 className="pfm-cal-title">{t("calendar.nationalTitle")}</h2>
 
           <div className="pfm-cal-controls pb-3">
-            <Input
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              prefix={<FiSearch />}
-              placeholder={t("calendar.searchPlaceholderNational")}
-              className="pfm-cal-search"
-              allowClear
-            />
-
-            <Tag className="pfm-cal-tag">
-              {t("calendar.total")} <b>{filtered.length}</b>
-            </Tag>
+            
 
             <Button
               className="pfm-cal-open"
               icon={<FiExternalLink />}
               onClick={() =>
-                window.open("/Schedule.pdf", "_blank", "noopener,noreferrer")
+                window.open("/2026-Swimming-National-Calendar.pdf", "_blank", "noopener,noreferrer")
               }
             >
               {t("calendar.openPdf")}
@@ -104,17 +282,50 @@ const CalendarNational = () => {
           </div>
         </div>
 
-        <div className="pfm-cal-card">
-          <Table
-            columns={columns}
-            dataSource={filtered}
-            pagination={{ pageSize: 10, showSizeChanger: false }}
-            size="middle"
-            bordered={false}
-            className="pfm-table-dark"
-            scroll={{ x: 1050 }}
-            rowKey="key"
-          />
+        <div className="pfm-schedule-wrap">
+          {groupedMonths.map((section) => (
+            <div className="pfm-schedule-month" key={section.month}>
+              <div className="pfm-schedule-month-bar">{section.month}</div>
+
+              <div className="pfm-schedule-table-wrap">
+                <table className="pfm-schedule-table">
+                  <thead>
+                    <tr>
+                      <th>{t("calendar.columns.event")}</th>
+                      <th>{t("calendar.columns.week")}</th>
+                      <th>{t("calendar.columns.date")}</th>
+                      <th>{t("calendar.columns.location")}</th>
+                      <th>{t("calendar.columns.organizer")}</th>
+                      <th>{t("calendar.columns.competition")}</th>
+                      <th>{t("calendar.columns.category")}</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {section.rows.map((row) => (
+                      <tr key={row.key} className={row.isEmpty ? "is-empty" : ""}>
+                        <td>{renderCell(row.event, "pfm-cal-event")}</td>
+                        <td>{renderCell(row.week, "pfm-week-cell")}</td>
+                        <td>{renderCell(row.date, "pfm-cal-date")}</td>
+                        <td>{renderCell(row.location)}</td>
+                        <td>{renderCell(row.organizer)}</td>
+                        <td>
+                          {row.competition
+                            ? renderBadge(row.competition, "competition")
+                            : ""}
+                        </td>
+                        <td>
+                          {row.category
+                            ? renderBadge(row.category, "category")
+                            : ""}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

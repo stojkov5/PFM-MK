@@ -206,27 +206,34 @@
     }
   },
   "calendar": {
-    "kicker": "Календар",
-    "nationalTitle": "Календар – Национален",
-    "internationalTitle": "Календар – Меѓународен",
-    "searchPlaceholderNational": "Пребарај… (пример: Скопје, 25м, Национално)",
-    "searchPlaceholderInternational": "Пребарај… (пример: Белград, 25м, TBC, Olympics)",
-    "total": "Вкупно:",
-    "openPdf": "Отвори PDF",
-    "columns": {
-      "month": "Месец",
-      "date": "Датум",
-      "event": "Натпревар",
-      "place": "Место",
-      "categories": "Категории",
-      "pool": "Базен",
-      "status": "Статус"
-    },
-    "status": {
-      "tbc": "TBC",
-      "ok": "OK"
-    }
+  "kicker": "Календар",
+  "nationalTitle": "Календар – Национален",
+  "internationalTitle": "Календар – Интернационален",
+  "searchPlaceholderNational": "Пребарај… (пример: Скопје, 25м, Национално)",
+  "searchPlaceholderInternational": "Пребарај… (пример: Белград, 25м, TBC, Олимпијада)",
+  "total": "Вкупно:",
+  "openPdf": "Отвори PDF",
+  "noResults": "Нема пронајдени настани",
+  "eventsLabel": "настани",
+  "columns": {
+    "month": "Месец",
+    "week": "Недела",
+    "date": "Датум",
+    "event": "Настан",
+    "location": "Локација",
+    "organizer": "Организатор",
+    "competition": "Натпревар",
+    "category": "Категорија",
+    "place": "Место",
+    "categories": "Категории",
+    "pool": "Базен",
+    "status": "Статус"
   },
+  "status": {
+    "tbc": "TBC",
+    "ok": "OK"
+  }
+},
   "records": {
     "kicker": "Рекорди",
     "title": "Национални рекорди",
