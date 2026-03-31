@@ -1,0 +1,123 @@
+[
+  {
+    "name": "Seniors (17+)",
+    "records": [
+      { "discipline": "50m Freestyle", "time": "0:26.34", "athlete": "Bogdanovska Anastasija" },
+      { "discipline": "100m Freestyle", "time": "0:56.12", "athlete": "Bogdanovska Anastasija" },
+      { "discipline": "200m Freestyle", "time": "2:01.28", "athlete": "Bogdanovska Anastasija" },
+      { "discipline": "400m Freestyle", "time": "4:17.52", "athlete": "Stojanovska Vesna" },
+      { "discipline": "800m Freestyle", "time": "8:46.39", "athlete": "Boshevska Mirjana" },
+      { "discipline": "1500m Freestyle", "time": "17:06.42", "athlete": "Petrovska Eva" },
+      { "discipline": "50m Breaststroke", "time": "0:34.15", "athlete": "Jankovik Sara" },
+      { "discipline": "100m Breaststroke", "time": "1:15.98", "athlete": "Spasovska Monika" },
+      { "discipline": "200m Breaststroke", "time": "2:42.39", "athlete": "Trajkovska Vesna" },
+      { "discipline": "50m Butterfly", "time": "0:28.42", "athlete": "Blazevska Eminova Mia" },
+      { "discipline": "100m Butterfly", "time": "1:02.36", "athlete": "Stojanovska Vesna / Blazevska Eminova Mia" },
+      { "discipline": "200m Butterfly", "time": "2:12.59", "athlete": "Boshevska Mirjana" },
+      { "discipline": "50m Backstroke", "time": "0:29.63", "athlete": "Blazevska Eminova Mia" },
+      { "discipline": "100m Backstroke", "time": "1:04.11", "athlete": "Blazevska Eminova Mia" },
+      { "discipline": "200m Backstroke", "time": "2:18.02", "athlete": "Krstevska Mia" },
+      { "discipline": "200m Individual Medley", "time": "2:16.09", "athlete": "Boshevska Mirjana" },
+      { "discipline": "400m Individual Medley", "time": "4:48.42", "athlete": "Boshevska Mirjana" },
+      { "discipline": "4x100m Freestyle Relay", "time": "4:18.98", "athlete": "National Team Macedonia" },
+      { "discipline": "4x200m Freestyle Relay", "time": "9:11.69", "athlete": "SC Skopje" },
+      { "discipline": "4x100m Medley Relay", "time": "4:46.61", "athlete": "SC Vardar 2018" }
+    ]
+  },
+  {
+    "name": "Juniors (15/16)",
+    "records": [
+      { "discipline": "50m Freestyle", "time": "0:26.57", "athlete": "Blazevska Eminova Mia" },
+      { "discipline": "100m Freestyle", "time": "0:57.13", "athlete": "Blazevska Eminova Mia" },
+      { "discipline": "200m Freestyle", "time": "2:05.58", "athlete": "Stojanovska Vesna" },
+      { "discipline": "400m Freestyle", "time": "4:19.69", "athlete": "Stojanovska Vesna" },
+      { "discipline": "800m Freestyle", "time": "8:49.47", "athlete": "Boshevska Mirjana" },
+      { "discipline": "50m Breaststroke", "time": "0:34.15", "athlete": "Jankovik Sara" },
+      { "discipline": "100m Breaststroke", "time": "1:16.06", "athlete": "Jankovik Sara" },
+      { "discipline": "200m Breaststroke", "time": "2:43.98", "athlete": "Trajkovska Vesna" },
+      { "discipline": "50m Butterfly", "time": "0:28.60", "athlete": "Blazevska Eminova Mia" },
+      { "discipline": "100m Butterfly", "time": "1:05.00", "athlete": "Boshevska Mirjana" },
+      { "discipline": "200m Butterfly", "time": "2:16.91", "athlete": "Stojanovska Vesna" },
+      { "discipline": "50m Backstroke", "time": "0:30.54", "athlete": "Blazevska Eminova Mia" },
+      { "discipline": "100m Backstroke", "time": "1:04.11", "athlete": "Blazevska Eminova Mia" },
+      { "discipline": "200m Backstroke", "time": "2:22.23", "athlete": "Krstevska Mia" },
+      { "discipline": "200m Individual Medley", "time": "2:21.35", "athlete": "Boshevska Mirjana" },
+      { "discipline": "400m Individual Medley", "time": "4:54.12", "athlete": "Boshevska Mirjana" },
+      { "discipline": "4x100m Freestyle Relay", "time": "4:18.98", "athlete": "National Team Macedonia" },
+      { "discipline": "4x200m Freestyle Relay", "time": "9:11.69", "athlete": "SC Skopje" },
+      { "discipline": "4x100m Medley Relay", "time": "4:49.02", "athlete": "SWC Orion" }
+    ]
+  },
+  {
+    "name": "Cadets (13/14)",
+    "records": [
+      { "discipline": "50m Freestyle", "time": "0:27.10", "athlete": "Blazevska Eminova Mia" },
+      { "discipline": "100m Freestyle", "time": "0:58.81", "athlete": "Blazevska Eminova Mia" },
+      { "discipline": "200m Freestyle", "time": "2:08.29", "athlete": "Stojanovska Vesna" },
+      { "discipline": "400m Freestyle", "time": "4:26.00", "athlete": "Stojanovska Vesna" },
+      { "discipline": "800m Freestyle", "time": "9:06.32", "athlete": "Stojanovska Vesna" },
+      { "discipline": "50m Breaststroke", "time": "0:34.14", "athlete": "Jankovik Sara" },
+      { "discipline": "100m Breaststroke", "time": "1:16.06", "athlete": "Jankovik Sara" },
+      { "discipline": "200m Breaststroke", "time": "2:47.14", "athlete": "Jankovik Sara" },
+      { "discipline": "50m Butterfly", "time": "0:29.05", "athlete": "Blazevska Eminova Mia" },
+      { "discipline": "100m Butterfly", "time": "1:05.83", "athlete": "Ivanova Sandra" },
+      { "discipline": "200m Butterfly", "time": "2:25.97", "athlete": "Krsteva Ivana" },
+      { "discipline": "50m Backstroke", "time": "0:30.68", "athlete": "Blazevska Eminova Mia" },
+      { "discipline": "100m Backstroke", "time": "1:07.54", "athlete": "Blazevska Eminova Mia" },
+      { "discipline": "200m Backstroke", "time": "2:30.72", "athlete": "Blazevska Eminova Mia" },
+      { "discipline": "200m Individual Medley", "time": "2:25.57", "athlete": "Blazevska Eminova Mia" },
+      { "discipline": "400m Individual Medley", "time": "5:07.92", "athlete": "Boshevska Mirjana" },
+      { "discipline": "4x100m Freestyle Relay", "time": "4:23.42", "athlete": "National Team Macedonia" },
+      { "discipline": "4x200m Freestyle Relay", "time": "9:38.21", "athlete": "SC Struga" },
+      { "discipline": "4x100m Medley Relay", "time": "4:56.98", "athlete": "National Team Macedonia" }
+    ]
+  },
+  {
+    "name": "Old Pioneers (11/12)",
+    "records": [
+      { "discipline": "50m Freestyle", "time": "0:28.41", "athlete": "Blazevska Eminova Mia" },
+      { "discipline": "100m Freestyle", "time": "1:01.91", "athlete": "Stojanovska Vesna" },
+      { "discipline": "200m Freestyle", "time": "2:15.60", "athlete": "Stojanovska Vesna" },
+      { "discipline": "400m Freestyle", "time": "4:39.55", "athlete": "Stojanovska Vesna" },
+      { "discipline": "800m Freestyle", "time": "9:44.65", "athlete": "Stojanovska Vesna" },
+      { "discipline": "50m Breaststroke", "time": "0:37.64", "athlete": "Popovska Elena" },
+      { "discipline": "100m Breaststroke", "time": "1:22.73", "athlete": "Vladimirova Julija" },
+      { "discipline": "200m Breaststroke", "time": "2:55.46", "athlete": "Vladimirova Julija" },
+      { "discipline": "50m Butterfly", "time": "0:31.10", "athlete": "Blazevska Eminova Mia" },
+      { "discipline": "100m Butterfly", "time": "1:08.57", "athlete": "Stojanovska Vesna" },
+      { "discipline": "200m Butterfly", "time": "2:33.83", "athlete": "Stojanovska Vesna" },
+      { "discipline": "50m Backstroke", "time": "0:33.71", "athlete": "Blazevska Eminova Mia" },
+      { "discipline": "100m Backstroke", "time": "1:13.14", "athlete": "Blazevska Eminova Mia" },
+      { "discipline": "200m Backstroke", "time": "2:35.83", "athlete": "Boshevska Mirjana" },
+      { "discipline": "200m Individual Medley", "time": "2:33.98", "athlete": "Stojanovska Vesna" },
+      { "discipline": "400m Individual Medley", "time": "5:20.18", "athlete": "Stojanovska Vesna" },
+      { "discipline": "4x100m Freestyle Relay", "time": "5:00.87", "athlete": "SC Struga" },
+      { "discipline": "4x200m Freestyle Relay", "time": "10:18.27", "athlete": "ASC Student" },
+      { "discipline": "4x100m Medley Relay", "time": "5:27.75", "athlete": "ASC Student" }
+    ]
+  },
+  {
+    "name": "Young Pioneers (≤10)",
+    "records": [
+      { "discipline": "50m Freestyle", "time": "0:32.38", "athlete": "Mikovska Jana" },
+      { "discipline": "100m Freestyle", "time": "1:09.95", "athlete": "Boshevska Mirjana" },
+      { "discipline": "200m Freestyle", "time": "2:24.10", "athlete": "Boshevska Mirjana" },
+      { "discipline": "400m Freestyle", "time": "5:06.00", "athlete": "Boshevska Mirjana" },
+      { "discipline": "800m Freestyle", "time": "10:12.08", "athlete": "Boshevska Mirjana" },
+      { "discipline": "50m Breaststroke", "time": "0:43.28", "athlete": "Tasevska Tijana" },
+      { "discipline": "100m Breaststroke", "time": "1:29.99", "athlete": "Tasevska Tijana" },
+      { "discipline": "200m Breaststroke", "time": "3:14.33", "athlete": "Tasevska Tijana" },
+      { "discipline": "50m Butterfly", "time": "0:34.84", "athlete": "Mikovska Tijana" },
+      { "discipline": "100m Butterfly", "time": "1:18.22", "athlete": "Stojanovska Jana" },
+      { "discipline": "200m Butterfly", "time": "2:49.10", "athlete": "Mikovska Jana" },
+      { "discipline": "50m Backstroke", "time": "0:38.60", "athlete": "Kitanovik Iva" },
+      { "discipline": "100m Backstroke", "time": "1:17.99", "athlete": "Boshevska Mirjana" },
+      { "discipline": "200m Backstroke", "time": "2:40.97", "athlete": "Boshevska Mirjana" },
+      { "discipline": "200m Individual Medley", "time": "2:48.87", "athlete": "Boshevska Mirjana" },
+      { "discipline": "400m Individual Medley", "time": "5:48.54", "athlete": "Boshevska Mirjana" },
+      { "discipline": "4x100m Freestyle Relay", "time": "5:25.21", "athlete": "SC Struga" },
+      { "discipline": "4x200m Freestyle Relay", "time": "11:35.17", "athlete": "ASC Student" },
+      { "discipline": "4x100m Medley Relay", "time": "6:05.97", "athlete": "SC Ohridski Branovi" }
+    ]
+  }
+]

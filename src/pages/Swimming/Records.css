@@ -61,9 +61,7 @@
   font-weight: 900;
 }
 
-.pfm-record-list {
-  
-}
+
 
 /* Ant Segmented – dark */
 .ant-segmented {
@@ -193,11 +191,14 @@
 }
 
 .pfm-highlights-grid {
-  display: grid;
+  width: 100%;
+  display: flex;
+  
   gap: 10px;
 }
 
 .pfm-highlight {
+  width: 100% ;
   padding: 12px 14px;
   border-radius: 18px;
   background: rgba(2, 6, 23, 0.28);

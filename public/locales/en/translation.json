@@ -222,11 +222,12 @@
 },
 
   "records": {
+    "overviewTitle": "Overview",
     "kicker": "Records",
     "title": "National Records",
     "intro": {
-      "p1": "Browse official national swimming records by pool length and gender. Use the controls to switch between 25m (short course) and 50m (long course).",
-      "mustInclude": "The official PDFs include:",
+      
+     
       "list": {
         "0": "All disciplines by age category",
         "1": "Record holders and results",
@@ -241,13 +242,6 @@
       "female": "Female",
       "male": "Male"
     },
-    "actions": {
-      "openPdf": "Open PDF",
-      "download": "Download"
-    },
-    "highlightsTitle": "Quick Highlights",
-    "noteTitle": "Note",
-    "noteText": "Highlights are informational only. In case of any mismatch, the official PDF document is always the authoritative source.",
     "preview": {
       "title": "PDF Preview",
       "sub": "Use zoom and scroll inside the frame. If it doesn't load, open the PDF directly."
@@ -260,28 +254,17 @@
       "shortCourse": "Short course",
       "longCourse": "Long course"
     },
-    "docs": {
-      "25": {
-        "female": {
-          "title": "National Records — 25m Pool (Female)",
-          "subtitle": "Short Course / 25 meters — by category and discipline"
-        },
-        "male": {
-          "title": "National Records — 25m Pool (Male)",
-          "subtitle": "Short Course / 25 meters — by category and discipline"
-        }
-      },
-      "50": {
-        "female": {
-          "title": "National Records — 50m Pool (Female)",
-          "subtitle": "Long Course / 50 meters — by category and discipline"
-        },
-        "male": {
-          "title": "National Records — 50m Pool (Male)",
-          "subtitle": "Long Course / 50 meters — by category and discipline"
-        }
-      }
+    "summary":{
+      "categories":"Categories",
+      "records":"Records",
+      "selection":"Selection"
+    },
+    "table":{
+      "list":"Record List"
     }
+    
+    
+   
   },
   "criteria": {
     "kicker": "Criteria",
