@@ -268,74 +268,81 @@
   },
   "criteria": {
     "kicker": "Criteria",
-    "title": "Selection Criteria",
-    "subtitle": "Download the official documents and review the preview tables for a quick understanding.",
-    "actions": {
-      "openPdf": "Open PDF",
-      "download": "Download"
+    "title": "Swimming Criteria",
+    "subtitle": "Official competition criteria, qualification standards, and national championship limits.",
+    "eligibilityTitle": "Eligibility:",
+    "eligibilityText": "Swimmers must meet the required standards for participation.",
+    "aNormInfo": "A norm information goes here.",
+    "bNormInfo": "B norm information goes here.",
+    "birthLabel": "Birth years:",
+    "birthGroups": "Birth groups",
+    "officialDocsTitle": "Official Documents",
+    "openPdf": "Open PDF",
+    "downloadPdf": "Download PDF",
+    "notes": {
+      "top10": "Right to participate have swimmers ranked up to 10th place.",
+      "top16": "Right to participate have swimmers ranked up to 16th place."
     },
-    "tags": {
-      "openWater": "Open Water",
-      "norms": "Norms",
-      "points": "Points",
-      "nationalTeam": "National Team"
+    "table": {
+      "discipline": "Discipline",
+      "female": "Female",
+      "male": "Male",
+      "aNorm": "A Norm",
+      "bNorm": "B Norm"
     },
-    "docs": {
-      "0": {
-        "title": "Selection Criteria — Open Water (DS)",
-        "subtitle": "Norms & requirements for open water selection",
-        "note": "These norms are summarized in the preview table below. For official rules and full details, open the PDF."
+    "events": {
+      "graz": {
+        "title": "Multinations Austria",
+        "subtitle": "Graz · 50m pool"
       },
-      "1": {
-        "title": "Selection Criteria — Cup / Points",
-        "subtitle": "Points criteria and national team selection rules",
-        "note": "Points thresholds are summarized in the preview table below. Always confirm the details in the official PDF."
+      "prague": {
+        "title": "Multinations Czech Republic",
+        "subtitle": "Prague · 50m pool"
+      },
+      "comen": {
+        "title": "COMEN Cup Serbia",
+        "subtitle": "Belgrade · 50m pool"
+      },
+      "ljubljana": {
+        "title": "Central European Championship Slovenia",
+        "subtitle": "Ljubljana · 50m pool"
+      },
+      "juniors": {
+        "title": "European Swimming Championship",
+        "subtitle": "Juniors · Germany · 50m pool"
+      },
+      "seniors": {
+        "title": "European Swimming Championship",
+        "subtitle": "Seniors · Paris · 50m pool"
       }
     },
-    "preview": {
-      "1": {
-        "label": "Open Water — Norms Preview",
-        "p1": "Below is a quick preview of the time norms by discipline and category. The official PDF remains the source of truth.",
-        "li1": "Times are shown in minutes:seconds",
-        "li2": "Categories are split by age group and gender",
-        "li3": "A dash (—) means not defined / not applicable"
-      },
-      "2": {
-        "label": "Cup / Points — Preview",
-        "p1": "Below is a quick preview of points thresholds by category used for selection.",
-        "warn": "Important: Requirements may change. Always rely on the official PDF for final confirmation."
-      }
-    },
-    "tables": {
-      "openWater": {
-        "discipline": "Discipline",
-        "seniors": "Seniors",
-        "youth": "U20",
-        "juniors": "Juniors",
+    "national": {
+      "title": "National Championship Limits",
+      "subtitle": "Limits by pool length, gender, and age category.",
+      "poolLabel": "Pool",
+      "genderLabel": "Gender",
+      "additionalProvisions": "Additional provisions",
+      "men50": "Men · 50m Pool",
+      "women50": "Women · 50m Pool",
+      "men25": "Men · 25m Pool",
+      "women25": "Women · 25m Pool",
+      "columns": {
+        "youngerPioneers": "Younger Pioneers",
+        "olderPioneers": "Older Pioneers",
         "cadets": "Cadets",
-        "m": "M",
-        "f": "F"
-      },
-      "points": {
-        "category": "Category",
-        "points": "Points",
-        "note": "Note"
+        "juniors": "Juniors",
+        "seniors": "Seniors"
       }
     },
-    "pointsData": {
-      "base": "Minimum points threshold",
-      "avg": "Average points threshold",
-      "b14": { "group": "Boys (2014)" },
-      "b16": { "group": "Boys (2016)" },
-      "b18": { "group": "Boys (2018)" },
-      "g13": { "group": "Girls (2013)" },
-      "g15": { "group": "Girls (2015)" },
-      "g17": { "group": "Girls (2017)" },
-      "avgB13": { "group": "Average (Boys 2013)" },
-      "avgB15": { "group": "Average (Boys 2015)" },
-      "avgG14": { "group": "Average (Girls 2014)" },
-      "avgG16": { "group": "Average (Girls 2016)" }
+     "nationalExtra": {
+      "0": "The limits are set according to the achieved results from the last National Championship (separately for 25m and 50m pool). For all disciplines and categories, the 16th best time is taken, except for the 50m and 100m freestyle where the 40th best time is taken.",
+      "1": "The criterion for participation in the National Championship is meeting the limit set by the National Swimming Federation of Macedonia.",
+      "2": "The standards apply to all registered swimmers in the Republic of Macedonia and remain valid for one year.",
+      "3": "Each swimmer may compete only in the discipline for the corresponding category in which they have achieved the required standard.",
+      "4": "A swimmer earns the right to participate if they achieve the limit in the 200m individual medley in the corresponding category, thereby gaining the right to swim 8 events prescribed by the competition regulations of the National Swimming Federation of Macedonia.",
+      "5": "If a swimmer achieves the required limit in a 25m pool, it will be taken into account for participation in 50m pool competitions as well, and vice versa."
     }
+  
   },
   "swimming": {
     "hero": {
