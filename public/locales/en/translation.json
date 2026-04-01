@@ -179,18 +179,24 @@
   "common": {
     "dash": "—"
   },
-  "clubs": {
-    "kicker": "Clubs",
-    "title": "Registered clubs",
-    "subtitle": "List of registered clubs. Search by name, city or type.",
-    "searchPlaceholder": "Search… (example: Skopje, Kumanovo, Orion)",
+   "clubs": {
+    "kicker": "Swimming Clubs",
+    "title": "Registered Clubs",
+    "subtitle": "Browse the officially registered clubs, search by name or contact details, and filter them by city.",
+    "searchPlaceholder": "Search by club, city, president, email, phone...",
     "allCities": "All cities",
     "total": "Total:",
+    "dash": "—",
     "labels": {
-      "city": "City:",
-      "type": "Type:"
-    }
+      "city": "City",
+      "type": "Type",
+      "address": "Address",
+      "phone": "Phone",
+      "president": "President"
+    },
+    "note": "The list is shown from a separate data file so the component stays clean and easier to maintain."
   },
+
   "calendar": {
   "kicker": "Calendar",
   "nationalTitle": "Calendar – National",

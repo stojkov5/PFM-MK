@@ -1,8 +1,8 @@
-// src/pages/Swimming/Clubs.jsx
 import React, { useMemo, useState } from "react";
 import { Row, Col, Input, Select, Tag } from "antd";
-import { FiSearch, FiMail } from "react-icons/fi";
+import { FiSearch, FiMail, FiMapPin, FiPhone, FiUser } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
+import clubsData from "../../data/Clubs.json";
 import "./Clubs.css";
 
 const { Option } = Select;
@@ -13,54 +13,35 @@ const Clubs = () => {
   const [q, setQ] = useState("");
   const [city, setCity] = useState("all");
 
-  const clubs = useMemo(
-    () => [
-      {
-        id: 1,
-        name: "ПК Младост",
-        city: "",
-        type: "Пливачки клуб",
-        email: "pkmladost@hotmail.com",
-      },
-      { id: 2, name: "ПК Орион", city: "Скопје", type: "Пливачки клуб" },
-      { id: 3, name: "ПК Делфин", city: "Скопје", type: "Пливачки клуб" },
-      {
-        id: 4,
-        name: "ПК Вип Работнички",
-        city: "Скопје",
-        type: "Пливачки клуб",
-      },
-      { id: 5, name: "ПК Бета", city: "", type: "Пливачки и ватерполо клуб" },
-      { id: 6, name: "ПК Челични", city: "Штип", type: "Пливачки клуб" },
-      { id: 7, name: "ПК Феникс", city: "Скопје", type: "Пливачки клуб" },
-      { id: 8, name: "ПК Карпош", city: "Скопје", type: "Пливачки клуб" },
-      { id: 9, name: "ПК Немо", city: "Куманово", type: "Пливачки клуб" },
-      { id: 10, name: "ПК Ноти", city: "Скопје", type: "Пливачки клуб" },
-      { id: 11, name: "ПК Орки 2012", city: "Битола", type: "Пливачки клуб" },
-      { id: 12, name: "ПК Тумба", city: "Куманово", type: "Пливачки клуб" },
-      { id: 13, name: "ПК Вардар 2018", city: "Скопје", type: "Пливачки клуб" },
-      { id: 14, name: "ПК Аква", city: "Куманово", type: "Пливачки клуб" },
-      { id: 15, name: "ПК Струга", city: "Струга", type: "Пливачки клуб" },
-      { id: 16, name: "ПК Звезда", city: "Скопје", type: "Пливачки клуб" },
-      { id: 17, name: "ПК Пес", city: "Скопје", type: "Пливачки клуб" },
-      { id: 18, name: "ПК Делфини", city: "Куманово", type: "Пливачки клуб" },
-    ],
-    []
-  );
+  const clubs = useMemo(() => clubsData, []);
 
   const cities = useMemo(() => {
-    const set = new Set(clubs.map((c) => c.city).filter(Boolean));
-    return ["all", ...Array.from(set)];
+    const uniqueCities = [...new Set(clubs.map((club) => club.city).filter(Boolean))];
+    return ["all", ...uniqueCities.sort((a, b) => a.localeCompare(b, "mk"))];
   }, [clubs]);
 
   const filtered = useMemo(() => {
-    const s = q.trim().toLowerCase();
-    return clubs.filter((c) => {
-      const matchesCity = city === "all" ? true : c.city === city;
-      const matchesQ = !s
-        ? true
-        : [c.name, c.city, c.type, c.email].join(" ").toLowerCase().includes(s);
-      return matchesCity && matchesQ;
+    const search = q.trim().toLowerCase();
+
+    return clubs.filter((club) => {
+      const matchesCity = city === "all" ? true : club.city === city;
+
+      const haystack = [
+        club.name,
+        club.city,
+        club.type,
+        club.address,
+        club.email,
+        club.phone,
+        club.president
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      const matchesSearch = !search ? true : haystack.includes(search);
+
+      return matchesCity && matchesSearch;
     });
   }, [clubs, q, city]);
 
@@ -88,9 +69,9 @@ const Clubs = () => {
               className="pfm-clubs-select"
               popupClassName="pfm-clubs-select-popup"
             >
-              {cities.map((c) => (
-                <Option key={c} value={c}>
-                  {c === "all" ? t("clubs.allCities") : c}
+              {cities.map((item) => (
+                <Option key={item} value={item}>
+                  {item === "all" ? t("clubs.allCities") : item}
                 </Option>
               ))}
             </Select>
@@ -102,43 +83,65 @@ const Clubs = () => {
         </div>
 
         <Row gutter={[14, 14]}>
-          {filtered.map((c) => (
-            <Col xs={24} sm={12} lg={8} key={c.id}>
+          {filtered.map((club) => (
+            <Col xs={24} sm={12} lg={8} key={club.id}>
               <div className="pfm-club-card">
                 <div className="pfm-club-top">
-                  <div className="pfm-club-badge">{c.id}</div>
-                  <div className="pfm-club-name">{c.name}</div>
+                  <div className="pfm-club-badge">{club.id}</div>
+                  <div className="pfm-club-name">{club.name}</div>
                 </div>
 
                 <div className="pfm-club-meta">
                   <div className="pfm-club-line">
                     <span className="pfm-club-label">{t("clubs.labels.city")}</span>
-                    <span className="pfm-club-value">{c.city || t("common.dash")}</span>
+                    <span className="pfm-club-value">
+                      {club.city || t("clubs.dash", { defaultValue: "—" })}
+                    </span>
                   </div>
 
                   <div className="pfm-club-line">
                     <span className="pfm-club-label">{t("clubs.labels.type")}</span>
-                    <span className="pfm-club-value">{c.type || t("common.dash")}</span>
+                    <span className="pfm-club-value">
+                      {club.type || t("clubs.dash", { defaultValue: "—" })}
+                    </span>
                   </div>
 
-                  {c.email && (
-                    <a className="pfm-club-email" href={`mailto:${c.email}`}>
+                  <div className="pfm-club-line">
+                    <span className="pfm-club-label">{t("clubs.labels.address")}</span>
+                    <span className="pfm-club-value">
+                      {club.address || t("clubs.dash", { defaultValue: "—" })}
+                    </span>
+                  </div>
+
+                  <div className="pfm-club-line">
+                    <span className="pfm-club-label">{t("clubs.labels.phone")}</span>
+                    <span className="pfm-club-value">
+                      {club.phone || t("clubs.dash", { defaultValue: "—" })}
+                    </span>
+                  </div>
+
+                  <div className="pfm-club-line">
+                    <span className="pfm-club-label">{t("clubs.labels.president")}</span>
+                    <span className="pfm-club-value">
+                      {club.president || t("clubs.dash", { defaultValue: "—" })}
+                    </span>
+                  </div>
+
+                  {club.email && (
+                    <a className="pfm-club-email" href={`mailto:${club.email}`}>
                       <FiMail />
-                      <span>{c.email}</span>
+                      <span>{club.email}</span>
                     </a>
                   )}
                 </div>
 
-                <div className="pfm-club-tags">
-                  {c.city ? <Tag className="pfm-tag">{c.city}</Tag> : null}
-                  {c.type ? (
-                    <Tag className="pfm-tag pfm-tag-alt">{c.type}</Tag>
-                  ) : null}
-                </div>
+                
               </div>
             </Col>
           ))}
         </Row>
+
+       
       </div>
     </div>
   );
