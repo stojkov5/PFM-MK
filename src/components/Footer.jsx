@@ -29,8 +29,8 @@ const Footer = () => {
             <Col xs={24} sm={12}>
               <div className="pfm-footer-col-title">Брзи линкови</div>
               <div className="pfm-footer-links">
-                <NavLink className="pfm-footer-link" to="/news">
-                  <span>Вести и соопштенија</span>
+                <NavLink className="pfm-footer-link" to="/documents">
+                  <span>Документи</span>
                   <FiArrowRight />
                 </NavLink>
 

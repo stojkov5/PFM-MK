@@ -24,8 +24,8 @@ import DistanceSwimmingCalendar from "./pages/DistanceSwimming/DistanceSwimmingC
 import OhridMarathon from "./pages/DistanceSwimming/OhridMarathon.jsx";
 import DistanceSwimmingNews from "./pages/DistanceSwimming/DistanceSwimmingNews.jsx";
 
-import NewsList from "./pages/News/NewsList.jsx";
-
+import News from "./pages/News/News.jsx";
+import Documents from "./components/Documents.jsx";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -75,7 +75,9 @@ export const router = createBrowserRouter([
       },
 
       // NEWS
-      { path: "news", element: <NewsList /> },
+      { path: "news", element: <News /> },
+      // DOCUMENTS
+      { path: "documents", element: <Documents /> }
     ],
   },
 ]);

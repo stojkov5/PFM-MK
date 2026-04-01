@@ -373,5 +373,58 @@
         "desc": "National records (25m / 50m; Female / Male)."
       }
     }
+  },
+  "documents": {
+    "hero": {
+      "kicker": "OFFICIAL DOCUMENTS",
+      "title": "Documents and regulations of the National Swimming Federation",
+      "subtitle": "The most important federation documents related to organization, registration, discipline, and competition rules are available in one place."
+    },
+    "stats": {
+      "documents": {
+        "value": "5",
+        "label": "Official documents"
+      },
+      "format": {
+        "value": "PDF",
+        "label": "Preview and download"
+      },
+      "source": {
+        "value": "NSF",
+        "label": "Federation acts and regulations"
+      }
+    },
+    "pdfLabel": "PDF document",
+    "actions": {
+      "preview": "Preview",
+      "download": "Download"
+    },
+    "items": {
+      "statute": {
+        "title": "Statute of NSF",
+        "category": "Main Act",
+        "description": "The main federation document covering general provisions, goals, responsibilities, membership, rights and obligations of members, as well as the organization and governing bodies of the NSF."
+      },
+      "registration": {
+        "title": "Registration Rulebook",
+        "category": "Registration",
+        "description": "Regulates the conditions, procedures, and method of athlete registration, the work of the registration commission, and the transfer of swimmers from one club to another."
+      },
+      "disciplinary": {
+        "title": "Disciplinary Rulebook",
+        "category": "Discipline",
+        "description": "Defines disciplinary violations, disciplinary responsibility, types of sanctions, disciplinary bodies, and the execution of decisions."
+      },
+      "championships": {
+        "title": "National Championships Rulebook",
+        "category": "Competitions",
+        "description": "Contains the propositions for winter and summer championships of Macedonia, participation requirements, age categories, entries, and competition rules."
+      },
+      "structure": {
+        "title": "Organizational Structure",
+        "category": "Organization",
+        "description": "Overview of the NSF structure: assembly, executive and supervisory board, president, secretary, sports director, commissions, and sports sectors."
+      }
+    }
   }
 }
