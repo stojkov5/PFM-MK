@@ -3,6 +3,7 @@ import { Row, Col, Button, Collapse, Table, Tag } from "antd";
 import { FiDownload, FiExternalLink, FiFileText } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import criteriaData from "../../data/criteriaData.json";
+import Reveal from "../../components/fx/Reveal.jsx";
 import "./Criteria.css";
 
 const Criteria = () => {
@@ -89,12 +90,15 @@ const Criteria = () => {
   return (
     <div className="pfm-criteria pt-24">
       <div className="pfm-landing-inner max-w-6xl mx-auto px-4 md:px-6">
+        <Reveal>
         <div className="pfm-criteria-head">
           <div className="pfm-criteria-kicker">{t("criteria.kicker")}</div>
           <h2 className="pfm-criteria-title">{t("criteria.title")}</h2>
           <p className="pfm-criteria-sub">{t("criteria.subtitle")}</p>
         </div>
+        </Reveal>
 
+        <Reveal delay={0.1}>
         <div className="pfm-criteria-preview">
           <Collapse
             className="pfm-collapse"
@@ -102,7 +106,9 @@ const Criteria = () => {
             items={officialItems}
           />
         </div>
+        </Reveal>
 
+        <Reveal delay={0.1}>
         <div className="mt-8">
           <h3 className="pfm-section-title">{t("criteria.officialDocsTitle")}</h3>
 
@@ -156,7 +162,9 @@ const Criteria = () => {
             ))}
           </Row>
         </div>
+        </Reveal>
 
+        <Reveal delay={0.1}>
         <div className="mt-10">
           <h3 className="pfm-section-title">{t("criteria.national.title")}</h3>
           <p className="pfm-criteria-sub">{t("criteria.national.subtitle")}</p>
@@ -221,6 +229,7 @@ const Criteria = () => {
             </ul>
           </div>
         </div>
+        </Reveal>
       </div>
     </div>
   );

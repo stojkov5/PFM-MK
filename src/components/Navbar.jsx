@@ -161,7 +161,7 @@ const Navbar = () => {
         open={mobileOpen}
         onClose={closeMobile}
         closeIcon={<FiX className="text-xl" />}
-        width="82%"
+        styles={{ wrapper: { width: "82%" } }}
         className="pfm-drawer"
       >
         {/* ✅ Language switcher (mobile) */}

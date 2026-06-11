@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Input, Button, Tag } from "antd";
 import { FiSearch, FiExternalLink } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
+import Reveal from "../../components/fx/Reveal.jsx";
 import "./Calendar.css";
 
 const MONTH_ORDER = [
@@ -263,6 +264,7 @@ const CalendarNational = () => {
   return (
     <div className="pfm-cal pt-24">
       <div className="pfm-landing-inner max-w-6xl mx-auto px-4 md:px-6">
+        <Reveal>
         <div className="pfm-cal-head">
           <div className="pfm-cal-kicker">{t("calendar.kicker")}</div>
           <h2 className="pfm-cal-title">{t("calendar.nationalTitle")}</h2>
@@ -281,7 +283,9 @@ const CalendarNational = () => {
             </Button>
           </div>
         </div>
+        </Reveal>
 
+        <Reveal delay={0.1}>
         <div className="pfm-schedule-wrap">
           {groupedMonths.map((section) => (
             <div className="pfm-schedule-month" key={section.month}>
@@ -327,6 +331,7 @@ const CalendarNational = () => {
             </div>
           ))}
         </div>
+        </Reveal>
       </div>
     </div>
   );

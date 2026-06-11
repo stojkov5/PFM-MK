@@ -13,6 +13,9 @@ import SwimmingCalendarNational from "./pages/Swimming/CalendarNational.jsx";
 import SwimmingCalendarInternational from "./pages/Swimming/CalendarInternational.jsx";
 import SwimmingRecords from "./pages/Swimming/Records.jsx";
 import SwimmingCriteria from "./pages/Swimming/Criteria.jsx";
+import RecordApplication from "./pages/Swimming/RecordApplication.jsx";
+import AdminLogin from "./pages/Admin/AdminLogin.jsx";
+import AdminApplications from "./pages/Admin/AdminApplications.jsx";
 
 import WaterpoloPrograms from "./pages/Waterpolo/WaterpoloPrograms.jsx";
 import WaterpoloCalendarNational from "./pages/Waterpolo/WaterpoloCalendarNational.jsx";
@@ -46,6 +49,7 @@ export const router = createBrowserRouter([
       },
       { path: "swimming/records", element: <SwimmingRecords /> },
       { path: "swimming/criteria", element: <SwimmingCriteria /> },
+      { path: "swimming/record-application", element: <RecordApplication /> },
 
       // WATERPOLO
       { path: "waterpolo/programs", element: <WaterpoloPrograms /> },
@@ -73,6 +77,10 @@ export const router = createBrowserRouter([
         path: "distance-swimming/news",
         element: <DistanceSwimmingNews />,
       },
+
+      // ADMIN (not linked from navigation)
+      { path: "admin", element: <AdminLogin /> },
+      { path: "admin/applications", element: <AdminApplications /> },
 
       // NEWS
       { path: "news", element: <News /> },

@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "./HomeAbout.css";
 import { Link } from "react-router-dom";
+import Reveal from "../../components/fx/Reveal.jsx";
+import CountUp from "../../components/fx/CountUp.jsx";
 
 const HomeAbout = () => {
   const navigate = useNavigate();
@@ -37,6 +39,7 @@ const HomeAbout = () => {
         <Row gutter={[22, 22]} align="middle">
           {/* LEFT: About text */}
           <Col xs={24} lg={13}>
+            <Reveal>
             <div className="pfm-about-card">
               <div className="pfm-about-kicker">{t("homeAbout.kicker")}</div>
 
@@ -65,17 +68,21 @@ const HomeAbout = () => {
 
               <div className="pfm-about-note">{t("homeAbout.note")}</div>
             </div>
+            </Reveal>
           </Col>
 
           {/* RIGHT: Stats cards */}
           <Col xs={24} lg={11}>
+            <Reveal delay={0.12}>
             <div className="pfm-stats-wrap">
               {stats.map((s) => (
                 <Link key={s.to} to={s.to} className="pfm-stat-link">
                   <div className="pfm-stat">
                     <div className="pfm-stat-icon">{s.icon}</div>
                     <div className="pfm-stat-body">
-                      <div className="pfm-stat-title">{s.value}</div>
+                      <div className="pfm-stat-title">
+                        <CountUp value={s.value} />
+                      </div>
                       <div className="pfm-stat-desc">{s.label}</div>
                     </div>
                   </div>
@@ -100,6 +107,7 @@ const HomeAbout = () => {
                 </button>
               </div>
             </div>
+            </Reveal>
           </Col>
         </Row>
       </div>

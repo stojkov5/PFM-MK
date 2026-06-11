@@ -321,6 +321,20 @@
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
 }
 
+/* Animated scroll indicator */
+.pfm-scroll-dot {
+  animation: pfm-scroll-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes pfm-scroll-pulse {
+  0%, 100% { transform: translateY(0); opacity: 0.9; }
+  50% { transform: translateY(14px); opacity: 0.4; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pfm-scroll-dot { animation: none; }
+}
+
 /* Mobile tweaks */
 @media (max-width: 1023px) {
   .pfm-landing-row {

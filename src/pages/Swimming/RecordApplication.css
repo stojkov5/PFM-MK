@@ -1,0 +1,54 @@
+/* src/pages/Swimming/RecordApplication.css */
+.pfm-recapp {
+  min-height: 70vh;
+  padding-bottom: 60px;
+}
+
+.pfm-recapp-head { margin-bottom: 22px; }
+
+.pfm-recapp-kicker {
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(56, 189, 248, 0.85);
+}
+
+.pfm-recapp-title {
+  margin-top: 8px;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.94);
+}
+
+.pfm-recapp-sub {
+  margin-top: 14px;
+  color: rgba(255, 255, 255, 0.72);
+  max-width: 60ch;
+}
+
+.pfm-recapp-card {
+  border-radius: 22px;
+  padding: 22px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px);
+}
+
+.pfm-recapp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+
+@media (max-width: 640px) {
+  .pfm-recapp-grid { grid-template-columns: 1fr; }
+}
+
+.pfm-recapp-error { margin-bottom: 16px; }
+
+.pfm-recapp-submit {
+  border-radius: 9999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}

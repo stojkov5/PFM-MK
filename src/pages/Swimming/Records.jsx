@@ -1,26 +1,11 @@
 import React, { useMemo, useState } from "react";
-import { Row, Col, Segmented, Collapse, Tag, Empty } from "antd";
+import { Row, Col, Segmented, Collapse, Tag, Empty, Skeleton, Alert, Button } from "antd";
 import { FiFileText, FiSearch } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
+import { useQuery } from "@tanstack/react-query";
+import { apiGet } from "../../lib/api.js";
+import Reveal from "../../components/fx/Reveal.jsx";
 import "./Records.css";
-
-import women25 from "../../data/records/women25.json";
-import women50 from "../../data/records/women50.json";
-import men25 from "../../data/records/men25.json";
-import men50 from "../../data/records/men50.json";
-
-const { Panel } = Collapse;
-
-const DATA_MAP = {
-  25: {
-    female: women25,
-    male: men25,
-  },
-  50: {
-    female: women50,
-    male: men50,
-  },
-};
 
 const FALLBACK_CATEGORIES = [
   "Seniors",
@@ -144,7 +129,15 @@ const Records = () => {
   const [pool, setPool] = useState("25");
   const [gender, setGender] = useState("female");
 
-  const rawData = DATA_MAP?.[pool]?.[gender];
+  const {
+    data: rawData,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
+    queryKey: ["records", pool, gender],
+    queryFn: () => apiGet(`/api/records?pool=${pool}&gender=${gender}`),
+  });
 
   const categories = useMemo(() => normalizeData(rawData, t), [rawData, t]);
 
@@ -174,9 +167,90 @@ const Records = () => {
     return categories.reduce((sum, category) => sum + category.records.length, 0);
   }, [categories]);
 
+  const collapseItems = categories.map((category, index) => ({
+    key: category.id || `category-${index}`,
+    label: `${category.name} (${category.records.length})`,
+    children: (
+      <div className="grid gap-3">
+        {category.records.length === 0 ? (
+          <div className="pfm-note">
+            {t("records.noCategoryRecords", "No records in this category.")}
+          </div>
+        ) : (
+          category.records.map((record, recordIndex) => (
+            <div
+              key={`${category.id}-${getRecordDiscipline(record)}-${recordIndex}`}
+              className="pfm-highlight"
+            >
+              <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                <div className="flex-1">
+                  <div className="pfm-highlight-label">
+                    {getRecordDiscipline(record)}
+                  </div>
+                  <div className="pfm-highlight-value">
+                    {getRecordTime(record)}
+                  </div>
+                </div>
+
+                <div className="flex-1">
+                  <div className="pfm-highlight-label">
+                    {t("records.fields.athlete", "Athlete")}
+                  </div>
+                  <div className="pfm-highlight-value">
+                    {getRecordAthlete(record)}
+                  </div>
+                </div>
+              </div>
+
+              {(getRecordClub(record) ||
+                getRecordDate(record) ||
+                getRecordPlace(record)) && (
+                <div className="mt-3 grid gap-2 md:grid-cols-3">
+                  {getRecordClub(record) && (
+                    <div>
+                      <div className="pfm-highlight-label">
+                        {t("records.fields.club", "Club")}
+                      </div>
+                      <div className="pfm-note">
+                        {getRecordClub(record)}
+                      </div>
+                    </div>
+                  )}
+
+                  {getRecordDate(record) && (
+                    <div>
+                      <div className="pfm-highlight-label">
+                        {t("records.fields.date", "Date")}
+                      </div>
+                      <div className="pfm-note">
+                        {getRecordDate(record)}
+                      </div>
+                    </div>
+                  )}
+
+                  {getRecordPlace(record) && (
+                    <div>
+                      <div className="pfm-highlight-label">
+                        {t("records.fields.place", "Place")}
+                      </div>
+                      <div className="pfm-note">
+                        {getRecordPlace(record)}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          ))
+        )}
+      </div>
+    ),
+  }));
+
   return (
     <div className="pfm-records pt-24">
       <div className="pfm-landing-inner max-w-6xl mx-auto px-4 md:px-6">
+        <Reveal>
         <div className="pfm-records-head">
           <div className="pfm-records-kicker">
             {t("records.kicker", "Swimming Records")}
@@ -187,9 +261,10 @@ const Records = () => {
           </h2>
 
           <div className="pfm-records-sub">
-            
+
           </div>
         </div>
+        </Reveal>
 
         <div className="pfm-records-controls pb-3">
           <div className="pfm-control">
@@ -229,6 +304,23 @@ const Records = () => {
           </div>
         </div>
 
+        {isLoading && <Skeleton active paragraph={{ rows: 8 }} />}
+
+        {isError && (
+          <Alert
+            type="error"
+            showIcon
+            message={t("records.loadError", "Could not load records.")}
+            action={
+              <Button size="small" onClick={() => refetch()}>
+                {t("records.retry", "Retry")}
+              </Button>
+            }
+          />
+        )}
+
+        {!isLoading && !isError && (
+        <Reveal delay={0.1}>
         <Row gutter={[16, 16]} align="stretch">
           <Col span={24}>
             <div className="pfm-doc-card">
@@ -314,93 +406,15 @@ const Records = () => {
                     className="pfm-collapse pfm-record-list"
                     bordered={false}
                     defaultActiveKey={categories[0]?.id ? [categories[0].id] : []}
-                  >
-                    {categories.map((category, index) => (
-                      <Panel
-                        key={category.id || `category-${index}`}
-                        header={`${category.name} (${category.records.length})`}
-                      >
-                        <div className="grid gap-3">
-                          {category.records.length === 0 ? (
-                            <div className="pfm-note">
-                              {t("records.noCategoryRecords", "No records in this category.")}
-                            </div>
-                          ) : (
-                            category.records.map((record, recordIndex) => (
-                              <div
-                                key={`${category.id}-${getRecordDiscipline(record)}-${recordIndex}`}
-                                className="pfm-highlight"
-                              >
-                                <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                                  <div className="flex-1">
-                                    <div className="pfm-highlight-label">
-                                      {getRecordDiscipline(record)}
-                                    </div>
-                                    <div className="pfm-highlight-value">
-                                      {getRecordTime(record)}
-                                    </div>
-                                  </div>
-
-                                  <div className="flex-1">
-                                    <div className="pfm-highlight-label">
-                                      {t("records.fields.athlete", "Athlete")}
-                                    </div>
-                                    <div className="pfm-highlight-value">
-                                      {getRecordAthlete(record)}
-                                    </div>
-                                  </div>
-                                </div>
-
-                                {(getRecordClub(record) ||
-                                  getRecordDate(record) ||
-                                  getRecordPlace(record)) && (
-                                  <div className="mt-3 grid gap-2 md:grid-cols-3">
-                                    {getRecordClub(record) && (
-                                      <div>
-                                        <div className="pfm-highlight-label">
-                                          {t("records.fields.club", "Club")}
-                                        </div>
-                                        <div className="pfm-note">
-                                          {getRecordClub(record)}
-                                        </div>
-                                      </div>
-                                    )}
-
-                                    {getRecordDate(record) && (
-                                      <div>
-                                        <div className="pfm-highlight-label">
-                                          {t("records.fields.date", "Date")}
-                                        </div>
-                                        <div className="pfm-note">
-                                          {getRecordDate(record)}
-                                        </div>
-                                      </div>
-                                    )}
-
-                                    {getRecordPlace(record) && (
-                                      <div>
-                                        <div className="pfm-highlight-label">
-                                          {t("records.fields.place", "Place")}
-                                        </div>
-                                        <div className="pfm-note">
-                                          {getRecordPlace(record)}
-                                        </div>
-                                      </div>
-                                    )}
-                                  </div>
-                                )}
-                              </div>
-                            ))
-                          )}
-                        </div>
-                      </Panel>
-                    ))}
-                  </Collapse>
+                    items={collapseItems}
+                  />
                 )}
               </div>
             </div>
           </Col>
         </Row>
+        </Reveal>
+        )}
       </div>
     </div>
   );

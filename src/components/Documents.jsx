@@ -10,6 +10,7 @@ import {
   FiGitBranch,
 } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
+import Reveal from "./fx/Reveal.jsx";
 import "./Documents.css";
 const Documents = () => {
   const { t } = useTranslation();
@@ -66,6 +67,7 @@ const Documents = () => {
     <section className="pfm-documents-page">
       <div className="pfm-documents-hero">
         <div className="max-w-6xl mx-auto px-4 md:px-6">
+          <Reveal>
           <span className="pfm-documents-kicker">
             {t("documents.hero.kicker")}
           </span>
@@ -94,10 +96,12 @@ const Documents = () => {
               <span>{t("documents.stats.source.label")}</span>
             </div>
           </div>
+          </Reveal>
         </div>
       </div>
 
       <div className="pfm-documents-body max-w-6xl mx-auto px-4 md:px-6">
+        <Reveal delay={0.1}>
         <div className="pfm-documents-grid">
           {documents.map((doc) => (
             <article
@@ -145,6 +149,7 @@ const Documents = () => {
             </article>
           ))}
         </div>
+        </Reveal>
       </div>
     </section>
   );

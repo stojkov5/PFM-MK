@@ -3,6 +3,7 @@ import { Row, Col, Input, Select, Tag } from "antd";
 import { FiSearch, FiMail, FiMapPin, FiPhone, FiUser } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import clubsData from "../../data/Clubs.json";
+import Reveal from "../../components/fx/Reveal.jsx";
 import "./Clubs.css";
 
 const { Option } = Select;
@@ -48,6 +49,7 @@ const Clubs = () => {
   return (
     <div className="pfm-clubs pt-24">
       <div className="pfm-landing-inner max-w-6xl mx-auto px-4 md:px-6">
+        <Reveal>
         <div className="pfm-clubs-head">
           <div className="pfm-clubs-kicker">{t("clubs.kicker")}</div>
           <h2 className="pfm-clubs-title">{t("clubs.title")}</h2>
@@ -81,7 +83,9 @@ const Clubs = () => {
             </Tag>
           </div>
         </div>
+        </Reveal>
 
+        <Reveal delay={0.1}>
         <Row gutter={[14, 14]}>
           {filtered.map((club) => (
             <Col xs={24} sm={12} lg={8} key={club.id}>
@@ -140,8 +144,9 @@ const Clubs = () => {
             </Col>
           ))}
         </Row>
+        </Reveal>
 
-       
+
       </div>
     </div>
   );

@@ -19,3 +19,33 @@
 .pfm-site-main {
   padding-top: 0; /* Landing already has pt-24 */
 }
+
+/* Pool lane-rope heading underline */
+.pfm-lane-underline {
+  position: relative;
+  padding-bottom: 16px;
+}
+
+.pfm-lane-underline::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 6px;
+  border-radius: 9999px;
+  background: repeating-linear-gradient(
+    90deg,
+    #ef4444 0 14px,
+    #f8fafc 14px 28px,
+    #38bdf8 28px 42px,
+    #f8fafc 42px 56px
+  );
+  opacity: 0.85;
+}
+
+.pfm-lane-underline-left::after {
+  left: 0;
+  transform: none;
+}

@@ -1,16 +1,53 @@
 // src/pages/Landing.jsx
-import React from "react";
+import React, { Suspense, lazy, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Row, Col, Button } from "antd";
 import { TbSwimming, TbWaterpolo } from "react-icons/tb";
 import { TiWaves } from "react-icons/ti";
 import { FiArrowRight, FiAward } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
+import { motion as Motion, useReducedMotion } from "motion/react";
+import Bubbles from "../../components/fx/Bubbles.jsx";
 import "./Landing.css";
+
+const HeroWater = lazy(() => import("../../components/fx/HeroWater.jsx"));
+
+const canUseWebGL = () => {
+  try {
+    const canvas = document.createElement("canvas");
+    return !!(canvas.getContext("webgl2") || canvas.getContext("webgl"));
+  } catch {
+    return false;
+  }
+};
+
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+};
+
+const rise = {
+  hidden: { opacity: 0, y: 24 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+  },
+};
 
 const Landing = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const reduceMotion = useReducedMotion();
+  const [show3D, setShow3D] = useState(false);
+
+  useEffect(() => {
+    if (reduceMotion) return undefined;
+    const id = requestAnimationFrame(() => {
+      if (canUseWebGL()) setShow3D(true);
+    });
+    return () => cancelAnimationFrame(id);
+  }, [reduceMotion]);
 
   const quickLinks = [
     {
@@ -39,25 +76,40 @@ const Landing = () => {
       <div className="pfm-landing-overlay" aria-hidden="true" />
       <div className="pfm-landing-vignette" aria-hidden="true" />
 
+      {!reduceMotion && <Bubbles count={12} />}
+
+      {show3D && (
+        <Suspense fallback={null}>
+          <HeroWater />
+        </Suspense>
+      )}
+
       <div className="pfm-landing-inner max-w-6xl mx-auto px-4 md:px-6">
         <Row gutter={[24, 24]} align="middle" className="pfm-landing-row">
           {/* LEFT */}
           <Col xs={24} lg={13}>
-            <div className="pfm-hero-left">
-              <div className="pfm-hero-badge">
+            <Motion.div
+              className="pfm-hero-left"
+              variants={stagger}
+              initial={reduceMotion ? false : "hidden"}
+              animate="show"
+            >
+              <Motion.div variants={rise} className="pfm-hero-badge">
                 <FiAward className="pfm-hero-badge-icon" />
                 <span>{t("landing.badge")}</span>
-              </div>
+              </Motion.div>
 
-              <h1 className="pfm-hero-title">
+              <Motion.h1 variants={rise} className="pfm-hero-title">
                 {t("landing.titleLine1")}
                 <br />
                 {t("landing.titleLine2")}
-              </h1>
+              </Motion.h1>
 
-              <p className="pfm-hero-subtitle">{t("landing.subtitle")}</p>
+              <Motion.p variants={rise} className="pfm-hero-subtitle">
+                {t("landing.subtitle")}
+              </Motion.p>
 
-              <div className="pfm-hero-actions">
+              <Motion.div variants={rise} className="pfm-hero-actions">
                 <Button
                   type="primary"
                   size="large"
@@ -79,9 +131,9 @@ const Landing = () => {
                 >
                   {t("landing.actions.browse")}
                 </Button>
-              </div>
+              </Motion.div>
 
-              <div className="pfm-hero-meta">
+              <Motion.div variants={rise} className="pfm-hero-meta">
                 <div className="pfm-hero-meta-item">
                   <div className="pfm-hero-meta-label">
                     {t("landing.meta.focusLabel")}
@@ -98,13 +150,24 @@ const Landing = () => {
                     {t("landing.meta.infoValue")}
                   </div>
                 </div>
-              </div>
-            </div>
+              </Motion.div>
+            </Motion.div>
           </Col>
 
           {/* RIGHT */}
           <Col xs={24} lg={11}>
-            <div className="pfm-hero-right">
+            <Motion.div
+              className="pfm-hero-right"
+              initial={
+                reduceMotion ? false : { opacity: 0, y: 28, scale: 0.98 }
+              }
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{
+                duration: 0.7,
+                delay: 0.35,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
               <div className="pfm-hero-card">
                 <div className="pfm-hero-card-top">
                   <div className="pfm-hero-card-title">
@@ -149,7 +212,7 @@ const Landing = () => {
               </div>
 
               <div className="pfm-hero-glow" aria-hidden="true" />
-            </div>
+            </Motion.div>
           </Col>
         </Row>
 

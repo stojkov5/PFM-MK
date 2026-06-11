@@ -6,8 +6,10 @@ import {
   FiGlobe,
   FiFileText,
   FiAward,
+  FiEdit3,
 } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
+import Reveal from "../../components/fx/Reveal.jsx";
 import "./swimming.css";
 
 const SwimmingLayout = () => {
@@ -45,6 +47,12 @@ const SwimmingLayout = () => {
       desc: t("swimming.cards.records.desc"),
       icon: <FiAward />,
     },
+    {
+      to: "/swimming/record-application",
+      label: t("swimming.cards.recordApplication.title"),
+      desc: t("swimming.cards.recordApplication.desc"),
+      icon: <FiEdit3 />,
+    },
   ];
 
   return (
@@ -52,17 +60,20 @@ const SwimmingLayout = () => {
       {/* Header / Hero */}
       <div className="pfm-swimming-hero">
         <div className="pfm-swimming-hero-inner max-w-6xl mx-auto px-4 md:px-6">
-          <span className="pfm-swimming-kicker">
-            {t("swimming.hero.kicker")}
-          </span>
-          <h1 className="pfm-swimming-title">
-            {t("swimming.hero.title")}
-          </h1>
-          <p className="pfm-swimming-sub">
-            {t("swimming.hero.subtitle")}
-          </p>
+          <Reveal>
+            <span className="pfm-swimming-kicker">
+              {t("swimming.hero.kicker")}
+            </span>
+            <h1 className="pfm-swimming-title pfm-lane-underline pfm-lane-underline-left">
+              {t("swimming.hero.title")}
+            </h1>
+            <p className="pfm-swimming-sub">
+              {t("swimming.hero.subtitle")}
+            </p>
+          </Reveal>
 
           {/* Cards nav */}
+          <Reveal delay={0.1}>
           <div className="pfm-swimming-cardgrid">
             {cards.map((c) => {
               const isActive = location.pathname.startsWith(c.to);
@@ -92,6 +103,7 @@ const SwimmingLayout = () => {
               );
             })}
           </div>
+          </Reveal>
         </div>
       </div>
 

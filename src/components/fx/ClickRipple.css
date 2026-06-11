@@ -1,0 +1,23 @@
+/* src/components/fx/ClickRipple.css */
+.pfm-ripple-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.pfm-ripple {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 9999px;
+  border: 2px solid rgba(56, 189, 248, 0.65);
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.35);
+  animation: pfm-ripple-expand 0.7s ease-out forwards;
+}
+
+@keyframes pfm-ripple-expand {
+  from { transform: scale(0.4); opacity: 0.8; }
+  to { transform: scale(5); opacity: 0; }
+}

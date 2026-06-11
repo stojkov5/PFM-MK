@@ -231,6 +231,8 @@
     "overviewTitle": "Overview",
     "kicker": "Records",
     "title": "National Records",
+    "loadError": "Could not load records.",
+    "retry": "Retry",
     "intro": {
       
      
@@ -377,7 +379,43 @@
       "records": {
         "title": "Record List",
         "desc": "National records (25m / 50m; Female / Male)."
+      },
+      "recordApplication": {
+        "title": "Sign for a Record",
+        "desc": "Apply for a new national record."
       }
+    }
+  },
+  "recordApplication": {
+    "kicker": "National records",
+    "title": "Sign for a Record",
+    "subtitle": "Broke a national record at an official competition? Fill in the form below — the federation reviews every application and updates the official record list once it is approved.",
+    "fields": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "sex": "Sex",
+      "female": "Women",
+      "male": "Men",
+      "pool": "Pool",
+      "category": "Category",
+      "categoryPlaceholder": "Select category",
+      "discipline": "Discipline",
+      "disciplinePlaceholder": "Select discipline",
+      "time": "New record (time)",
+      "timeHint": "Format: minutes:seconds.hundredths, e.g. 0:26.34",
+      "proofUrl": "Link to competition results"
+    },
+    "submit": "Submit application",
+    "success": {
+      "title": "Application submitted",
+      "text": "The federation will review your application. If approved, the record list is updated.",
+      "another": "Submit another"
+    },
+    "errors": {
+      "required": "This field is required",
+      "timeFormat": "Use the format 0:26.34",
+      "urlFormat": "Enter a valid link (https://...)",
+      "submitFailed": "Submission failed. Please try again."
     }
   },
   "documents": {

@@ -5,6 +5,7 @@ import { TbSwimming, TbWaterpolo } from "react-icons/tb";
 import { TiWaves } from "react-icons/ti";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import Reveal from "../../components/fx/Reveal.jsx";
 import "./HomeDisciplines.css";
 
 const HomeDisciplines = () => {
@@ -43,13 +44,16 @@ const HomeDisciplines = () => {
       <div className="pfm-disciplines-inner max-w-6xl mx-auto px-4 md:px-6">
         <div className="pfm-disciplines-head">
           <div className="pfm-disciplines-kicker">{t("homeDisciplines.kicker")}</div>
-          <h2 className="pfm-disciplines-title">{t("homeDisciplines.title")}</h2>
+          <h2 className="pfm-disciplines-title pfm-lane-underline">
+            {t("homeDisciplines.title")}
+          </h2>
           <p className="pfm-disciplines-subtitle">{t("homeDisciplines.subtitle")}</p>
         </div>
 
         <Row gutter={[18, 18]} align="stretch">
-          {items.map((it) => (
+          {items.map((it, idx) => (
             <Col xs={24} lg={8} key={it.key}>
+              <Reveal delay={idx * 0.12}>
               <div className="pfm-discipline-card">
                 <div
                   className="pfm-discipline-image"
@@ -97,6 +101,7 @@ const HomeDisciplines = () => {
                   </Button>
                 </div>
               </div>
+              </Reveal>
             </Col>
           ))}
         </Row>

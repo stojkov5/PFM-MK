@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "antd";
 import { FiExternalLink } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
+import Reveal from "../../components/fx/Reveal.jsx";
 import "../Swimming/Calendar.css";
 
 const MONTH_ORDER = [
@@ -133,6 +134,7 @@ const WaterpoloCalendarNational = () => {
   return (
     <div className="pfm-cal pt-24">
       <div className="pfm-landing-inner max-w-6xl mx-auto px-4 md:px-6">
+        <Reveal>
         <div className="pfm-cal-head">
           <div className="pfm-cal-kicker">
             {t("calendar.kicker", { defaultValue: "Waterpolo Calendar" })}
@@ -160,7 +162,9 @@ const WaterpoloCalendarNational = () => {
             </Button>
           </div>
         </div>
+        </Reveal>
 
+        <Reveal delay={0.1}>
         <div className="pfm-schedule-wrap">
           {groupedMonths.map((section) => (
             <div className="pfm-schedule-month" key={section.month}>
@@ -220,6 +224,7 @@ const WaterpoloCalendarNational = () => {
             </div>
           ))}
         </div>
+        </Reveal>
       </div>
     </div>
   );

@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id           Int                 @id @default(autoincrement())
+  username     String              @unique
+  passwordHash String              @map("password_hash")
+  createdAt    DateTime            @default(now()) @map("created_at") @db.Timestamptz()
+  reviewed     RecordApplication[]
+
+  @@map("admins")
+}
+
+model Record {
+  id         Int      @id @default(autoincrement())
+  pool       String
+  gender     String
+  category   String
+  sortOrder  Int      @default(0) @map("sort_order")
+  discipline String
+  time       String
+  athlete    String
+  updatedAt  DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@unique([pool, gender, category, discipline], name: "recordKey")
+  @@map("records")
+}
+
+model RecordApplication {
+  id         Int       @id @default(autoincrement())
+  firstName  String    @map("first_name")
+  lastName   String    @map("last_name")
+  gender     String
+  pool       String
+  category   String
+  discipline String
+  time       String
+  proofUrl   String    @map("proof_url")
+  status     String    @default("pending")
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  reviewedAt DateTime? @map("reviewed_at") @db.Timestamptz()
+  reviewedBy Int?      @map("reviewed_by")
+  reviewer   Admin?    @relation(fields: [reviewedBy], references: [id])
+
+  @@map("record_applications")
+}

@@ -3,6 +3,7 @@ import { Row, Col, Button, Table, Tag } from "antd";
 import { FiArrowRight, FiCalendar, FiBell } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import Reveal from "../../components/fx/Reveal.jsx";
 import "./HomeHighlights.css";
 
 const HomeHighlights = () => {
@@ -70,6 +71,7 @@ const HomeHighlights = () => {
         <Row gutter={[22, 22]} align="stretch">
           {/* LEFT: Latest News */}
           <Col xs={24} lg={14}>
+            <Reveal>
             <div className="pfm-card pfm-card-news">
               <div className="pfm-card-head">
                 <div className="pfm-card-title">
@@ -107,10 +109,12 @@ const HomeHighlights = () => {
                 ))}
               </div>
             </div>
+            </Reveal>
           </Col>
 
           {/* RIGHT: Upcoming Events */}
           <Col xs={24} lg={10}>
+            <Reveal delay={0.12}>
             <div className="pfm-card pfm-card-events">
               <div className="pfm-card-head">
                 <div className="pfm-card-title">
@@ -141,6 +145,7 @@ const HomeHighlights = () => {
                 </Button>
               </div>
             </div>
+            </Reveal>
           </Col>
         </Row>
       </div>
