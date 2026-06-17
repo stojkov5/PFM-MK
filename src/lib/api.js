@@ -1,4 +1,14 @@
 // src/lib/api.js
+
+// In production the API lives on a different origin (Railway). Set VITE_API_URL
+// (e.g. https://your-api.up.railway.app) in the Vercel project so calls hit it.
+// In local dev VITE_API_URL is unset, so requests stay relative and go through
+// the Vite dev proxy to localhost:3001.
+const API_BASE = import.meta.env.VITE_API_URL ?? "";
+
+const resolve = (url) =>
+  API_BASE && url.startsWith("/api") ? `${API_BASE}${url}` : url;
+
 const json = async (res) => {
   const body = await res.json().catch(() => ({}));
   if (!res.ok) {
@@ -10,10 +20,11 @@ const json = async (res) => {
   return body;
 };
 
-export const apiGet = (url) => fetch(url, { credentials: "include" }).then(json);
+export const apiGet = (url) =>
+  fetch(resolve(url), { credentials: "include" }).then(json);
 
 export const apiPost = (url, data) =>
-  fetch(url, {
+  fetch(resolve(url), {
     method: "POST",
     credentials: "include",
     headers: { "Content-Type": "application/json" },

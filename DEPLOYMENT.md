@@ -1,62 +1,102 @@
-# Deploying PFM-MK to Railway
+# Deploying PFM-MK
 
-The app is one Node service (API + static site) plus a PostgreSQL database.
-The database layer uses **Prisma** — the schema lives in `prisma/schema.prisma`.
+Architecture: **frontend on Vercel**, **API + PostgreSQL on Railway**.
 
-## 1. Create the project
-1. https://railway.app → New Project → **Deploy from GitHub repo** (or `railway init` with the CLI).
-2. In the project: **+ New → Database → PostgreSQL**.
+- The React site (Vite SPA) is hosted by Vercel.
+- The Express API and the Prisma/PostgreSQL database run on Railway.
+- They are on different origins, so the API allows the Vercel origin via CORS and
+  issues a `SameSite=None; Secure` session cookie (only works when `NODE_ENV=production`).
 
-## 2. Configure the service
-Settings → Build & Deploy:
-- Build command: `npm install && npm run build`
-  (`npm install` also runs `prisma generate` automatically via the `postinstall` script)
+The database is already created and seeded (418 records + your admin account). The
+steps below are about hosting the two apps. **Do them in this order** — each app needs
+the other's URL.
+
+---
+
+## Part 1 — API on Railway
+
+You already have a Railway project with PostgreSQL and a service connected to the
+GitHub repo. Configure that service as **API-only**:
+
+**Settings → Build & Deploy**
+- Build command: `npm install`   (this also runs `prisma generate` via `postinstall`)
 - Start command: `npm run start:server`
 
-Variables (service → Variables):
-- `DATABASE_URL` → click "Add reference" and pick the Postgres `DATABASE_URL`
-- `JWT_SECRET` → long random string (e.g. `openssl rand -hex 32`)
-- `NODE_ENV` → `production`
-- `ADMIN_USERNAME` / `ADMIN_PASSWORD` → first admin account (password ≥ 10 chars)
+> Leaving the build as `npm install && npm run build` also works — the API just also
+> serves a copy of the site — but API-only is cleaner.
 
-## 3. Initialize the database (one time)
+**Variables** (service → Variables)
+| Variable | Value |
+|---|---|
+| `DATABASE_URL` | Add Reference → Postgres `DATABASE_URL` (the internal one is correct here) |
+| `JWT_SECRET` | a long random string (e.g. `openssl rand -hex 32`) |
+| `NODE_ENV` | `production`  ← **required**, or the cross-site login cookie won't work |
+| `CLIENT_ORIGIN` | *leave empty for now — you'll fill it in Part 3* |
 
-Either with the Railway CLI (`npm i -g @railway/cli`, then `railway login`, `railway link`):
+Deploy. Then **Settings → Networking → Generate Domain** to get the public API URL,
+e.g. `https://pfm-mk-api.up.railway.app`. Copy it.
 
-```
-railway run npm run db:push
-railway run npm run db:seed-records
-railway run npm run db:seed-admin
-```
+Quick check: `https://<your-api>.up.railway.app/api/records?pool=25&gender=female`
+should return JSON.
 
-Or from your own machine: put the Postgres service's **`DATABASE_PUBLIC_URL`** into
-your local `.env` as `DATABASE_URL` (the internal URL only works inside Railway), set
-`ADMIN_USERNAME`/`ADMIN_PASSWORD` there too, then run the same three commands locally:
+---
 
-```
-npm run db:push
-npm run db:seed-records
-npm run db:seed-admin
-```
+## Part 2 — Frontend on Vercel
 
-`db:push` creates/updates the tables from `prisma/schema.prisma`. The seeds are
-idempotent — running them again does not duplicate data.
+1. https://vercel.com → **Add New → Project** → import the `PFM-MK` GitHub repo.
+2. Vercel auto-detects Vite (Framework: Vite, Build: `npm run build`, Output: `dist`).
+   `vercel.json` in the repo already handles SPA routing so deep links like `/admin`
+   don't 404.
+3. **Environment Variables** → add:
+   | Variable | Value |
+   |---|---|
+   | `VITE_API_URL` | your Railway API URL from Part 1, e.g. `https://pfm-mk-api.up.railway.app` (no trailing slash) |
+4. **Deploy.** Copy the resulting site URL, e.g. `https://pfm-mk.vercel.app`.
 
-## 4. Done
-- Site: the service's public URL
-- Admin panel: `<url>/admin`
-- Re-deploys run automatically on push; the database persists.
+> `VITE_API_URL` must be set **before/at build time** — Vite inlines it into the bundle.
+> If you add it after the first deploy, trigger a redeploy.
+
+---
+
+## Part 3 — Connect them (CORS)
+
+Back in Railway → API service → Variables, set:
+
+| Variable | Value |
+|---|---|
+| `CLIENT_ORIGIN` | your Vercel URL from Part 2, e.g. `https://pfm-mk.vercel.app` (no trailing slash) |
+
+Railway redeploys. The API now allows the Vercel site to call it with credentials.
+
+For Vercel **preview** deployments (separate URLs per branch), add those origins too —
+`CLIENT_ORIGIN` accepts a comma-separated list:
+`https://pfm-mk.vercel.app,https://pfm-mk-git-dev-you.vercel.app`
+
+---
+
+## Done — verify
+- Open the Vercel site → Swimming → Records: data loads from Railway.
+- `/swimming/record-application`: submit a test application.
+- `/admin`: log in with your admin account, see the application, Approve it, confirm the
+  record updates on the Records page.
+
+If login "succeeds" but you stay logged out, the cause is almost always: `NODE_ENV` not
+set to `production` on Railway (cookie not `Secure`), or `CLIENT_ORIGIN` not exactly
+matching the Vercel URL (scheme + host, no trailing slash).
+
+---
 
 ## Local development
 - `npm run dev:server` (API on :3001) + `npm run dev` (site on :5173).
-- `DATABASE_URL` is **required** — the server refuses to start without it. Use the
-  Railway `DATABASE_PUBLIC_URL` in `.env`.
+- Locally `VITE_API_URL` and `CLIENT_ORIGIN` are unset: the Vite proxy makes everything
+  same-origin, so CORS and the cookie work without extra config.
+- `DATABASE_URL` is required (use the Railway Postgres `DATABASE_PUBLIC_URL` in `.env`).
 
-## Useful commands
+## Database commands
 | Command | What it does |
 |---|---|
-| `npm run test:server` | Backend test suite (in-memory Prisma mock, no DB needed) |
+| `npm run test:server` | Backend tests (in-memory Prisma mock, no DB needed) |
 | `npm run db:push` | Apply `prisma/schema.prisma` to `DATABASE_URL` |
 | `npm run db:seed-records` | Import the JSON record files (skips existing rows) |
-| `npm run db:seed-admin` | Create/update the admin from `ADMIN_USERNAME`/`ADMIN_PASSWORD` |
-| `npx prisma studio` | Browse/edit the database in a local GUI |
+| `npm run db:seed-admin` | Create/update admin from `ADMIN_USERNAME`/`ADMIN_PASSWORD` |
+| `npx prisma studio` | Browse/edit the database in a GUI |

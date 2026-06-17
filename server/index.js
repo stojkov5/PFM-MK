@@ -1,5 +1,6 @@
 // server/index.js
 import "dotenv/config";
+import fs from "node:fs";
 import path from "node:path";
 import express from "express";
 import { fileURLToPath } from "node:url";
@@ -20,15 +21,20 @@ if (!process.env.JWT_SECRET) {
 const db = createPrisma();
 const app = createApp(db);
 
+// Serve the built SPA only if a build is present. When the frontend is hosted
+// separately (Vercel), this Railway service runs API-only and dist won't exist —
+// the guard keeps it from crashing on non-API requests.
 if (process.env.NODE_ENV === "production") {
   const dist = path.join(__dirname, "..", "dist");
-  app.use(express.static(dist));
-  app.use((req, res, next) => {
-    if (req.method === "GET" && !req.path.startsWith("/api")) {
-      return res.sendFile(path.join(dist, "index.html"));
-    }
-    next();
-  });
+  if (fs.existsSync(path.join(dist, "index.html"))) {
+    app.use(express.static(dist));
+    app.use((req, res, next) => {
+      if (req.method === "GET" && !req.path.startsWith("/api")) {
+        return res.sendFile(path.join(dist, "index.html"));
+      }
+      next();
+    });
+  }
 }
 
 const port = Number(process.env.PORT) || 3001;

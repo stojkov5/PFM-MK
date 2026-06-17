@@ -4,10 +4,15 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { COOKIE_NAME, requireAdmin } from "../middleware/requireAdmin.js";
 
+// In production the frontend (Vercel) and API (Railway) are on different origins,
+// so the session cookie must be SameSite=None + Secure to be sent cross-site.
+// In development everything is same-origin via the Vite proxy, so Lax is fine.
+const isProd = () => process.env.NODE_ENV === "production";
+
 const cookieOpts = () => ({
   httpOnly: true,
-  sameSite: "lax",
-  secure: process.env.NODE_ENV === "production",
+  sameSite: isProd() ? "none" : "lax",
+  secure: isProd(),
   maxAge: 7 * 24 * 60 * 60 * 1000,
 });
 
@@ -33,7 +38,12 @@ export const authRouter = (db) => {
   });
 
   router.post("/logout", (req, res) => {
-    res.clearCookie(COOKIE_NAME, { httpOnly: true, sameSite: "lax" });
+    // clearCookie attributes must match the ones used to set it, or the browser keeps it.
+    res.clearCookie(COOKIE_NAME, {
+      httpOnly: true,
+      sameSite: isProd() ? "none" : "lax",
+      secure: isProd(),
+    });
     res.json({ ok: true });
   });
 
