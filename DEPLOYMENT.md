@@ -4,10 +4,11 @@ Architecture: **frontend on Vercel**, **API + PostgreSQL on Railway**.
 
 - The React site (Vite SPA) is hosted by Vercel.
 - The Express API and the Prisma/PostgreSQL database run on Railway.
-- They are on different origins, so the API allows the Vercel origin via CORS and
-  issues a `SameSite=None; Secure` session cookie (only works when `NODE_ENV=production`).
+- Admin login is handled by **Clerk**. The admin panel sends a Clerk session token as
+  a `Bearer` header, and the API checks it plus the user's `role: "admin"` metadata.
+- They are on different origins, so the API allows the Vercel origin via CORS.
 
-The database is already created and seeded (418 records + your admin account). The
+The database is already created and seeded (418 records). The
 steps below are about hosting the two apps. **Do them in this order** — each app needs
 the other's URL.
 
@@ -29,8 +30,9 @@ GitHub repo. Configure that service as **API-only**:
 | Variable | Value |
 |---|---|
 | `DATABASE_URL` | Add Reference → Postgres `DATABASE_URL` (the internal one is correct here) |
-| `JWT_SECRET` | a long random string (e.g. `openssl rand -hex 32`) |
-| `NODE_ENV` | `production`  ← **required**, or the cross-site login cookie won't work |
+| `CLERK_SECRET_KEY` | Clerk dashboard → API keys (use the **production** instance keys) |
+| `CLERK_PUBLISHABLE_KEY` | Clerk dashboard → API keys |
+| `NODE_ENV` | `production` |
 | `CLIENT_ORIGIN` | *leave empty for now — you'll fill it in Part 3* |
 
 Deploy. Then **Settings → Networking → Generate Domain** to get the public API URL,
@@ -51,9 +53,10 @@ should return JSON.
    | Variable | Value |
    |---|---|
    | `VITE_API_URL` | your Railway API URL from Part 1, e.g. `https://pfm-mk-api.up.railway.app` (no trailing slash) |
+   | `VITE_CLERK_PUBLISHABLE_KEY` | same value as `CLERK_PUBLISHABLE_KEY` |
 4. **Deploy.** Copy the resulting site URL, e.g. `https://pfm-mk.vercel.app`.
 
-> `VITE_API_URL` must be set **before/at build time** — Vite inlines it into the bundle.
+> `VITE_*` variables must be set **before/at build time** — Vite inlines it into the bundle.
 > If you add it after the first deploy, trigger a redeploy.
 
 ---
@@ -66,7 +69,8 @@ Back in Railway → API service → Variables, set:
 |---|---|
 | `CLIENT_ORIGIN` | your Vercel URL from Part 2, e.g. `https://pfm-mk.vercel.app` (no trailing slash) |
 
-Railway redeploys. The API now allows the Vercel site to call it with credentials.
+Railway redeploys. The API now allows the Vercel site to call it, and only accepts
+Clerk tokens issued for these origins.
 
 For Vercel **preview** deployments (separate URLs per branch), add those origins too —
 `CLIENT_ORIGIN` accepts a comma-separated list:
@@ -77,19 +81,22 @@ For Vercel **preview** deployments (separate URLs per branch), add those origins
 ## Done — verify
 - Open the Vercel site → Swimming → Records: data loads from Railway.
 - `/swimming/record-application`: submit a test application.
-- `/admin`: log in with your admin account, see the application, Approve it, confirm the
-  record updates on the Records page.
+- `/admin`: sign in with Clerk, see the application, Approve it, confirm the record
+  updates on the Records page.
 
-If login "succeeds" but you stay logged out, the cause is almost always: `NODE_ENV` not
-set to `production` on Railway (cookie not `Secure`), or `CLIENT_ORIGIN` not exactly
-matching the Vercel URL (scheme + host, no trailing slash).
+If you sign in but the panel says "Couldn't reach the server" or you get 401s, the cause
+is almost always: `CLIENT_ORIGIN` not exactly matching the Vercel URL (scheme + host, no
+trailing slash), or the frontend and API using keys from different Clerk instances.
+"No admin access" means the account is missing `{"role": "admin"}` in its public metadata.
 
 ---
 
 ## Local development
 - `npm run dev:server` (API on :3001) + `npm run dev` (site on :5173).
 - Locally `VITE_API_URL` and `CLIENT_ORIGIN` are unset: the Vite proxy makes everything
-  same-origin, so CORS and the cookie work without extra config.
+  same-origin, so CORS works without extra config.
+- `CLERK_SECRET_KEY`, `CLERK_PUBLISHABLE_KEY` and `VITE_CLERK_PUBLISHABLE_KEY` are required
+  (use the Clerk **development** instance keys locally).
 - `DATABASE_URL` is required (use the Railway Postgres `DATABASE_PUBLIC_URL` in `.env`).
 
 ## Database commands
@@ -98,5 +105,5 @@ matching the Vercel URL (scheme + host, no trailing slash).
 | `npm run test:server` | Backend tests (in-memory Prisma mock, no DB needed) |
 | `npm run db:push` | Apply `prisma/schema.prisma` to `DATABASE_URL` |
 | `npm run db:seed-records` | Import the JSON record files (skips existing rows) |
-| `npm run db:seed-admin` | Create/update admin from `ADMIN_USERNAME`/`ADMIN_PASSWORD` |
+| `npm run admin:grant -- you@example.com` | Give an existing Clerk user the admin role |
 | `npx prisma studio` | Browse/edit the database in a GUI |

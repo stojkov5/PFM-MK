@@ -1,16 +1,32 @@
 // server/routes/admin.js
 import { Router } from "express";
-import bcrypt from "bcryptjs";
 import { requireAdmin } from "../middleware/requireAdmin.js";
+import { teamRouter } from "./team.js";
 
-export const adminRouter = (db) => {
+const STATUSES = ["pending", "approved", "denied"];
+
+const recordSlot = (a) => ({
+  pool: a.pool,
+  gender: a.gender,
+  category: a.category,
+  discipline: a.discipline,
+});
+
+export const adminRouter = (db, auth, { allowedOrigins = [] } = {}) => {
   const router = Router();
-  router.use(requireAdmin);
+  router.use(auth.middleware, requireAdmin(auth));
+
+  router.get("/me", (req, res) => res.json(req.admin));
+
+  router.get("/applications/counts", async (req, res) => {
+    const counts = await Promise.all(
+      STATUSES.map((status) => db.recordApplication.count({ where: { status } }))
+    );
+    res.json(Object.fromEntries(STATUSES.map((s, i) => [s, counts[i]])));
+  });
 
   router.get("/applications", async (req, res) => {
-    const status = ["pending", "approved", "denied"].includes(req.query.status)
-      ? req.query.status
-      : "pending";
+    const status = STATUSES.includes(req.query.status) ? req.query.status : "pending";
     const apps = await db.recordApplication.findMany({
       where: { status },
       orderBy: [{ createdAt: "desc" }, { id: "desc" }],
@@ -18,18 +34,19 @@ export const adminRouter = (db) => {
     const withCurrent = await Promise.all(
       apps.map(async (a) => {
         const current = await db.record.findFirst({
-          where: {
-            pool: a.pool,
-            gender: a.gender,
-            category: a.category,
-            discipline: a.discipline,
-          },
+          where: recordSlot(a),
           select: { time: true, athlete: true },
         });
         return { ...a, currentRecord: current ?? null };
       })
     );
     res.json(withCurrent);
+  });
+
+  const reviewedBy = (req) => ({
+    reviewedAt: new Date(),
+    reviewerId: req.admin.id,
+    reviewerName: req.admin.name ?? req.admin.email,
   });
 
   router.post("/applications/:id/approve", async (req, res) => {
@@ -40,14 +57,8 @@ export const adminRouter = (db) => {
       if (app.status !== "pending") return { error: 409 };
 
       const athlete = `${app.lastName} ${app.firstName}`;
-
       const existing = await tx.record.findFirst({
-        where: {
-          pool: app.pool,
-          gender: app.gender,
-          category: app.category,
-          discipline: app.discipline,
-        },
+        where: recordSlot(app),
         select: { id: true },
       });
 
@@ -63,11 +74,8 @@ export const adminRouter = (db) => {
         });
         await tx.record.create({
           data: {
-            pool: app.pool,
-            gender: app.gender,
-            category: app.category,
+            ...recordSlot(app),
             sortOrder: sibling?.sortOrder ?? 0,
-            discipline: app.discipline,
             time: app.time,
             athlete,
           },
@@ -76,7 +84,7 @@ export const adminRouter = (db) => {
 
       await tx.recordApplication.update({
         where: { id },
-        data: { status: "approved", reviewedAt: new Date(), reviewedBy: req.admin.id },
+        data: { status: "approved", ...reviewedBy(req) },
       });
       return { ok: true };
     });
@@ -96,28 +104,12 @@ export const adminRouter = (db) => {
     if (app.status !== "pending") return res.status(409).json({ error: "Already reviewed" });
     await db.recordApplication.update({
       where: { id },
-      data: { status: "denied", reviewedAt: new Date(), reviewedBy: req.admin.id },
+      data: { status: "denied", ...reviewedBy(req) },
     });
     res.json({ ok: true });
   });
 
-  router.post("/admins", async (req, res) => {
-    const { username, password } = req.body ?? {};
-    if (
-      typeof username !== "string" || username.trim().length < 3 || username.length > 50 ||
-      typeof password !== "string" || password.length < 10
-    ) {
-      return res.status(400).json({ error: "Username min 3 chars, password min 10 chars" });
-    }
-    const existing = await db.admin.findUnique({
-      where: { username: username.trim() },
-      select: { id: true },
-    });
-    if (existing) return res.status(409).json({ error: "Username already exists" });
-    const passwordHash = await bcrypt.hash(password, 12);
-    await db.admin.create({ data: { username: username.trim(), passwordHash } });
-    res.status(201).json({ ok: true });
-  });
+  router.use("/team", teamRouter(auth, { allowedOrigins }));
 
   return router;
 };

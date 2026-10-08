@@ -14,8 +14,6 @@ import SwimmingCalendarInternational from "./pages/Swimming/CalendarInternationa
 import SwimmingRecords from "./pages/Swimming/Records.jsx";
 import SwimmingCriteria from "./pages/Swimming/Criteria.jsx";
 import RecordApplication from "./pages/Swimming/RecordApplication.jsx";
-import AdminLogin from "./pages/Admin/AdminLogin.jsx";
-import AdminApplications from "./pages/Admin/AdminApplications.jsx";
 
 import WaterpoloPrograms from "./pages/Waterpolo/WaterpoloPrograms.jsx";
 import WaterpoloCalendarNational from "./pages/Waterpolo/WaterpoloCalendarNational.jsx";
@@ -78,9 +76,14 @@ export const router = createBrowserRouter([
         element: <DistanceSwimmingNews />,
       },
 
-      // ADMIN (not linked from navigation)
-      { path: "admin", element: <AdminLogin /> },
-      { path: "admin/applications", element: <AdminApplications /> },
+      // ADMIN (not linked from navigation). Lazy so Clerk + the admin UI are
+      // only downloaded when someone opens /admin.
+      {
+        path: "admin/*",
+        lazy: async () => ({
+          Component: (await import("./pages/Admin/AdminRoot.jsx")).default,
+        }),
+      },
 
       // NEWS
       { path: "news", element: <News /> },

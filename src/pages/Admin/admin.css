@@ -2,41 +2,70 @@
 .pfm-admin {
   min-height: 80vh;
   padding-bottom: 60px;
+  color: rgba(255, 255, 255, 0.88);
 }
 
-.pfm-admin-login-wrap {
-  max-width: 380px;
-  margin: 8vh auto 0;
-  padding: 0 16px;
-}
-
-.pfm-admin-card {
-  border-radius: 22px;
-  padding: 24px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(14px);
-}
-
-.pfm-admin-title {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: rgba(255, 255, 255, 0.94);
-  margin-bottom: 16px;
+.pfm-admin-center {
+  display: flex;
+  justify-content: center;
+  padding: 6vh 16px 0;
 }
 
 .pfm-admin-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
   gap: 12px;
-  margin-bottom: 8px;
+  margin: 8px 0 12px;
 }
 
-.pfm-admin-head-actions { display: flex; gap: 10px; }
+.pfm-admin-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.94);
+}
+
+.pfm-admin-subtitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.92);
+  margin-bottom: 6px;
+}
+
+.pfm-admin-tab-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pfm-admin-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pfm-admin-card {
+  border-radius: 18px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(14px);
+}
+
+.pfm-admin-invite {
+  margin-top: 14px;
+  row-gap: 10px;
+}
+
+.pfm-admin-invite .ant-form-item {
+  flex: 1 1 260px;
+}
+
+.pfm-admin-table .ant-table {
+  background: rgba(255, 255, 255, 0.03);
+}
 
 .pfm-admin-strong { color: rgba(255, 255, 255, 0.92); font-weight: 600; }
 .pfm-admin-dim { color: rgba(255, 255, 255, 0.6); font-size: 0.85rem; }
 .pfm-admin-actions { display: flex; gap: 8px; }
-.pfm-admin-error { margin-bottom: 14px; }
+.pfm-admin-link { display: inline-flex; align-items: center; gap: 4px; }

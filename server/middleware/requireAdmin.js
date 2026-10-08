@@ -1,16 +1,20 @@
 // server/middleware/requireAdmin.js
-import jwt from "jsonwebtoken";
+import { isAdmin, toAdminDto } from "../auth/clerk.js";
 
-export const COOKIE_NAME = "pfm_admin";
+// Looks the user up on every request (instead of trusting token claims) so that
+// removing someone's admin role takes effect immediately.
+export const requireAdmin = (auth) => async (req, res, next) => {
+  const userId = auth.getUserId(req);
+  if (!userId) return res.status(401).json({ error: "Not authenticated" });
 
-export const requireAdmin = (req, res, next) => {
-  const token = req.cookies?.[COOKIE_NAME];
-  if (!token) return res.status(401).json({ error: "Not authenticated" });
+  let user;
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
-    req.admin = { id: payload.sub, username: payload.username };
-    next();
+    user = await auth.client.users.getUser(userId);
   } catch {
     return res.status(401).json({ error: "Not authenticated" });
   }
+  if (!isAdmin(user)) return res.status(403).json({ error: "Not an admin" });
+
+  req.admin = toAdminDto(user);
+  next();
 };

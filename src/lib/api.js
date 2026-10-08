@@ -20,13 +20,20 @@ const json = async (res) => {
   return body;
 };
 
-export const apiGet = (url) =>
-  fetch(resolve(url), { credentials: "include" }).then(json);
+// `token` is a Clerk session token; when given it's sent as a Bearer header
+// (used by the admin panel — public endpoints don't need it).
+const headers = (token, extra = {}) =>
+  token ? { ...extra, Authorization: `Bearer ${token}` } : extra;
 
-export const apiPost = (url, data) =>
+export const apiGet = (url, { token } = {}) =>
+  fetch(resolve(url), { headers: headers(token) }).then(json);
+
+export const apiPost = (url, data, { token } = {}) =>
   fetch(resolve(url), {
     method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    headers: headers(token, { "Content-Type": "application/json" }),
     body: data === undefined ? undefined : JSON.stringify(data),
   }).then(json);
+
+export const apiDelete = (url, { token } = {}) =>
+  fetch(resolve(url), { method: "DELETE", headers: headers(token) }).then(json);

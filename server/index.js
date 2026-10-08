@@ -9,13 +9,12 @@ import { createPrisma } from "./db/client.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-if (!process.env.JWT_SECRET) {
-  if (process.env.NODE_ENV === "production") {
-    console.error("JWT_SECRET is required in production.");
-    process.exit(1);
-  }
-  process.env.JWT_SECRET = "dev-only-secret";
-  console.warn("[pfm] JWT_SECRET not set — using an insecure dev secret.");
+const missingClerk = ["CLERK_SECRET_KEY", "CLERK_PUBLISHABLE_KEY"].filter((k) => !process.env[k]);
+if (missingClerk.length) {
+  console.error(
+    `[pfm] ${missingClerk.join(" and ")} missing. Copy them from the Clerk dashboard → API keys into .env.`
+  );
+  process.exit(1);
 }
 
 const db = createPrisma();
