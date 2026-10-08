@@ -1,7 +1,7 @@
 {
   "navbar": {
     "brand": {
-      "fullName": "Swimming Federation of Macedonia",
+      "fullName": "National Swimming Federation of Macedoniа",
       "logoAlt": "PFM Logo"
     },
     "items": {
@@ -9,7 +9,10 @@
       "swimming": "SWIMMING",
       "waterpolo": "WATERPOLO",
       "news": "NEWS",
-      "distanceSwimming": "DISTANCE SWIMMING"
+      "distanceSwimming": "DISTANCE SWIMMING",
+      "sports": "SPORTS",
+      "calendar": "CALENDAR",
+      "about": "ABOUT US"
     },
     "swimming": {
       "home": "Swimming",
@@ -33,6 +36,34 @@
       "goHome": "Go to home",
       "changeLanguage": "Change language",
       "language": "Language"
+    },
+    "sports": {
+      "swimming": {
+        "title": "Swimming",
+        "desc": "Clubs, records, criteria and calendars"
+      },
+      "waterpolo": {
+        "title": "Water polo",
+        "desc": "Programs, calendars and criteria"
+      },
+      "distance": {
+        "title": "Distance swimming",
+        "desc": "Open-water calendar and the Ohrid marathon"
+      }
+    },
+    "about": {
+      "about": {
+        "title": "About us",
+        "desc": "Who we are and what we do"
+      },
+      "structure": {
+        "title": "Structure",
+        "desc": "Organisational structure of the federation"
+      },
+      "partners": {
+        "title": "Partners",
+        "desc": "Memberships, partners and sponsors"
+      }
     }
   },
   "landing": {
@@ -77,7 +108,6 @@
       }
     }
   },
-
   "homeHighlights": {
     "latestNews": "Latest news",
     "viewMore": "View more",
@@ -108,7 +138,6 @@
       }
     ]
   },
-
   "homeAbout": {
     "kicker": "About the federation",
     "title": "Official national body for swimming, water polo and distance swimming",
@@ -135,7 +164,6 @@
       }
     ]
   },
-
   "homeDisciplines": {
     "kicker": "Disciplines",
     "title": "Swimming, water polo and distance swimming",
@@ -179,7 +207,7 @@
   "common": {
     "dash": "—"
   },
-   "clubs": {
+  "clubs": {
     "kicker": "Swimming Clubs",
     "title": "Registered Clubs",
     "subtitle": "Browse the officially registered clubs, search by name or contact details, and filter them by city.",
@@ -196,37 +224,35 @@
     },
     "note": "The list is shown from a separate data file so the component stays clean and easier to maintain."
   },
-
   "calendar": {
-  "kicker": "Calendar",
-  "nationalTitle": "Calendar – National",
-  "internationalTitle": "Calendar – International",
-  "searchPlaceholderNational": "Search… (example: Skopje, 25m, National)",
-  "searchPlaceholderInternational": "Search… (example: Belgrade, 25m, TBC, Olympics)",
-  "total": "Total:",
-  "openPdf": "Open PDF",
-  "noResults": "No events found",
-  "eventsLabel": "events",
-  "columns": {
-    "month": "Month",
-    "week": "Week",
-    "date": "Date",
-    "event": "Event",
-    "location": "Location",
-    "organizer": "Organizer",
-    "competition": "Competition",
-    "category": "Category",
-    "place": "Place",
-    "categories": "Categories",
-    "pool": "Pool",
-    "status": "Status"
+    "kicker": "Calendar",
+    "nationalTitle": "Calendar – National",
+    "internationalTitle": "Calendar – International",
+    "searchPlaceholderNational": "Search… (example: Skopje, 25m, National)",
+    "searchPlaceholderInternational": "Search… (example: Belgrade, 25m, TBC, Olympics)",
+    "total": "Total:",
+    "openPdf": "Open PDF",
+    "noResults": "No events found",
+    "eventsLabel": "events",
+    "columns": {
+      "month": "Month",
+      "week": "Week",
+      "date": "Date",
+      "event": "Event",
+      "location": "Location",
+      "organizer": "Organizer",
+      "competition": "Competition",
+      "category": "Category",
+      "place": "Place",
+      "categories": "Categories",
+      "pool": "Pool",
+      "status": "Status"
+    },
+    "status": {
+      "tbc": "TBC",
+      "ok": "OK"
+    }
   },
-  "status": {
-    "tbc": "TBC",
-    "ok": "OK"
-  }
-},
-
   "records": {
     "overviewTitle": "Overview",
     "kicker": "Records",
@@ -234,8 +260,6 @@
     "loadError": "Could not load records.",
     "retry": "Retry",
     "intro": {
-      
-     
       "list": {
         "0": "All disciplines by age category",
         "1": "Record holders and results",
@@ -262,17 +286,14 @@
       "shortCourse": "Short course",
       "longCourse": "Long course"
     },
-    "summary":{
-      "categories":"Categories",
-      "records":"Records",
-      "selection":"Selection"
+    "summary": {
+      "categories": "Categories",
+      "records": "Records",
+      "selection": "Selection"
     },
-    "table":{
-      "list":"Record List"
+    "table": {
+      "list": "Record List"
     }
-    
-    
-   
   },
   "criteria": {
     "kicker": "Criteria",
@@ -342,7 +363,7 @@
         "seniors": "Seniors"
       }
     },
-     "nationalExtra": {
+    "nationalExtra": {
       "0": "The limits are set according to the achieved results from the last National Championship (separately for 25m and 50m pool). For all disciplines and categories, the 16th best time is taken, except for the 50m and 100m freestyle where the 40th best time is taken.",
       "1": "The criterion for participation in the National Championship is meeting the limit set by the National Swimming Federation of Macedonia.",
       "2": "The standards apply to all registered swimmers in the Republic of Macedonia and remain valid for one year.",
@@ -350,7 +371,6 @@
       "4": "A swimmer earns the right to participate if they achieve the limit in the 200m individual medley in the corresponding category, thereby gaining the right to swim 8 events prescribed by the competition regulations of the National Swimming Federation of Macedonia.",
       "5": "If a swimmer achieves the required limit in a 25m pool, it will be taken into account for participation in 50m pool competitions as well, and vice versa."
     }
-  
   },
   "swimming": {
     "hero": {
@@ -468,6 +488,134 @@
         "title": "Organizational Structure",
         "category": "Organization",
         "description": "Overview of the NSF structure: assembly, executive and supervisory board, president, secretary, sports director, commissions, and sports sectors."
+      }
+    }
+  },
+  "waterpolo": {
+    "hero": {
+      "kicker": "Discipline",
+      "title": "Water polo",
+      "subtitle": "Official information about water polo programs, national and international calendars, records and criteria."
+    },
+    "cards": {
+      "programs": {
+        "title": "Programs",
+        "desc": "Water polo programs and development activities."
+      },
+      "calendarNational": {
+        "title": "Calendar – National",
+        "desc": "Domestic water polo competitions and leagues."
+      },
+      "calendarInternational": {
+        "title": "Calendar – International",
+        "desc": "International tournaments and events."
+      },
+      "records": {
+        "title": "Record List",
+        "desc": "Results and records in water polo."
+      },
+      "criteria": {
+        "title": "Criteria",
+        "desc": "Rules and criteria for participation and selections."
+      }
+    }
+  },
+  "distance": {
+    "hero": {
+      "kicker": "Discipline",
+      "title": "Distance swimming",
+      "subtitle": "Open-water swimming: the marathon calendar, the Ohrid swimming marathon and the latest news."
+    },
+    "cards": {
+      "calendar": {
+        "title": "Calendar",
+        "desc": "Open-water and marathon events through the season."
+      },
+      "ohridMarathon": {
+        "title": "Ohrid Swimming Marathon",
+        "desc": "Information about the traditional Ohrid marathon."
+      },
+      "news": {
+        "title": "News",
+        "desc": "Updates and announcements for distance swimming."
+      }
+    }
+  },
+  "calendarHub": {
+    "hero": {
+      "kicker": "Calendar",
+      "title": "Competition calendar",
+      "subtitle": "All national and international competition calendars in one place, grouped by sport."
+    },
+    "national": {
+      "title": "National",
+      "desc": "Domestic competitions by month."
+    },
+    "international": {
+      "title": "International",
+      "desc": "International competitions and events."
+    },
+    "distance": {
+      "title": "Season calendar",
+      "desc": "Open-water and marathon events."
+    }
+  },
+  "about": {
+    "hero": {
+      "kicker": "About us",
+      "title": "Swimming Federation of Macedonia",
+      "subtitle": "The official national body for swimming, water polo and distance swimming."
+    },
+    "pillars": {
+      "title": "What we do",
+      "competitions": {
+        "title": "Competitions",
+        "desc": "Organizing and sanctioning national competitions, championships and cups."
+      },
+      "calendars": {
+        "title": "Calendars & regulations",
+        "desc": "Preparing competition calendars, rulebooks and participation criteria."
+      },
+      "records": {
+        "title": "Official records",
+        "desc": "Keeping the official national record lists for 25m and 50m pools."
+      },
+      "national": {
+        "title": "National teams",
+        "desc": "Activities related to national team selections, together with clubs and coaches."
+      }
+    },
+    "more": {
+      "title": "Learn more",
+      "structure": {
+        "title": "Structure",
+        "desc": "Governing bodies and the organisational structure."
+      },
+      "partners": {
+        "title": "Partners",
+        "desc": "International memberships, partners and sponsors."
+      },
+      "documents": {
+        "title": "Documents",
+        "desc": "Statute, rulebooks and other official acts."
+      }
+    },
+    "structure": {
+      "kicker": "About us",
+      "title": "Organisational structure",
+      "subtitle": "The governing bodies and organisational structure of the federation.",
+      "hint": "If the document doesn't show on your device, use the Preview or Download button."
+    },
+    "partners": {
+      "kicker": "About us",
+      "title": "Partners",
+      "subtitle": "The international federations we are part of, and the partners who support aquatic sports in Macedonia.",
+      "memberships": "Member of",
+      "sponsors": "Partners & sponsors",
+      "empty": "The list of partners and sponsors will be published here soon.",
+      "items": {
+        "worldAquatics": "The international federation for aquatic sports.",
+        "europeanAquatics": "The European federation for aquatic sports."
       }
     }
   }

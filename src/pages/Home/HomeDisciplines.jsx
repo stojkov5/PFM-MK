@@ -26,7 +26,7 @@ const HomeDisciplines = () => {
       image: "/Images/Waterpolo.webp",
       icon: <TbWaterpolo />,
       bulletsCount: 3,
-      primaryTo: "/waterpolo/programs",
+      primaryTo: "/waterpolo",
       secondaryTo: "/waterpolo/calendar-national",
     },
     {
@@ -34,7 +34,7 @@ const HomeDisciplines = () => {
       image: "/Images/Distance.webp",
       icon: <TiWaves />,
       bulletsCount: 3,
-      primaryTo: "/distance-swimming/calendar",
+      primaryTo: "/distance-swimming",
       secondaryTo: "/distance-swimming/ohrid-marathon",
     },
   ];

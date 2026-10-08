@@ -15,17 +15,23 @@ import SwimmingRecords from "./pages/Swimming/Records.jsx";
 import SwimmingCriteria from "./pages/Swimming/Criteria.jsx";
 import RecordApplication from "./pages/Swimming/RecordApplication.jsx";
 
+import WaterpoloHome from "./pages/Waterpolo/WaterpoloHome.jsx";
 import WaterpoloPrograms from "./pages/Waterpolo/WaterpoloPrograms.jsx";
 import WaterpoloCalendarNational from "./pages/Waterpolo/WaterpoloCalendarNational.jsx";
 import WaterpoloCalendarInternational from "./pages/Waterpolo/WaterpoloCalendarInternational.jsx";
 import WaterpoloRecords from "./pages/Waterpolo/WaterpoloRecords.jsx";
 import WaterpoloCriteria from "./pages/Waterpolo/WaterpoloCriteria.jsx";
 
+import DistanceSwimmingHome from "./pages/DistanceSwimming/DistanceSwimmingHome.jsx";
 import DistanceSwimmingCalendar from "./pages/DistanceSwimming/DistanceSwimmingCalendar.jsx";
 import OhridMarathon from "./pages/DistanceSwimming/OhridMarathon.jsx";
 import DistanceSwimmingNews from "./pages/DistanceSwimming/DistanceSwimmingNews.jsx";
 
 import News from "./pages/News/News.jsx";
+import CalendarHub from "./pages/Calendar/CalendarHub.jsx";
+import AboutPage from "./pages/About/AboutPage.jsx";
+import StructurePage from "./pages/About/StructurePage.jsx";
+import PartnersPage from "./pages/About/PartnersPage.jsx";
 import Documents from "./components/Documents.jsx";
 export const router = createBrowserRouter([
   {
@@ -50,6 +56,7 @@ export const router = createBrowserRouter([
       { path: "swimming/record-application", element: <RecordApplication /> },
 
       // WATERPOLO
+      { path: "waterpolo", element: <WaterpoloHome /> },
       { path: "waterpolo/programs", element: <WaterpoloPrograms /> },
       {
         path: "waterpolo/calendar-national",
@@ -63,6 +70,7 @@ export const router = createBrowserRouter([
       { path: "waterpolo/criteria", element: <WaterpoloCriteria /> },
 
       // DISTANCE SWIMMING
+      { path: "distance-swimming", element: <DistanceSwimmingHome /> },
       {
         path: "distance-swimming/calendar",
         element: <DistanceSwimmingCalendar />,
@@ -87,6 +95,12 @@ export const router = createBrowserRouter([
 
       // NEWS
       { path: "news", element: <News /> },
+      // CALENDAR (all sports)
+      { path: "calendar", element: <CalendarHub /> },
+      // ABOUT US
+      { path: "about", element: <AboutPage /> },
+      { path: "about/structure", element: <StructurePage /> },
+      { path: "about/partners", element: <PartnersPage /> },
       // DOCUMENTS
       { path: "documents", element: <Documents /> }
     ],

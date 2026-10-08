@@ -59,13 +59,13 @@ const Landing = () => {
     {
       key: "waterpolo",
       icon: <TbWaterpolo />,
-      href: "/waterpolo/programs",
+      href: "/waterpolo",
       chips: ["programs", "calendar", "criteria"],
     },
     {
       key: "distance",
       icon: <TiWaves />,
-      href: "/distance-swimming/calendar",
+      href: "/distance-swimming",
       chips: ["calendar", "ohridMarathon", "news"],
     },
   ];

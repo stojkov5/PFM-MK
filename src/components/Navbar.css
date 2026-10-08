@@ -1,232 +1,426 @@
-/* src/components/Navbar/Navbar.css */
+/* src/components/Navbar.css */
 
-/* Wrapper blur stays, but now it’s dark glass */
-.pfm-navbar-wrapper {
+.pfm-nav {
+  --nav-h: 64px;
+  --nav-bg: rgba(2, 6, 23, 0.92);
+  --nav-line: rgba(255, 255, 255, 0.1);
+  --nav-accent: #38bdf8;
+  --nav-accent-2: #2563eb;
+
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 40;
+}
+
+/* ===== BAR ===== */
+.pfm-nav-bar {
+  height: var(--nav-h);
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.pfm-nav.is-solid .pfm-nav-bar {
+  background: var(--nav-bg);
+  border-bottom-color: var(--nav-line);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(16px);
 }
 
-/* Slightly stronger on home (Landing) */
-.pfm-navbar-home .pfm-navbar {
-  background: rgba(2, 6, 23, 0.55);
-  border-color: rgba(255, 255, 255, 0.16);
-}
-
-/* Main container: dark glass to match Landing */
-.pfm-navbar {
-  margin-top: 0;
-  border-radius: 0;
-  background: rgba(2, 6, 23, 0.42);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
-}
-
-/* If you want rounded pill only on desktop */
-@media (min-width: 1024px) {
-  .pfm-navbar {
-    margin-top: 14px;
-    border-radius: 9999px;
-  }
-}
-
-/* Logo */
-.pfm-logo {
-  width: 42px;
-  height: 42px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(10px);
-}
-
-.pfm-logo-img {
-  width: 30px;
-  height: 30px;
-  object-fit: contain;
-}
-
-/* Title */
-.pfm-title-small {
-  font-size: 0.7rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.82);
-}
-
-/* === NAV LINKS – DESKTOP === */
-.nav-link-base {
-  position: relative;
-  padding-bottom: 0.12rem;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-weight: 500;
-
-  color: rgba(255, 255, 255, 0.86);
-  background: transparent;
-  border: none;
-  outline: none;
-  cursor: pointer;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  transition:
-    color 160ms ease-out,
-    opacity 160ms ease-out;
-  font-size: 0.76rem;
-}
-
-@media (min-width: 1280px) {
-  .nav-link-base {
-    font-size: 0.82rem;
-  }
-}
-
-/* Underline effect (light blue to match Landing glow) */
-.nav-link-base::after {
+/* Thin water-coloured accent line under the bar */
+.pfm-nav.is-solid .pfm-nav-bar::after {
   content: "";
   position: absolute;
   left: 0;
-  bottom: -0.08rem;
-  width: 0;
+  right: 0;
+  top: var(--nav-h);
   height: 2px;
-  border-radius: 9999px;
-  background: linear-gradient(
-    90deg,
-    rgba(56, 189, 248, 1),
-    rgba(37, 99, 235, 1)
-  );
-  transition: width 180ms ease-out;
+  background: linear-gradient(90deg, transparent, var(--nav-accent), var(--nav-accent-2), transparent);
+  opacity: 0.55;
+  pointer-events: none;
 }
 
-.nav-link-base:hover {
-  color: #ffffff;
+.pfm-nav-inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 28px;
 }
 
-.nav-link-base:hover::after,
-.nav-link-active::after {
-  width: 100%;
+/* ===== BRAND (logo + name) ===== */
+.pfm-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+  min-width: 0;
 }
 
-.nav-link-active {
-  color: #ffffff;
+/* The logo already has its own white frame, so it sits directly on the bar. */
+.pfm-nav-brand-logo {
+  height: 38px;
+  width: auto;
+  flex-shrink: 0;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  transition: transform 180ms ease;
 }
 
-/* Dropdown trigger */
-.nav-trigger {
-  padding-bottom: 0.12rem;
+.pfm-nav-brand:hover .pfm-nav-brand-logo {
+  transform: scale(1.04);
 }
 
-.chevron-icon {
-  font-size: 0.85rem;
-  opacity: 0.9;
-}
-
-/* ===== AntD Dropdown menu styling ===== */
-.pfm-dd-menu {
-  background: rgba(2, 6, 23, 0.92) !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
-  border-radius: 14px !important;
-  padding: 8px !important;
-  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.45) !important;
-  backdrop-filter: blur(14px) !important;
-}
-
-.pfm-dd-link {
-  display: block;
-  padding: 8px 10px;
-  border-radius: 10px;
-  font-size: 0.88rem;
-  color: rgba(255, 255, 255, 0.86);
-}
-
-.pfm-dd-link:hover {
-  background: rgba(56, 189, 248, 0.12);
-  color: #ffffff;
-}
-
-/* Fix AntD default item hover colors */
-.ant-dropdown-menu-item:hover,
-.ant-dropdown-menu-submenu-title:hover {
-  background: transparent !important;
-}
-
-/* === MOBILE / TABLET NAV === */
-.mobile-burger-btn {
+.pfm-nav-brand-name {
+  display: none;
+  max-width: 190px;
+  padding-left: 14px;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: rgba(255, 255, 255, 0.9);
 }
 
-/* Drawer dark glass */
-.pfm-drawer .ant-drawer-content {
-  background: rgba(2, 6, 23, 0.96) !important;
+@media (min-width: 640px) {
+  .pfm-nav-brand-name {
+    display: block;
+  }
 }
 
-.pfm-drawer .ant-drawer-header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+@media (min-width: 1024px) {
+  .pfm-nav-brand-logo {
+    height: 42px;
+  }
 }
 
-.pfm-drawer .ant-drawer-close {
-  color: rgba(2, 6, 23, 0.96) !important;
+/* ===== DESKTOP LINKS ===== */
+.pfm-nav-links {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  height: 100%;
 }
 
-.pfm-drawer .ant-drawer-body {
-  padding-top: 0.9rem;
+@media (min-width: 1024px) {
+  .pfm-nav-links {
+    display: flex;
+  }
 }
 
-.pfm-drawer-title {
+.pfm-nav-link {
+  position: relative;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transition: color 160ms ease;
+}
+
+.pfm-nav-link::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--nav-accent), var(--nav-accent-2));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 200ms ease;
+}
+
+.pfm-nav-link:hover,
+.pfm-nav-link.is-active,
+.pfm-nav-link[aria-expanded="true"] {
+  color: #ffffff;
+}
+
+.pfm-nav-link:hover::after,
+.pfm-nav-link.is-active::after,
+.pfm-nav-link[aria-expanded="true"]::after {
+  transform: scaleX(1);
+}
+
+.pfm-nav-link:focus-visible,
+.pfm-lang-btn:focus-visible,
+.pfm-nav-burger:focus-visible,
+.pfm-nav-brand:focus-visible {
+  outline: 2px solid var(--nav-accent);
+  outline-offset: 2px;
+}
+
+.pfm-nav-chevron {
+  font-size: 0.9rem;
+  transition: transform 200ms ease;
+}
+
+.pfm-nav-chevron.is-open {
+  transform: rotate(180deg);
+}
+
+/* ===== SPORTS DROPDOWN ===== */
+.pfm-nav-dd {
+  position: relative;
+  height: 100%;
+}
+
+.pfm-nav-panel {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  width: 320px;
+  padding: 8px;
+  border-radius: 0 0 16px 16px;
+  background: var(--nav-bg);
+  border: 1px solid var(--nav-line);
+  border-top: none;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(16px);
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity 160ms ease, transform 160ms ease, visibility 160ms;
+}
+
+.pfm-nav-dd:last-child .pfm-nav-panel {
+  left: auto;
+  right: 0;
+}
+
+.pfm-nav-panel.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.pfm-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  transition: background 140ms ease;
+}
+
+.pfm-nav-item:hover,
+.pfm-nav-item.is-active {
+  background: rgba(56, 189, 248, 0.12);
+}
+
+.pfm-nav-item-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  color: var(--nav-accent);
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.pfm-nav-item-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.pfm-nav-item-title {
+  font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
-  color: rgba(2, 6, 23, 0.96);
-  font-size: 0.95rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffffff;
 }
 
-/* mobile links */
-.nav-link-mobile {
-  font-size: 0.95rem;
-  font-weight: 400;
-  color: rgba(2, 6, 23, 0.96);
+.pfm-nav-item-desc {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.4;
 }
 
-.nav-link-mobile:hover {
-  color: rgba(2, 6, 23, 0.75);
+.pfm-nav-item-arrow {
+  margin-left: auto;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.4);
+  transition: transform 160ms ease, color 160ms ease;
 }
 
-.nav-link-mobile-active {
-  font-weight: 700;
-  color: #38bdf8;
+.pfm-nav-item:hover .pfm-nav-item-arrow {
+  color: var(--nav-accent);
+  transform: translateX(3px);
 }
 
-.nav-mobile-section-title {
+/* ===== LANGUAGE SWITCH ===== */
+.pfm-lang {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.pfm-lang-btn {
+  min-width: 38px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: none;
+  border: none;
+  cursor: pointer;
   font-size: 0.72rem;
   font-weight: 700;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.7);
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.pfm-lang-btn:hover {
+  color: #ffffff;
+}
+
+.pfm-lang-btn.is-active {
+  background: linear-gradient(90deg, var(--nav-accent), var(--nav-accent-2));
+  color: #020617;
+}
+
+.pfm-lang-desktop {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .pfm-lang-desktop {
+    display: inline-flex;
+  }
+}
+
+/* ===== MOBILE ===== */
+.pfm-nav-burger {
+  margin-left: auto;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  font-size: 1.35rem;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+  .pfm-nav-burger {
+    display: none;
+  }
+}
+
+.pfm-nav-mobile {
+  position: fixed;
+  top: var(--nav-h);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(2, 6, 23, 0.97);
+  backdrop-filter: blur(16px);
+  overflow-y: auto;
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity 200ms ease, transform 200ms ease, visibility 200ms;
+}
+
+.pfm-nav-mobile.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+@media (min-width: 1024px) {
+  .pfm-nav-mobile {
+    display: none;
+  }
+}
+
+/* Mobile menu content */
+.pfm-nav-mobile-inner {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 20px 16px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pfm-nav-mobile-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 8px 0 6px;
+}
+
+.pfm-nav-mobile-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: 12px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--nav-line);
+}
+
+.pfm-nav-mobile-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 4px;
+  border-bottom: 1px solid var(--nav-line);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+  font-weight: 700;
   letter-spacing: 0.16em;
-  color: rgba(2, 6, 23, 0.96);
-  margin-bottom: 0.25rem;
-}
-/* ===== FIX: AntD Dropdown text is black ===== */
-.pfm-dd-menu .ant-dropdown-menu {
-  background: rgba(2, 6, 23, 0.92) !important;
+  text-transform: uppercase;
 }
 
-.pfm-dd-menu .ant-dropdown-menu-item,
-.pfm-dd-menu .ant-dropdown-menu-submenu-title {
-  color: rgba(255, 255, 255, 0.88) !important;
+.pfm-nav-mobile-link + .pfm-nav-mobile-group {
+  margin-top: 14px;
 }
 
-.pfm-dd-menu .ant-dropdown-menu-title-content,
-.pfm-dd-menu .ant-dropdown-menu-item a,
-.pfm-dd-menu .ant-dropdown-menu-item a:visited {
-  color: rgba(255, 255, 255, 0.88) !important;
+.pfm-nav-mobile-link.is-active {
+  color: var(--nav-accent);
 }
 
-/* Hover state */
-.pfm-dd-menu .ant-dropdown-menu-item:hover,
-.pfm-dd-menu .ant-dropdown-menu-submenu-title:hover {
-  background: rgba(56, 189, 248, 0.12) !important;
+.pfm-nav-mobile-lang {
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
 }
 
-.pfm-dd-menu .ant-dropdown-menu-item:hover .ant-dropdown-menu-title-content,
-.pfm-dd-menu .ant-dropdown-menu-item:hover a {
-  color: #ffffff !important;
+@media (prefers-reduced-motion: reduce) {
+  .pfm-nav *,
+  .pfm-nav *::after {
+    transition: none !important;
+  }
 }

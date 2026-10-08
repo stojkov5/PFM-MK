@@ -152,3 +152,22 @@
   backdrop-filter: blur(14px);
   box-shadow: 0 26px 70px rgba(0, 0, 0, 0.34);
 }
+
+/* Group headings on hub pages (e.g. Calendar: Swimming / Waterpolo / ...) */
+.pfm-hub-group-title {
+  margin-top: 34px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.pfm-hub-group-icon {
+  display: inline-flex;
+  font-size: 1.25rem;
+  color: #38bdf8;
+}
