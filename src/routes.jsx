@@ -28,6 +28,7 @@ import OhridMarathon from "./pages/DistanceSwimming/OhridMarathon.jsx";
 import DistanceSwimmingNews from "./pages/DistanceSwimming/DistanceSwimmingNews.jsx";
 
 import News from "./pages/News/News.jsx";
+import NewsArticle from "./pages/News/NewsArticle.jsx";
 import CalendarHub from "./pages/Calendar/CalendarHub.jsx";
 import AboutPage from "./pages/About/AboutPage.jsx";
 import StructurePage from "./pages/About/StructurePage.jsx";
@@ -95,6 +96,7 @@ export const router = createBrowserRouter([
 
       // NEWS
       { path: "news", element: <News /> },
+      { path: "news/:slug", element: <NewsArticle /> },
       // CALENDAR (all sports)
       { path: "calendar", element: <CalendarHub /> },
       // ABOUT US

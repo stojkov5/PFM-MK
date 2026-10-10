@@ -1,0 +1,237 @@
+/* src/pages/News/rich-content.css
+   Typography for article bodies. Used by the public article page AND by the
+   admin editor, so what an admin sees while writing is what gets published. */
+.pfm-rich {
+  color: #1e293b;
+  font-size: 1rem;
+  line-height: 1.7;
+  overflow-wrap: break-word;
+}
+
+/* Contain floated (text-wrapped) images. */
+.pfm-rich::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.pfm-rich p {
+  margin: 0 0 0.9em;
+}
+
+/* An empty paragraph is a blank line, like in a word processor. */
+.pfm-rich p:empty::after {
+  content: "\00a0";
+}
+
+.pfm-rich h1,
+.pfm-rich h2,
+.pfm-rich h3,
+.pfm-rich h4 {
+  margin: 1.3em 0 0.5em;
+  color: #0f172a;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.pfm-rich h1 { font-size: 2em; }
+.pfm-rich h2 { font-size: 1.55em; }
+.pfm-rich h3 { font-size: 1.28em; }
+.pfm-rich h4 { font-size: 1.1em; }
+
+.pfm-rich > :first-child {
+  margin-top: 0;
+}
+
+.pfm-rich strong,
+.pfm-rich b {
+  font-weight: 700;
+}
+
+.pfm-rich a {
+  color: #0369a1;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.pfm-rich a:hover {
+  color: #0284c7;
+}
+
+.pfm-rich ul,
+.pfm-rich ol {
+  margin: 0 0 0.9em;
+  padding-left: 1.7em;
+}
+
+.pfm-rich ul { list-style: disc; }
+.pfm-rich ul ul { list-style: circle; }
+.pfm-rich ol { list-style: decimal; }
+.pfm-rich ol ol { list-style: lower-alpha; }
+
+.pfm-rich li > p {
+  margin: 0;
+}
+
+.pfm-rich li > ul,
+.pfm-rich li > ol {
+  margin-bottom: 0;
+}
+
+.pfm-rich blockquote {
+  margin: 1em 0;
+  padding: 0.3em 0 0.3em 1em;
+  border-left: 4px solid #38bdf8;
+  color: #475569;
+  font-style: italic;
+}
+
+.pfm-rich blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+.pfm-rich hr {
+  clear: both;
+  margin: 1.6em 0;
+  border: 0;
+  border-top: 2px solid #e2e8f0;
+}
+
+.pfm-rich code {
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: #f1f5f9;
+  font-size: 0.9em;
+}
+
+.pfm-rich pre {
+  margin: 1em 0;
+  padding: 0.9em 1em;
+  border-radius: 8px;
+  background: #0f172a;
+  color: #e2e8f0;
+  overflow-x: auto;
+  font-size: 0.9em;
+}
+
+.pfm-rich pre code {
+  padding: 0;
+  background: none;
+}
+
+/* ---------- Tables ---------- */
+.pfm-rich table {
+  width: 100%;
+  margin: 1em 0;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.pfm-rich th,
+.pfm-rich td {
+  position: relative;
+  padding: 0.45em 0.65em;
+  border: 1px solid #cbd5e1;
+  vertical-align: top;
+  text-align: left;
+}
+
+.pfm-rich th {
+  background: #f1f5f9;
+  font-weight: 700;
+}
+
+.pfm-rich th > :last-child,
+.pfm-rich td > :last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- Images ----------
+   On the site the <img> itself carries data-align + width; in the editor the
+   same attributes sit on the wrapper around it (.node-image). */
+.pfm-rich img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.pfm-rich img[data-align],
+.pfm-rich .node-image {
+  display: block;
+  max-width: 100%;
+}
+
+.pfm-rich img[data-align="center"],
+.pfm-rich .node-image[data-align="center"] {
+  margin: 1em auto;
+}
+
+/* Text wraps around images placed left or right. */
+.pfm-rich img[data-align="left"],
+.pfm-rich .node-image[data-align="left"] {
+  float: left;
+  margin: 0.35em 1.4em 0.8em 0;
+}
+
+.pfm-rich img[data-align="right"],
+.pfm-rich .node-image[data-align="right"] {
+  float: right;
+  margin: 0.35em 0 0.8em 1.4em;
+}
+
+/* Phones: no room for text next to an image, so images go full-flow. */
+@media (max-width: 560px) {
+  .pfm-rich img[data-align] {
+    float: none;
+    width: auto !important;
+    margin: 1em auto;
+  }
+}
+
+/* ---------- File attachments (PDF) ---------- */
+.pfm-rich .pfm-file {
+  clear: both;
+  margin: 1em 0;
+}
+
+.pfm-rich .pfm-file a {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+  padding: 0.75em 1em;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: #f8fafc;
+  color: #0f172a;
+  text-decoration: none;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+
+.pfm-rich .pfm-file a:hover {
+  border-color: #38bdf8;
+  background: #f0f9ff;
+}
+
+.pfm-rich .pfm-file-icon {
+  flex-shrink: 0;
+  padding: 0.35em 0.55em;
+  border-radius: 6px;
+  background: #dc2626;
+  color: #ffffff;
+  font-size: 0.72em;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.pfm-rich .pfm-file-name {
+  flex: 1;
+  min-width: 0;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.pfm-rich .pfm-file-size {
+  flex-shrink: 0;
+  color: #64748b;
+  font-size: 0.85em;
+}

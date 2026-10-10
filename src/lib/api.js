@@ -9,6 +9,10 @@ const API_BASE = import.meta.env.VITE_API_URL ?? "";
 const resolve = (url) =>
   API_BASE && url.startsWith("/api") ? `${API_BASE}${url}` : url;
 
+// Full URL for an API path stored in content, e.g. an uploaded image
+// ("/api/media/<id>"). Anything else is returned unchanged.
+export const apiUrl = (url) => (typeof url === "string" ? resolve(url) : url);
+
 const json = async (res) => {
   const body = await res.json().catch(() => ({}));
   if (!res.ok) {
@@ -33,6 +37,21 @@ export const apiPost = (url, data, { token } = {}) =>
     method: "POST",
     headers: headers(token, { "Content-Type": "application/json" }),
     body: data === undefined ? undefined : JSON.stringify(data),
+  }).then(json);
+
+export const apiPut = (url, data, { token } = {}) =>
+  fetch(resolve(url), {
+    method: "PUT",
+    headers: headers(token, { "Content-Type": "application/json" }),
+    body: JSON.stringify(data),
+  }).then(json);
+
+// Sends a File/Blob as the raw request body (see server/routes/media.js).
+export const apiUpload = (url, file, { token, name = file.name } = {}) =>
+  fetch(resolve(`${url}?name=${encodeURIComponent(name ?? "file")}`), {
+    method: "POST",
+    headers: headers(token, { "Content-Type": file.type }),
+    body: file,
   }).then(json);
 
 export const apiDelete = (url, { token } = {}) =>

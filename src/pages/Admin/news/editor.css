@@ -1,0 +1,407 @@
+/* src/pages/Admin/news/editor.css — admin article editor.
+   Article typography itself comes from ../../News/rich-content.css. */
+
+/* ---------- Article form layout ---------- */
+.pfm-article-form-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 8px 0 16px;
+}
+
+.pfm-article-form-head-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pfm-article-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .pfm-article-form {
+    grid-template-columns: minmax(0, 1fr) 300px;
+  }
+}
+
+.pfm-article-main {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.pfm-article-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pfm-article-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pfm-article-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.pfm-article-title-input.ant-input {
+  font-size: 1.35rem;
+  font-weight: 800;
+  padding: 10px 14px;
+}
+
+.pfm-article-cover-preview {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.pfm-article-cover-preview img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.pfm-article-cover-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.pfm-news-list-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 180px;
+}
+
+.pfm-news-list-thumb {
+  flex-shrink: 0;
+  width: 64px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.pfm-news-list-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.pfm-news-list-bar > :last-child {
+  margin-left: auto;
+}
+
+/* ---------- Editor shell ---------- */
+.pfm-editor {
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: #e2e8f0;
+}
+
+.pfm-editor-loading {
+  min-height: 640px;
+}
+
+/* Toolbar stays in view under the site navbar while the article scrolls. */
+.pfm-tb {
+  position: sticky;
+  top: 64px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 3px;
+  padding: 8px 10px;
+  border-radius: 13px 13px 0 0;
+  background: #0f1a2e;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.pfm-tb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+
+.pfm-tb-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.pfm-tb-btn.is-active {
+  background: #38bdf8;
+  color: #020617;
+}
+
+.pfm-tb-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.pfm-tb-caret {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.pfm-tb-color {
+  flex-direction: column;
+  gap: 1px;
+  font-size: 0.9rem;
+}
+
+.pfm-tb-color-bar {
+  width: 16px;
+  height: 3px;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+.pfm-tb-sep {
+  width: 1px;
+  height: 20px;
+  margin: 0 5px;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.pfm-tb-link {
+  display: flex;
+  gap: 8px;
+  width: min(420px, 80vw);
+}
+
+/* ---------- The page ---------- */
+.pfm-editor-body {
+  padding: 18px 12px;
+}
+
+.pfm-editor-page {
+  max-width: 820px;
+  min-height: 520px;
+  margin: 0 auto;
+  padding: 44px 56px 52px;
+  background: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.18);
+  outline: none;
+  caret-color: #0f172a;
+}
+
+@media (max-width: 767px) {
+  .pfm-editor-page {
+    padding: 28px 22px 34px;
+  }
+}
+
+.pfm-editor-foot {
+  padding: 6px 14px 8px;
+  border-radius: 0 0 13px 13px;
+  background: #0f1a2e;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8rem;
+  text-align: right;
+}
+
+/* Placeholder while the article is empty */
+.pfm-editor-page p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.pfm-editor-page ::selection {
+  background: rgba(56, 189, 248, 0.35);
+}
+
+/* ---------- Images in the editor ---------- */
+.pfm-editor-page .node-image {
+  position: relative;
+  width: fit-content;
+}
+
+.pfm-img {
+  position: relative;
+  line-height: 0;
+}
+
+.pfm-img img {
+  display: block;
+  width: 100%;
+  cursor: grab;
+}
+
+.pfm-img.is-selected img {
+  outline: 3px solid #38bdf8;
+  outline-offset: 0;
+}
+
+.pfm-img-bar-anchor {
+  position: sticky;
+  top: 160px; /* below the navbar + toolbar */
+  z-index: 5;
+  height: 0;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.pfm-img-bar-anchor.is-right {
+  justify-content: flex-end;
+}
+
+.pfm-img-bar {
+  flex-shrink: 0;
+  margin: 8px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  border-radius: 10px;
+  background: #0f1a2e;
+  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.35);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.pfm-img-bar button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 28px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.pfm-img-bar button svg {
+  pointer-events: none;
+}
+
+.pfm-img-bar button:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.pfm-img-bar button.is-active {
+  background: #38bdf8;
+  color: #020617;
+}
+
+.pfm-img-bar-sep {
+  width: 1px;
+  height: 18px;
+  margin: 0 3px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.pfm-img-handle {
+  position: absolute;
+  z-index: 4;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 1px 4px rgba(2, 6, 23, 0.4);
+  touch-action: none;
+}
+
+.pfm-img-handle-nw { top: -7px; left: -7px; cursor: nwse-resize; }
+.pfm-img-handle-ne { top: -7px; right: -7px; cursor: nesw-resize; }
+.pfm-img-handle-sw { bottom: -7px; left: -7px; cursor: nesw-resize; }
+.pfm-img-handle-se { bottom: -7px; right: -7px; cursor: nwse-resize; }
+
+/* ---------- Attached files in the editor ---------- */
+.pfm-editor-page .pfm-file {
+  cursor: grab;
+}
+
+.pfm-editor-page .pfm-file a {
+  pointer-events: none;
+}
+
+.pfm-editor-page .pfm-file.ProseMirror-selectednode a,
+.pfm-editor-page hr.ProseMirror-selectednode {
+  outline: 3px solid #38bdf8;
+}
+
+/* ---------- Tables in the editor ---------- */
+.pfm-editor-page .tableWrapper {
+  margin: 1em 0;
+  overflow-x: auto;
+}
+
+.pfm-editor-page .tableWrapper table {
+  margin: 0;
+}
+
+.pfm-editor-page .selectedCell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(56, 189, 248, 0.22);
+  pointer-events: none;
+}
+
+.pfm-editor-page .column-resize-handle {
+  position: absolute;
+  top: 0;
+  right: -2px;
+  bottom: -2px;
+  width: 4px;
+  background: #38bdf8;
+  pointer-events: none;
+}
+
+.pfm-editor-page.resize-cursor {
+  cursor: col-resize;
+}
+
+/* Cursor shown between blocks where no text cursor fits (e.g. after an image) */
+.pfm-editor-page .ProseMirror-gapcursor::after {
+  border-top-color: #0f172a;
+}
+
+.pfm-news-list-title button {
+  text-align: left;
+  cursor: pointer;
+}
+
+.pfm-news-list-title button:hover {
+  color: #38bdf8;
+}

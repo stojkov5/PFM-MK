@@ -99,6 +99,17 @@ trailing slash), or the frontend and API using keys from different Clerk instanc
   (use the Clerk **development** instance keys locally).
 - `DATABASE_URL` is required (use the Railway Postgres `DATABASE_PUBLIC_URL` in `.env`).
 
+## News articles
+- Admins write articles in `/admin` → **News**. The public pages are `/news` and
+  `/news/<slug>`.
+- Articles live in the `articles` table. Uploaded images and PDFs live in the `media`
+  table (max 15 MB per file) and are served by the API at `/api/media/<id>` — there is
+  no separate file storage to configure.
+- These two tables were added after the first deploy. Create them once with
+  `npm run db:push` (run it locally with the Railway `DATABASE_PUBLIC_URL` in `.env`)
+  **before** deploying the code that uses them. It only adds tables; existing data is
+  not touched.
+
 ## Database commands
 | Command | What it does |
 |---|---|

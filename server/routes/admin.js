@@ -2,6 +2,8 @@
 import { Router } from "express";
 import { requireAdmin } from "../middleware/requireAdmin.js";
 import { teamRouter } from "./team.js";
+import { adminNewsRouter } from "./adminNews.js";
+import { adminMediaRouter } from "./media.js";
 
 const STATUSES = ["pending", "approved", "denied"];
 
@@ -110,6 +112,8 @@ export const adminRouter = (db, auth, { allowedOrigins = [] } = {}) => {
   });
 
   router.use("/team", teamRouter(auth, { allowedOrigins }));
+  router.use("/news", adminNewsRouter(db));
+  router.use("/media", adminMediaRouter(db));
 
   return router;
 };

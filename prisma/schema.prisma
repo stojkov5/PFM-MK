@@ -41,3 +41,41 @@ model RecordApplication {
 
   @@map("record_applications")
 }
+
+model Article {
+  id          Int       @id @default(autoincrement())
+  // URL part of /news/<slug>, generated from the title.
+  slug        String    @unique
+  title       String
+  // One of ARTICLE_CATEGORIES in server/lib/news.js.
+  category    String
+  excerpt     String    @default("")
+  // Path of an uploaded image (/api/media/<id>), or null.
+  coverImage  String?   @map("cover_image")
+  // HTML produced by the admin panel's editor.
+  content     String    @default("")
+  status      String    @default("draft")
+  // Visible on the site once status is "published" and this date has passed.
+  publishedAt DateTime? @map("published_at") @db.Timestamptz()
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz()
+  // Clerk user id + display name of the admin who created it.
+  authorId    String?   @map("author_id")
+  authorName  String?   @map("author_name")
+
+  @@index([status, publishedAt])
+  @@map("articles")
+}
+
+// Images and PDFs uploaded from the article editor, served by /api/media/<id>.
+model Media {
+  id         String   @id
+  filename   String
+  mimeType   String   @map("mime_type")
+  size       Int
+  data       Bytes
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  uploaderId String?  @map("uploader_id")
+
+  @@map("media")
+}

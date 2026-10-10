@@ -1,0 +1,278 @@
+/* src/pages/News/News.css — news listing + single article */
+.pfm-articles {
+  padding: 142px 0 80px;
+  min-height: 80vh;
+}
+
+.pfm-articles-kicker {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+  font-weight: 800;
+}
+
+.pfm-articles-title {
+  margin-top: 10px;
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  font-weight: 900;
+  color: #ffffff;
+  text-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+}
+
+.pfm-articles-sub {
+  margin-top: 10px;
+  max-width: 76ch;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Category filter */
+.pfm-articles-filters {
+  margin-top: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pfm-articles-chip {
+  padding: 8px 16px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 800;
+  font-size: 0.86rem;
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+.pfm-articles-chip:hover {
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #ffffff;
+}
+
+.pfm-articles-chip.is-active {
+  background: #38bdf8;
+  border-color: #38bdf8;
+  color: #020617;
+}
+
+/* Grid of cards */
+.pfm-articles-grid {
+  margin-top: 26px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+@media (min-width: 640px) {
+  .pfm-articles-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .pfm-articles-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.pfm-articles-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 22px;
+  overflow: hidden;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.28);
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.pfm-articles-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(56, 189, 248, 0.32);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.pfm-articles-cover {
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(37, 99, 235, 0.22));
+  overflow: hidden;
+}
+
+.pfm-articles-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pfm-articles-cover-icon {
+  font-size: 3rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.pfm-articles-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  padding: 16px 18px 18px;
+}
+
+.pfm-articles-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pfm-articles-tag {
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background: rgba(56, 189, 248, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.pfm-articles-date {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.pfm-articles-card-title {
+  font-size: 1.08rem;
+  font-weight: 900;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.94);
+}
+
+.pfm-articles-excerpt {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.94rem;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pfm-articles-cta {
+  margin-top: auto;
+  padding-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(56, 189, 248, 0.92);
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+/* Loading / empty / error */
+.pfm-articles-state {
+  margin-top: 40px;
+  padding: 40px 20px;
+  border-radius: 22px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+}
+
+.pfm-articles-more-wrap {
+  margin-top: 26px;
+  text-align: center;
+}
+
+.pfm-articles-more {
+  margin-top: 12px;
+  padding: 10px 22px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 800;
+  cursor: pointer;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+
+.pfm-articles-more:hover:not(:disabled) {
+  border-color: rgba(56, 189, 248, 0.4);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.pfm-articles-more:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* ---------- Single article ---------- */
+.pfm-article-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.72);
+  font-weight: 800;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.pfm-article-back:hover {
+  color: #ffffff;
+}
+
+.pfm-article-head {
+  margin-top: 18px;
+}
+
+.pfm-article-head .pfm-articles-meta {
+  justify-content: flex-start;
+}
+
+.pfm-article-title {
+  margin-top: 14px;
+  font-size: clamp(1.7rem, 3.6vw, 2.5rem);
+  font-weight: 900;
+  line-height: 1.2;
+  color: #ffffff;
+  text-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+}
+
+/* The article body sits on a white sheet so it looks exactly like it did in
+   the editor (text colours, highlights, tables…). */
+.pfm-article-paper {
+  margin-top: 24px;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+}
+
+.pfm-article-cover {
+  display: block;
+  width: 100%;
+  max-height: 480px;
+  object-fit: cover;
+}
+
+.pfm-article-content {
+  padding: 28px 22px 34px;
+}
+
+@media (min-width: 768px) {
+  .pfm-article-content {
+    padding: 44px 56px 52px;
+  }
+}

@@ -1,16 +1,22 @@
 // src/pages/Admin/AdminPanel.jsx
-import React, { useState } from "react";
+import React, { Suspense, lazy, useState } from "react";
 import { UserButton } from "@clerk/react";
 import { useQuery } from "@tanstack/react-query";
-import { Badge, Tabs } from "antd";
-import { FiFileText, FiUsers } from "react-icons/fi";
+import { Badge, Spin, Tabs } from "antd";
+import { FiEdit3, FiFileText, FiUsers } from "react-icons/fi";
 import { useAdminApi } from "./useAdminApi.js";
 import ApplicationsTab from "./ApplicationsTab.jsx";
+import NewsTab from "./NewsTab.jsx";
 import TeamTab from "./TeamTab.jsx";
+
+// The article editor is big, so it's only downloaded when an article is opened.
+const ArticleEditor = lazy(() => import("./news/ArticleEditor.jsx"));
 
 const AdminPanel = ({ me }) => {
   const api = useAdminApi();
   const [tab, setTab] = useState("applications");
+  // undefined = the tabs; { id } = the article editor (id null = new article).
+  const [editing, setEditing] = useState();
 
   const counts = useQuery({
     queryKey: ["admin-application-counts"],
@@ -23,6 +29,24 @@ const AdminPanel = ({ me }) => {
       {count > 0 && <Badge count={count} size="small" />}
     </span>
   );
+
+  if (editing) {
+    return (
+      <Suspense
+        fallback={
+          <div className="pfm-admin-center">
+            <Spin size="large" />
+          </div>
+        }
+      >
+        <ArticleEditor
+          key={editing.id ?? "new"}
+          articleId={editing.id}
+          onClose={() => setEditing(undefined)}
+        />
+      </Suspense>
+    );
+  }
 
   return (
     <div className="pfm-admin-inner max-w-6xl mx-auto px-4 md:px-6">
@@ -42,6 +66,11 @@ const AdminPanel = ({ me }) => {
             key: "applications",
             label: tabLabel(<FiFileText />, "Record applications", counts.data?.pending),
             children: <ApplicationsTab counts={counts.data} />,
+          },
+          {
+            key: "news",
+            label: tabLabel(<FiEdit3 />, "News"),
+            children: <NewsTab onEdit={(id) => setEditing({ id })} />,
           },
           {
             key: "team",

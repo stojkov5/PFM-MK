@@ -119,24 +119,7 @@
       "date": "Date",
       "event": "Event",
       "type": "Type"
-    },
-    "news": [
-      {
-        "title": "National calendar published – Swimming (2026)",
-        "excerpt": "A preliminary calendar has been published with national competitions, categories and locations.",
-        "tag": "SWIMMING"
-      },
-      {
-        "title": "Criteria for selections and international appearances",
-        "excerpt": "Updated criteria for selection and conditions for competing at international events.",
-        "tag": "DOCUMENT"
-      },
-      {
-        "title": "Information about the Ohrid Swimming Marathon",
-        "excerpt": "Information is available for distances, registration, safety rules and protocol.",
-        "tag": "OPEN WATER"
-      }
-    ]
+    }
   },
   "homeAbout": {
     "kicker": "About the federation",
@@ -617,6 +600,32 @@
         "worldAquatics": "The international federation for aquatic sports.",
         "europeanAquatics": "The European federation for aquatic sports."
       }
+    }
+  },
+  "news": {
+    "kicker": "Federation",
+    "title": "News",
+    "subtitle": "Announcements, results and stories from swimming, water polo and distance swimming.",
+    "filterLabel": "Filter by category",
+    "all": "All",
+    "categories": {
+      "swimming": "Swimming",
+      "waterpolo": "Waterpolo",
+      "distance-swimming": "Distance swimming",
+      "other": "Other"
+    },
+    "loading": "Loading…",
+    "empty": "No news has been published yet.",
+    "emptyCategory": "There is no news in this category yet.",
+    "error": "The news couldn't be loaded.",
+    "retry": "Try again",
+    "loadMore": "Load more",
+    "readMore": "Read more",
+    "back": "All news",
+    "notFound": "This article doesn't exist or is no longer available.",
+    "distance": {
+      "title": "Distance swimming news",
+      "subtitle": "Open water announcements, results and stories."
     }
   }
 }

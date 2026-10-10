@@ -3,40 +3,22 @@ import { Row, Col, Button, Table, Tag } from "antd";
 import { FiArrowRight, FiCalendar, FiBell } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useQuery } from "@tanstack/react-query";
+import { apiGet } from "../../lib/api.js";
+import { categoryLabelKey, formatNewsDate } from "../../lib/news.js";
 import Reveal from "../../components/fx/Reveal.jsx";
 import "./HomeHighlights.css";
 
 const HomeHighlights = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
-  // ✅ Dummy data (replace later with API)
-  const news = [
-    {
-      id: 1,
-      title: t("homeHighlights.news.0.title"),
-      excerpt: t("homeHighlights.news.0.excerpt"),
-      date: "12.01.2026",
-      tag: t("homeHighlights.news.0.tag"),
-      link: "/news",
-    },
-    {
-      id: 2,
-      title: t("homeHighlights.news.1.title"),
-      excerpt: t("homeHighlights.news.1.excerpt"),
-      date: "08.01.2026",
-      tag: t("homeHighlights.news.1.tag"),
-      link: "/swimming/criteria",
-    },
-    {
-      id: 3,
-      title: t("homeHighlights.news.2.title"),
-      excerpt: t("homeHighlights.news.2.excerpt"),
-      date: "04.01.2026",
-      tag: t("homeHighlights.news.2.tag"),
-      link: "/distance-swimming/ohrid-marathon",
-    },
-  ];
+  // The three most recent published articles.
+  const latest = useQuery({
+    queryKey: ["news", "latest"],
+    queryFn: () => apiGet("/api/news?limit=3"),
+  });
+  const news = latest.data?.items ?? [];
 
   const columns = [
     {
@@ -87,16 +69,27 @@ const HomeHighlights = () => {
               </div>
 
               <div className="pfm-news-grid">
+                {news.length === 0 && (
+                  <p className="pfm-news-excerpt">
+                    {latest.isPending
+                      ? t("news.loading")
+                      : latest.isError
+                        ? t("news.error")
+                        : t("news.empty")}
+                  </p>
+                )}
                 {news.map((n) => (
                   <button
                     key={n.id}
                     type="button"
                     className="pfm-news-item"
-                    onClick={() => navigate(n.link)}
+                    onClick={() => navigate(`/news/${n.slug}`)}
                   >
                     <div className="pfm-news-top">
-                      <span className="pfm-news-tag">{n.tag}</span>
-                      <span className="pfm-news-date">{n.date}</span>
+                      <span className="pfm-news-tag">{t(categoryLabelKey(n.category))}</span>
+                      <span className="pfm-news-date">
+                        {formatNewsDate(n.publishedAt, i18n.resolvedLanguage)}
+                      </span>
                     </div>
 
                     <div className="pfm-news-title">{n.title}</div>

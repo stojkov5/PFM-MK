@@ -1,19 +1,16 @@
-import Reveal from "../../components/fx/Reveal.jsx";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import News from "../News/News.jsx";
 
+// The news listing, limited to the distance swimming category.
 const DistanceSwimmingNews = () => {
+  const { t } = useTranslation();
   return (
-    <div className="pfm-cal pt-24">
-      <div className="pfm-landing-inner max-w-6xl mx-auto px-4 md:px-6">
-        <Reveal>
-          <h1 className="pfm-cal-title text-3xl font-bold mb-4">
-            Distance Swimming News
-          </h1>
-          <p className="pfm-cal-description mb-8 text-center text-gray-600">
-            Нема Податоци / No data
-          </p>
-        </Reveal>
-      </div>
-    </div>
+    <News
+      category="distance-swimming"
+      title={t("news.distance.title")}
+      subtitle={t("news.distance.subtitle")}
+    />
   );
 };
 
