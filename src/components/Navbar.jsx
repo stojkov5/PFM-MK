@@ -17,6 +17,8 @@ import { TiWaves } from "react-icons/ti";
 import { PiHandshake } from "react-icons/pi";
 import { useTranslation } from "react-i18next";
 
+import NavAccount from "./NavAccount.jsx";
+import { CLERK_PUBLISHABLE_KEY } from "../lib/clerk.js";
 import "./Navbar.css";
 
 const LANGUAGES = [
@@ -216,6 +218,8 @@ const Navbar = () => {
           </nav>
 
           <LanguageSwitch className="pfm-lang-desktop" />
+
+          {CLERK_PUBLISHABLE_KEY && <NavAccount />}
 
           {/* Mobile burger */}
           <button

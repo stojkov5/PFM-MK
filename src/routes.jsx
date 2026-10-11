@@ -87,8 +87,8 @@ export const router = createBrowserRouter([
         element: <DistanceSwimmingNews />,
       },
 
-      // ADMIN (not linked from navigation). Lazy so Clerk + the admin UI are
-      // only downloaded when someone opens /admin.
+      // ADMIN (admins get a link in the navbar's account menu). Lazy so the
+      // admin UI is only downloaded when someone opens /admin.
       {
         path: "admin/*",
         lazy: async () => ({

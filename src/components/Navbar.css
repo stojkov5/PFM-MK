@@ -311,6 +311,58 @@
 }
 
 /* ===== MOBILE ===== */
+/* ---------- Account button (sign in / avatar) ---------- */
+
+.pfm-nav-account {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* On phones it sits right next to the burger. */
+.pfm-nav-account + .pfm-nav-burger {
+  margin-left: -16px;
+}
+
+@media (min-width: 1024px) {
+  /* The links already push everything to the right. */
+  .pfm-nav-account {
+    margin-left: -10px;
+  }
+}
+
+.pfm-nav-account-btn {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.86);
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  cursor: pointer;
+  transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+}
+
+.pfm-nav-account-btn:hover {
+  color: #ffffff;
+  border-color: var(--nav-accent);
+  background: rgba(56, 189, 248, 0.12);
+}
+
+.pfm-nav-account-btn:focus-visible {
+  outline: 2px solid var(--nav-accent);
+  outline-offset: 2px;
+}
+
 .pfm-nav-burger {
   margin-left: auto;
   width: 42px;

@@ -35,7 +35,9 @@
       "openMenu": "Отвори мени",
       "goHome": "Оди на почетна",
       "changeLanguage": "Промени јазик",
-      "language": "Јазик"
+      "language": "Јазик",
+      "signIn": "Најава или регистрација",
+      "adminPanel": "Админ панел"
     },
     "sports": {
       "swimming": {

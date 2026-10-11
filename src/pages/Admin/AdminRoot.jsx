@@ -1,31 +1,16 @@
 // src/pages/Admin/AdminRoot.jsx
-// Entry point for /admin. Loaded lazily (see routes.jsx) so Clerk is only
-// downloaded by people who actually open the admin panel.
+// Entry point for /admin. Loaded lazily (see routes.jsx) so the admin UI is
+// only downloaded by people who open it. The Clerk session comes from the
+// provider in layout/AppLayout.jsx, shared with the navbar's account button.
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { ClerkProvider, SignIn, SignUp, SignOutButton, useAuth, useUser } from "@clerk/react";
+import { useLocation } from "react-router-dom";
+import { SignIn, SignUp, SignOutButton, useAuth, useUser } from "@clerk/react";
 import { useQuery } from "@tanstack/react-query";
 import { App as AntApp, Button, ConfigProvider, Result, Spin, theme } from "antd";
 import { useAdminApi } from "./useAdminApi.js";
 import AdminPanel from "./AdminPanel.jsx";
+import { CLERK_PUBLISHABLE_KEY } from "../../lib/clerk.js";
 import "./admin.css";
-
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
-
-// Matches the site's dark navy + sky-blue look.
-const clerkAppearance = {
-  variables: {
-    colorPrimary: "#38bdf8",
-    colorPrimaryForeground: "#020617",
-    colorBackground: "#0b1324",
-    colorForeground: "#e2e8f0",
-    colorMutedForeground: "#94a3b8",
-    colorInput: "#0f1a2e",
-    colorInputForeground: "#f1f5f9",
-    colorNeutral: "#cbd5e1",
-    borderRadius: "12px",
-  },
-};
 
 const antTheme = {
   algorithm: theme.darkAlgorithm,
@@ -110,22 +95,12 @@ const AdminGate = () => {
 };
 
 const AdminRoot = () => {
-  const navigate = useNavigate();
-
   return (
     <ConfigProvider theme={antTheme}>
       <AntApp>
         <div className="pfm-admin pt-24">
-          {PUBLISHABLE_KEY ? (
-            <ClerkProvider
-              publishableKey={PUBLISHABLE_KEY}
-              appearance={clerkAppearance}
-              afterSignOutUrl="/admin"
-              routerPush={(to) => navigate(to)}
-              routerReplace={(to) => navigate(to, { replace: true })}
-            >
-              <AdminGate />
-            </ClerkProvider>
+          {CLERK_PUBLISHABLE_KEY ? (
+            <AdminGate />
           ) : (
             <Centered>
               <Result
