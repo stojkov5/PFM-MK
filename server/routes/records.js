@@ -1,5 +1,6 @@
 // server/routes/records.js
 import { Router } from "express";
+import { buildXlsx } from "../lib/xlsx.js";
 
 const validParams = (q) =>
   (q.pool === "25" || q.pool === "50") &&
@@ -10,6 +11,12 @@ const fetchRows = (db, q) =>
     where: { pool: q.pool, gender: q.gender },
     orderBy: [{ sortOrder: "asc" }, { id: "asc" }],
   });
+
+// Column headers of the Excel export, per site language.
+const EXPORT_HEADERS = {
+  en: { category: "Category", discipline: "Discipline", time: "Time", athlete: "Athlete", female: "Women", male: "Men" },
+  mk: { category: "Категорија", discipline: "Дисциплина", time: "Време", athlete: "Спортист", female: "Жени", male: "Мажи" },
+};
 
 export const recordsRouter = (db) => {
   const router = Router();
@@ -23,6 +30,33 @@ export const recordsRouter = (db) => {
       byCategory.get(r.category).push({ discipline: r.discipline, time: r.time, athlete: r.athlete });
     }
     res.json([...byCategory.entries()].map(([name, records]) => ({ name, records })));
+  });
+
+  // The list for one pool + gender as an .xlsx download.
+  router.get("/export", async (req, res) => {
+    if (!validParams(req.query)) return res.status(400).json({ error: "Invalid pool or gender" });
+    const rows = await fetchRows(db, req.query);
+    const h = EXPORT_HEADERS[req.query.lang] ?? EXPORT_HEADERS.en;
+    const { pool, gender } = req.query;
+
+    const file = buildXlsx({
+      sheetName: `${pool}m ${h[gender]}`,
+      columns: [
+        { header: h.category, width: 22 },
+        { header: h.discipline, width: 28 },
+        { header: h.time, width: 12 },
+        { header: h.athlete, width: 34 },
+      ],
+      rows: rows.map((r) => [r.category, r.discipline, r.time, r.athlete]),
+    });
+
+    res
+      .set({
+        "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "Content-Disposition": `attachment; filename="national-records-${pool}m-${gender === "female" ? "women" : "men"}.xlsx"`,
+        "Cache-Control": "no-store",
+      })
+      .send(file);
   });
 
   router.get("/options", async (req, res) => {

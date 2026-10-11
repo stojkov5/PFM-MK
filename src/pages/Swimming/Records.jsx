@@ -1,421 +1,202 @@
-import React, { useMemo, useState } from "react";
-import { Row, Col, Segmented, Collapse, Tag, Empty, Skeleton, Alert, Button } from "antd";
-import { FiFileText, FiSearch } from "react-icons/fi";
+import React, { useState } from "react";
+import { ConfigProvider, Modal } from "antd";
+import { FiDownload, FiPlus } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
-import { apiGet } from "../../lib/api.js";
+import { apiGet, apiUrl } from "../../lib/api.js";
+import { antDarkTheme } from "../../lib/antDarkTheme.js";
 import Reveal from "../../components/fx/Reveal.jsx";
+import RecordApplicationForm from "./RecordApplicationForm.jsx";
 import "./Records.css";
 
-const FALLBACK_CATEGORIES = [
-  "Seniors",
-  "Juniors",
-  "Cadets",
-  "Pioneers",
-];
+const POOLS = ["25", "50"];
+const GENDERS = ["female", "male"];
 
-const getCategoryName = (category, t) => {
-  if (typeof category === "string") return category;
+// Pill switch between a few options (pool length, gender).
+const Switch = ({ label, options, value, onChange }) => (
+  <div className="pfm-rec-switch" role="group" aria-label={label}>
+    {options.map((option) => (
+      <button
+        key={option.value}
+        type="button"
+        className={`pfm-rec-switch-btn ${option.value === value ? "is-active" : ""}`}
+        aria-pressed={option.value === value}
+        onClick={() => onChange(option.value)}
+      >
+        {option.label}
+      </button>
+    ))}
+  </div>
+);
 
-  if (category?.name) return category.name;
-  if (category?.title) return category.title;
-  if (category?.category) return category.category;
+const CategoryRow = ({ category, index, open, onToggle }) => {
+  const { t } = useTranslation();
+  const panelId = `pfm-rec-panel-${index}`;
 
-  return t("records.defaultCategory", "Category");
-};
+  return (
+    <li className={`pfm-rec-row ${open ? "is-open" : ""}`} style={{ "--i": index }}>
+      <button
+        type="button"
+        className="pfm-rec-toggle"
+        aria-expanded={open}
+        aria-controls={panelId}
+        onClick={onToggle}
+      >
+        <span className="pfm-rec-num">{String(index + 1).padStart(2, "0")}</span>
+        <span className="pfm-rec-name">{category.name}</span>
+        <span className="pfm-rec-count">
+          {t("records.count", { count: category.records.length })}
+        </span>
+        <span className="pfm-rec-icon">
+          <FiPlus />
+        </span>
+      </button>
 
-const getCategoryRecords = (category) => {
-  if (!category) return [];
-
-  if (Array.isArray(category.records)) return category.records;
-  if (Array.isArray(category.items)) return category.items;
-  if (Array.isArray(category.disciplines)) return category.disciplines;
-
-  return [];
-};
-
-const getRecordDiscipline = (record) =>
-  record?.discipline ||
-  record?.event ||
-  record?.name ||
-  record?.title ||
-  "-";
-
-const getRecordTime = (record) =>
-  record?.time ||
-  record?.result ||
-  record?.mark ||
-  "-";
-
-const getRecordAthlete = (record) =>
-  record?.athlete ||
-  record?.swimmer ||
-  record?.nameAthlete ||
-  record?.holder ||
-  "-";
-
-const getRecordClub = (record) =>
-  record?.club ||
-  record?.team ||
-  record?.organization ||
-  "";
-
-const getRecordDate = (record) =>
-  record?.date ||
-  record?.recordDate ||
-  "";
-
-const getRecordPlace = (record) =>
-  record?.place ||
-  record?.city ||
-  record?.competition ||
-  "";
-
-const normalizeData = (rawData, t) => {
-  if (!rawData) return [];
-
-  if (Array.isArray(rawData)) {
-    const looksLikeCategoryArray = rawData.some(
-      (item) =>
-        item?.records ||
-        item?.items ||
-        item?.disciplines ||
-        item?.name ||
-        item?.title ||
-        item?.category
-    );
-
-    if (looksLikeCategoryArray) {
-      return rawData.map((category, index) => ({
-        id: category?.id || category?.slug || `${getCategoryName(category, t)}-${index}`,
-        name: getCategoryName(category, t),
-        records: getCategoryRecords(category),
-      }));
-    }
-
-    return [
-      {
-        id: "all-records",
-        name: t("records.allRecords", "All Records"),
-        records: rawData,
-      },
-    ];
-  }
-
-  if (Array.isArray(rawData.categories)) {
-    return rawData.categories.map((category, index) => ({
-      id: category?.id || category?.slug || `${getCategoryName(category, t)}-${index}`,
-      name: getCategoryName(category, t),
-      records: getCategoryRecords(category),
-    }));
-  }
-
-  if (rawData.records && Array.isArray(rawData.records)) {
-    return [
-      {
-        id: "all-records",
-        name: rawData?.title || t("records.allRecords", "All Records"),
-        records: rawData.records,
-      },
-    ];
-  }
-
-  return [];
+      <div className="pfm-rec-panel" id={panelId} role="region" aria-hidden={!open}>
+        <div className="pfm-rec-panel-inner">
+          {category.records.length === 0 ? (
+            <p className="pfm-rec-none">{t("records.noCategoryRecords")}</p>
+          ) : (
+            <table className="pfm-rec-table">
+              <thead>
+                <tr>
+                  <th scope="col">{t("records.fields.discipline")}</th>
+                  <th scope="col">{t("records.fields.time")}</th>
+                  <th scope="col">{t("records.fields.athlete")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {category.records.map((record) => (
+                  <tr key={record.discipline}>
+                    <th scope="row" className="pfm-rec-discipline">
+                      {record.discipline}
+                    </th>
+                    <td className="pfm-rec-time">{record.time || "—"}</td>
+                    <td className="pfm-rec-athlete">{record.athlete || "—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      </div>
+    </li>
+  );
 };
 
 const Records = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [pool, setPool] = useState("25");
   const [gender, setGender] = useState("female");
+  // Name of the expanded category; undefined = the first one, null = none.
+  const [openName, setOpenName] = useState(undefined);
+  const [applying, setApplying] = useState(false);
 
-  const {
-    data: rawData,
-    isLoading,
-    isError,
-    refetch,
-  } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["records", pool, gender],
     queryFn: () => apiGet(`/api/records?pool=${pool}&gender=${gender}`),
   });
 
-  const categories = useMemo(() => normalizeData(rawData, t), [rawData, t]);
+  const categories = Array.isArray(data) ? data : [];
+  const activeName = openName === undefined ? categories[0]?.name : openName;
 
-  const currentMeta = useMemo(() => {
-    const genderLabel =
-      gender === "female"
-        ? t("records.controls.female", "Women")
-        : t("records.controls.male", "Men");
-
-    return {
-      title: `${genderLabel} · ${pool}m`,
-      subtitle: t(
-        "records.subtitle",
-        "National swimming records grouped by category and discipline."
-      ),
-      tags: [
-        `${pool}m`,
-        genderLabel,
-        pool === "25"
-          ? t("records.tags.shortCourse", "Short Course")
-          : t("records.tags.longCourse", "Long Course"),
-      ],
-    };
-  }, [gender, pool, t]);
-
-  const totalRecords = useMemo(() => {
-    return categories.reduce((sum, category) => sum + category.records.length, 0);
-  }, [categories]);
-
-  const collapseItems = categories.map((category, index) => ({
-    key: category.id || `category-${index}`,
-    label: `${category.name} (${category.records.length})`,
-    children: (
-      <div className="grid gap-3">
-        {category.records.length === 0 ? (
-          <div className="pfm-note">
-            {t("records.noCategoryRecords", "No records in this category.")}
-          </div>
-        ) : (
-          category.records.map((record, recordIndex) => (
-            <div
-              key={`${category.id}-${getRecordDiscipline(record)}-${recordIndex}`}
-              className="pfm-highlight"
-            >
-              <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                <div className="flex-1">
-                  <div className="pfm-highlight-label">
-                    {getRecordDiscipline(record)}
-                  </div>
-                  <div className="pfm-highlight-value">
-                    {getRecordTime(record)}
-                  </div>
-                </div>
-
-                <div className="flex-1">
-                  <div className="pfm-highlight-label">
-                    {t("records.fields.athlete", "Athlete")}
-                  </div>
-                  <div className="pfm-highlight-value">
-                    {getRecordAthlete(record)}
-                  </div>
-                </div>
-              </div>
-
-              {(getRecordClub(record) ||
-                getRecordDate(record) ||
-                getRecordPlace(record)) && (
-                <div className="mt-3 grid gap-2 md:grid-cols-3">
-                  {getRecordClub(record) && (
-                    <div>
-                      <div className="pfm-highlight-label">
-                        {t("records.fields.club", "Club")}
-                      </div>
-                      <div className="pfm-note">
-                        {getRecordClub(record)}
-                      </div>
-                    </div>
-                  )}
-
-                  {getRecordDate(record) && (
-                    <div>
-                      <div className="pfm-highlight-label">
-                        {t("records.fields.date", "Date")}
-                      </div>
-                      <div className="pfm-note">
-                        {getRecordDate(record)}
-                      </div>
-                    </div>
-                  )}
-
-                  {getRecordPlace(record) && (
-                    <div>
-                      <div className="pfm-highlight-label">
-                        {t("records.fields.place", "Place")}
-                      </div>
-                      <div className="pfm-note">
-                        {getRecordPlace(record)}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          ))
-        )}
-      </div>
-    ),
-  }));
+  const lang = (i18n.resolvedLanguage || i18n.language) === "mk" ? "mk" : "en";
+  const exportUrl = apiUrl(`/api/records/export?pool=${pool}&gender=${gender}&lang=${lang}`);
 
   return (
-    <div className="pfm-records pt-24">
+    <div className="pfm-rec pt-24">
       <div className="pfm-landing-inner max-w-6xl mx-auto px-4 md:px-6">
         <Reveal>
-        <div className="pfm-records-head">
-          <div className="pfm-records-kicker">
-            {t("records.kicker", "Swimming Records")}
+          <header className="pfm-rec-head">
+            <div className="pfm-rec-kicker">{t("records.kicker")}</div>
+            <h2 className="pfm-rec-title">{t("records.title")}</h2>
+            <p className="pfm-rec-sub">{t("records.subtitle")}</p>
+          </header>
+
+          <div className="pfm-rec-bar">
+            <div className="pfm-rec-filters">
+              <Switch
+                label={t("records.controls.pool")}
+                value={pool}
+                onChange={setPool}
+                options={POOLS.map((value) => ({ value, label: `${value}m` }))}
+              />
+              <Switch
+                label={t("records.controls.gender")}
+                value={gender}
+                onChange={setGender}
+                options={GENDERS.map((value) => ({
+                  value,
+                  label: t(`records.controls.${value}`),
+                }))}
+              />
+            </div>
+
+            <div className="pfm-rec-actions">
+              <a className="pfm-rec-btn" href={exportUrl} target="_blank" rel="noopener noreferrer">
+                <FiDownload /> {t("records.actions.excel")}
+              </a>
+              <button
+                type="button"
+                className="pfm-rec-btn is-primary"
+                onClick={() => setApplying(true)}
+              >
+                <FiPlus /> {t("records.actions.add")}
+              </button>
+            </div>
           </div>
-
-          <h2 className="pfm-records-title">
-            {t("records.title", "National Records")}
-          </h2>
-
-          <div className="pfm-records-sub">
-
-          </div>
-        </div>
         </Reveal>
 
-        <div className="pfm-records-controls pb-3">
-          <div className="pfm-control">
-            <div className="pfm-control-label">
-              {t("records.controls.pool", "Pool")}
-            </div>
-
-            <Segmented
-              options={[
-                { label: "25m", value: "25" },
-                { label: "50m", value: "50" },
-              ]}
-              value={pool}
-              onChange={setPool}
-            />
+        {isLoading ? (
+          <div className="pfm-rec-state" aria-busy="true">
+            {t("records.loading")}
           </div>
-
-          <div className="pfm-control">
-            <div className="pfm-control-label">
-              {t("records.controls.gender", "Gender")}
-            </div>
-
-            <Segmented
-              options={[
-                {
-                  label: t("records.controls.female", "Women"),
-                  value: "female",
-                },
-                {
-                  label: t("records.controls.male", "Men"),
-                  value: "male",
-                },
-              ]}
-              value={gender}
-              onChange={setGender}
-            />
+        ) : isError ? (
+          <div className="pfm-rec-state">
+            <p>{t("records.loadError")}</p>
+            <button type="button" className="pfm-rec-btn" onClick={() => refetch()}>
+              {t("records.retry")}
+            </button>
           </div>
-        </div>
-
-        {isLoading && <Skeleton active paragraph={{ rows: 8 }} />}
-
-        {isError && (
-          <Alert
-            type="error"
-            showIcon
-            message={t("records.loadError", "Could not load records.")}
-            action={
-              <Button size="small" onClick={() => refetch()}>
-                {t("records.retry", "Retry")}
-              </Button>
-            }
-          />
-        )}
-
-        {!isLoading && !isError && (
-        <Reveal delay={0.1}>
-        <Row gutter={[16, 16]} align="stretch">
-          <Col span={24}>
-            <div className="pfm-doc-card">
-              <div className="pfm-doc-top">
-                <div className="pfm-doc-ico">
-                  <FiFileText />
-                </div>
-
-                <div className="pfm-doc-meta">
-                  <div className="pfm-doc-title">{currentMeta.title}</div>
-                  <div className="pfm-doc-sub">{currentMeta.subtitle}</div>
-                </div>
-              </div>
-
-              <div className="pfm-doc-tags">
-                {currentMeta.tags.map((tag) => (
-                  <Tag key={tag} className="pfm-doc-tag">
-                    {tag}
-                  </Tag>
-                ))}
-              </div>
-
-              <div className="pfm-highlights">
-                <div className="pfm-highlights-title">
-                  {t("records.overviewTitle")}
-                </div>
-
-                <div className="pfm-highlights-grid">
-                  <div className="pfm-highlight">
-                    <div className="pfm-highlight-label">
-                      {t("records.summary.categories", "Categories")}
-                    </div>
-                    <div className="pfm-highlight-value">
-                      {categories.length || FALLBACK_CATEGORIES.length}
-                    </div>
-                  </div>
-
-                  <div className="pfm-highlight">
-                    <div className="pfm-highlight-label">
-                      {t("records.summary.records", "Records")}
-                    </div>
-                    <div className="pfm-highlight-value">{totalRecords}</div>
-                  </div>
-
-                  <div className="pfm-highlight">
-                    <div className="pfm-highlight-label">
-                      {t("records.summary.selection", "Selection")}
-                    </div>
-                    <div className="pfm-highlight-value">
-                      {gender === "female"
-                        ? t("records.controls.female", "Women")
-                        : t("records.controls.male", "Men")}{" "}
-                      / {pool}m
-                    </div>
-                  </div>
-                </div>
-
-                
-              </div>
-            </div>
-          </Col>
-
-          <Col span={24}>
-            <div className="pfm-pdf-card">
-              <div className="pfm-pdf-top">
-                <div className="pfm-pdf-top-title">
-                  {t("records.table.list")}
-                </div>
-                
-              </div>
-
-              <div className="p-4 md:p-5">
-                {categories.length === 0 ? (
-                  <Empty
-                    image={Empty.PRESENTED_IMAGE_SIMPLE}
-                    description={t(
-                      "records.empty",
-                      "No records yet. Add the JSON data files and the records will appear here."
-                    )}
-                  />
-                ) : (
-                  <Collapse
-                    className="pfm-collapse pfm-record-list"
-                    bordered={false}
-                    defaultActiveKey={categories[0]?.id ? [categories[0].id] : []}
-                    items={collapseItems}
-                  />
-                )}
-              </div>
-            </div>
-          </Col>
-        </Row>
-        </Reveal>
+        ) : categories.length === 0 ? (
+          <div className="pfm-rec-state">{t("records.empty")}</div>
+        ) : (
+          // Keyed by the selection so the rows replay their entrance when it changes.
+          <ol className="pfm-rec-list" key={`${pool}-${gender}`}>
+            {categories.map((category, index) => (
+              <CategoryRow
+                key={category.name}
+                category={category}
+                index={index}
+                open={activeName === category.name}
+                onToggle={() =>
+                  setOpenName(activeName === category.name ? null : category.name)
+                }
+              />
+            ))}
+          </ol>
         )}
       </div>
+
+      <ConfigProvider theme={antDarkTheme}>
+        <Modal
+          open={applying}
+          onCancel={() => setApplying(false)}
+          title={t("records.apply.title")}
+          footer={null}
+          width={680}
+          destroyOnHidden
+          className="pfm-rec-modal"
+        >
+          <p className="pfm-rec-modal-intro">{t("records.apply.intro")}</p>
+          <RecordApplicationForm
+            initialPool={pool}
+            initialGender={gender}
+            onClose={() => setApplying(false)}
+          />
+        </Modal>
+      </ConfigProvider>
     </div>
   );
 };

@@ -16,6 +16,8 @@ const good = {
   category: "Seniors (17+)",
   discipline: "50m Freestyle",
   time: "0:25.99",
+  competition: "National Championship",
+  location: "Skopje",
   proofUrl: "https://results.example.com/1",
 };
 
@@ -29,6 +31,15 @@ describe("POST /api/applications", () => {
     });
     expect(row.status).toBe("pending");
     expect(row.firstName).toBe("Ana");
+    expect(row.competition).toBe("National Championship");
+    expect(row.location).toBe("Skopje");
+  });
+  it("requires the competition and its location", async () => {
+    const res = await request(app)
+      .post("/api/applications")
+      .send({ ...good, competition: " ", location: undefined });
+    expect(res.status).toBe(400);
+    expect(res.body.errors).toEqual(expect.arrayContaining(["competition", "location"]));
   });
   it("rejects invalid payloads", async () => {
     const res = await request(app).post("/api/applications").send({ ...good, time: "fast" });

@@ -73,12 +73,16 @@ const ApplicationsTab = ({ counts }) => {
         ),
     },
     {
-      title: "Proof",
-      key: "proof",
+      title: "Competition",
+      key: "competition",
       render: (_, a) => (
-        <a href={a.proofUrl} target="_blank" rel="noopener noreferrer" className="pfm-admin-link">
-          Results <FiExternalLink />
-        </a>
+        <div>
+          {a.competition && <div className="pfm-admin-strong">{a.competition}</div>}
+          {a.location && <div className="pfm-admin-dim">{a.location}</div>}
+          <a href={a.proofUrl} target="_blank" rel="noopener noreferrer" className="pfm-admin-link">
+            Results <FiExternalLink />
+          </a>
+        </div>
       ),
     },
     {

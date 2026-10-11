@@ -24,6 +24,8 @@ export const validateApplication = (body = {}) => {
   const lastName = text(body.lastName);
   const category = text(body.category, 200);
   const discipline = text(body.discipline, 200);
+  const competition = text(body.competition, 200);
+  const location = text(body.location, 200);
   if (!firstName) errors.push("firstName");
   if (!lastName) errors.push("lastName");
   if (body.gender !== "male" && body.gender !== "female") errors.push("gender");
@@ -31,6 +33,8 @@ export const validateApplication = (body = {}) => {
   if (!category) errors.push("category");
   if (!discipline) errors.push("discipline");
   if (!isValidTime(body.time)) errors.push("time");
+  if (!competition) errors.push("competition");
+  if (!location) errors.push("location");
   if (!isValidProofUrl(body.proofUrl)) errors.push("proofUrl");
   if (errors.length > 0) return { ok: false, errors };
   return {
@@ -43,6 +47,8 @@ export const validateApplication = (body = {}) => {
       category,
       discipline,
       time: body.time,
+      competition,
+      location,
       proofUrl: body.proofUrl,
     },
   };

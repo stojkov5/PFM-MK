@@ -34,3 +34,27 @@ describe("GET /api/records/options", () => {
     expect(res.body.disciplines["Juniors (15/16)"]).toEqual(["50m Freestyle"]);
   });
 });
+
+describe("GET /api/records/export", () => {
+  const binary = (res, cb) => {
+    const chunks = [];
+    res.on("data", (c) => chunks.push(c));
+    res.on("end", () => cb(null, Buffer.concat(chunks)));
+  };
+
+  it("downloads the list as an .xlsx file", async () => {
+    const res = await request(app)
+      .get("/api/records/export?pool=25&gender=female")
+      .buffer()
+      .parse(binary);
+    expect(res.status).toBe(200);
+    expect(res.headers["content-type"]).toContain("spreadsheetml.sheet");
+    expect(res.headers["content-disposition"]).toContain("national-records-25m-women.xlsx");
+    // An .xlsx file is a ZIP archive: "PK" signature, end record at the tail.
+    expect(res.body.subarray(0, 4)).toEqual(Buffer.from([0x50, 0x4b, 0x03, 0x04]));
+    expect(res.body.readUInt32LE(res.body.length - 22)).toBe(0x06054b50);
+  });
+  it("rejects bad params", async () => {
+    expect((await request(app).get("/api/records/export?pool=33&gender=female")).status).toBe(400);
+  });
+});

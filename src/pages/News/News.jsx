@@ -43,8 +43,10 @@ export const ArticleCard = ({ article }) => {
 /**
  * The news listing. Pass `category` to lock it to one category (used by the
  * distance swimming section); otherwise visitors can filter with the chips.
+ * `embedded` drops the page-level spacing and kicker so the listing can sit
+ * inside another page (used by the swimming landing page).
  */
-const News = ({ category: fixedCategory, title, subtitle }) => {
+const News = ({ category: fixedCategory, title, subtitle, embedded = false }) => {
   const { t } = useTranslation();
   const [params, setParams] = useSearchParams();
 
@@ -65,15 +67,16 @@ const News = ({ category: fixedCategory, title, subtitle }) => {
   });
 
   const articles = news.data?.pages.flatMap((p) => p.items) ?? [];
+  const Heading = embedded ? "h2" : "h1";
 
   return (
-    <section className="pfm-articles">
+    <section className={`pfm-articles ${embedded ? "is-embedded" : ""}`}>
       <div className="max-w-6xl mx-auto px-4 md:px-6">
         <Reveal>
-          <span className="pfm-articles-kicker">{t("news.kicker")}</span>
-          <h1 className="pfm-articles-title pfm-lane-underline pfm-lane-underline-left">
+          {!embedded && <span className="pfm-articles-kicker">{t("news.kicker")}</span>}
+          <Heading className="pfm-articles-title pfm-lane-underline pfm-lane-underline-left">
             {title ?? t("news.title")}
-          </h1>
+          </Heading>
           <p className="pfm-articles-sub">{subtitle ?? t("news.subtitle")}</p>
         </Reveal>
 

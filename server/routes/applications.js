@@ -29,6 +29,8 @@ export const applicationsRouter = (db) => {
         category: d.category,
         discipline: d.discipline,
         time: d.time,
+        competition: d.competition,
+        location: d.location,
         proofUrl: d.proofUrl,
       },
       select: { id: true },

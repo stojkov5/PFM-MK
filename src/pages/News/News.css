@@ -4,6 +4,17 @@
   min-height: 80vh;
 }
 
+/* Inside another page (e.g. the swimming landing page) */
+.pfm-articles.is-embedded {
+  padding: 0;
+  min-height: 0;
+}
+
+.pfm-articles.is-embedded .pfm-articles-title {
+  margin-top: 0;
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+}
+
 .pfm-articles-kicker {
   font-size: 0.7rem;
   letter-spacing: 0.18em;

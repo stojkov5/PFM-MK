@@ -247,45 +247,34 @@
     }
   },
   "records": {
-    "overviewTitle": "Overview",
     "kicker": "Records",
     "title": "National Records",
+    "subtitle": "The official Macedonian swimming records. Pick the pool length and gender, then open an age category to see every discipline.",
+    "loading": "Loading records…",
     "loadError": "Could not load records.",
     "retry": "Retry",
-    "intro": {
-      "list": {
-        "0": "All disciplines by age category",
-        "1": "Record holders and results",
-        "2": "Event breakdown per category",
-        "3": "The full official list (source of truth)"
-      },
-      "p2": "The highlights below are just a quick overview — always refer to the PDFs for the complete and official data."
-    },
+    "empty": "No records have been published for this selection yet.",
+    "noCategoryRecords": "No records in this category.",
+    "count_one": "{{count}} record",
+    "count_other": "{{count}} records",
     "controls": {
       "pool": "Pool",
       "gender": "Gender",
-      "female": "Female",
-      "male": "Male"
+      "female": "Women",
+      "male": "Men"
     },
-    "preview": {
-      "title": "PDF Preview",
-      "sub": "Use zoom and scroll inside the frame. If it doesn't load, open the PDF directly."
+    "fields": {
+      "discipline": "Discipline",
+      "time": "Time",
+      "athlete": "Athlete"
     },
-    "tags": {
-      "25m": "25m",
-      "50m": "50m",
-      "female": "Female",
-      "male": "Male",
-      "shortCourse": "Short course",
-      "longCourse": "Long course"
+    "actions": {
+      "excel": "Excel",
+      "add": "Add record"
     },
-    "summary": {
-      "categories": "Categories",
-      "records": "Records",
-      "selection": "Selection"
-    },
-    "table": {
-      "list": "Record List"
+    "apply": {
+      "title": "Apply for a new record",
+      "intro": "Fill in the result and where it was swum. The federation checks every application; the list is updated only after it is approved."
     }
   },
   "criteria": {
@@ -372,6 +361,17 @@
       "subtitle": "Official information about clubs, calendars, records, and criteria under the authority of the Swimming Federation."
     },
     "open": "Open",
+    "subnav": {
+      "label": "Swimming sections",
+      "latest": "Latest",
+      "calendar": "Calendar",
+      "records": "Records",
+      "criteria": "Criteria"
+    },
+    "latest": {
+      "title": "Latest from swimming",
+      "subtitle": "News, results and announcements from Macedonian swimming."
+    },
     "cards": {
       "clubs": {
         "title": "Clubs",
@@ -416,13 +416,17 @@
       "disciplinePlaceholder": "Select discipline",
       "time": "New record (time)",
       "timeHint": "Format: minutes:seconds.hundredths, e.g. 0:26.34",
+      "competition": "Name of the competition",
+      "location": "Location of the competition",
+      "locationPlaceholder": "City, country",
       "proofUrl": "Link to competition results"
     },
     "submit": "Submit application",
     "success": {
       "title": "Application submitted",
       "text": "The federation will review your application. If approved, the record list is updated.",
-      "another": "Submit another"
+      "another": "Submit another",
+      "close": "Close"
     },
     "errors": {
       "required": "This field is required",

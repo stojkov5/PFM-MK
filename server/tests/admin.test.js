@@ -13,6 +13,8 @@ const application = {
   category: "Seniors (17+)",
   discipline: "50m Freestyle",
   time: "0:25.99",
+  competition: "National Championship",
+  location: "Skopje",
   proofUrl: "https://results.example.com/1",
 };
 

@@ -37,6 +37,8 @@ describe("validateApplication", () => {
     category: "Seniors (17+)",
     discipline: "50m Freestyle",
     time: "0:25.99",
+    competition: "National Championship",
+    location: "Skopje",
     proofUrl: "https://results.example.com/1",
   };
   it("passes a valid application", () => {
@@ -55,5 +57,7 @@ describe("validateApplication", () => {
     expect(validateApplication({ ...good, firstName: "x".repeat(101) }).ok).toBe(false);
     expect(validateApplication({ ...good, time: "fast" }).ok).toBe(false);
     expect(validateApplication({ ...good, proofUrl: "nope" }).ok).toBe(false);
+    expect(validateApplication({ ...good, competition: "" }).ok).toBe(false);
+    expect(validateApplication({ ...good, location: "x".repeat(201) }).ok).toBe(false);
   });
 });

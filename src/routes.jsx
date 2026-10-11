@@ -8,6 +8,7 @@ import AppLayout from "./layout/AppLayout.jsx";
 import HomePage from "./pages/Home/HomePage.jsx";
 
 import SwimmingLayout from "./pages/Swimming/SwimmingLayout.jsx";
+import SwimmingHome from "./pages/Swimming/SwimmingHome.jsx";
 import SwimmingCalendarNational from "./pages/Swimming/CalendarNational.jsx";
 import SwimmingCalendarInternational from "./pages/Swimming/CalendarInternational.jsx";
 import SwimmingRecords from "./pages/Swimming/Records.jsx";
@@ -41,21 +42,21 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
 
-      // SWIMMING
-      { path: "swimming", element: <SwimmingLayout /> },
-      // Old clubs URL, kept so existing links still land on /clubs.
-      { path: "swimming/clubs", loader: () => redirect("/clubs") },
+      // SWIMMING — every page renders under the shared hero + section bar
       {
-        path: "swimming/calendar-national",
-        element: <SwimmingCalendarNational />,
+        path: "swimming",
+        element: <SwimmingLayout />,
+        children: [
+          { index: true, element: <SwimmingHome /> },
+          { path: "calendar-national", element: <SwimmingCalendarNational /> },
+          { path: "calendar-international", element: <SwimmingCalendarInternational /> },
+          { path: "records", element: <SwimmingRecords /> },
+          { path: "criteria", element: <SwimmingCriteria /> },
+          { path: "record-application", element: <RecordApplication /> },
+          // Old clubs URL, kept so existing links still land on /clubs.
+          { path: "clubs", loader: () => redirect("/clubs") },
+        ],
       },
-      {
-        path: "swimming/calendar-international",
-        element: <SwimmingCalendarInternational />,
-      },
-      { path: "swimming/records", element: <SwimmingRecords /> },
-      { path: "swimming/criteria", element: <SwimmingCriteria /> },
-      { path: "swimming/record-application", element: <RecordApplication /> },
 
       // WATERPOLO
       { path: "waterpolo", element: <WaterpoloHome /> },

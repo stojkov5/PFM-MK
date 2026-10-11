@@ -1,0 +1,93 @@
+/* src/pages/Swimming/SwimmingSubnav.css — section bar under the swimming hero */
+.pfm-subnav {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  min-height: var(--subnav-h, 62px);
+  padding: 0 10px;
+  border-radius: 18px;
+  background: rgba(2, 6, 23, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(16px);
+}
+
+.pfm-subnav > * {
+  flex: 1;
+}
+
+.pfm-subnav-link {
+  position: relative;
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 14px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+  transition: color 160ms ease;
+}
+
+/* Water-coloured underline, same as the main navbar links */
+.pfm-subnav-link::after {
+  content: "";
+  position: absolute;
+  left: 22%;
+  right: 22%;
+  bottom: 12px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #38bdf8, #2563eb);
+  transform: scaleX(0);
+  transition: transform 200ms ease;
+}
+
+.pfm-subnav-link:hover,
+.pfm-subnav-link.is-active {
+  color: #ffffff;
+}
+
+.pfm-subnav-link:hover::after,
+.pfm-subnav-link.is-active::after {
+  transform: scaleX(1);
+}
+
+.pfm-subnav-link:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: -4px;
+  border-radius: 12px;
+}
+
+/* Phones: two links per row instead of one long line */
+@media (max-width: 640px) {
+  .pfm-subnav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 6px;
+  }
+
+  .pfm-subnav-link {
+    min-height: 46px;
+    padding: 0 8px;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    white-space: normal;
+  }
+
+  .pfm-subnav-link::after {
+    bottom: 7px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pfm-subnav-link,
+  .pfm-subnav-link::after {
+    transition: none;
+  }
+}

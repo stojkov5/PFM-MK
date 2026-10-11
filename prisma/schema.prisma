@@ -31,6 +31,9 @@ model RecordApplication {
   category     String
   discipline   String
   time         String
+  // Where the record was swum, and the link to the official results.
+  competition  String    @default("")
+  location     String    @default("")
   proofUrl     String    @map("proof_url")
   status       String    @default("pending")
   createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz()
