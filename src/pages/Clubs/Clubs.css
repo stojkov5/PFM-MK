@@ -1,0 +1,432 @@
+.pfm-clubs {
+  --clubs-accent: #38bdf8;
+  --clubs-line: rgba(255, 255, 255, 0.1);
+  --clubs-muted: rgba(255, 255, 255, 0.58);
+  padding-bottom: 96px;
+}
+
+/* Header */
+.pfm-clubs-head {
+  max-width: 70ch;
+}
+
+.pfm-clubs-kicker {
+  display: inline-flex;
+  padding: 7px 12px;
+  border-radius: 9999px;
+  background: rgba(56, 189, 248, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+.pfm-clubs-title {
+  margin: 14px 0 0;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-size: clamp(2.1rem, 5vw, 3.6rem);
+  text-wrap: balance;
+}
+
+.pfm-clubs-sub {
+  margin-top: 14px;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.7;
+  font-size: 1.02rem;
+}
+
+/* Toolbar: list switch on the left, filters on the right */
+.pfm-clubs-bar {
+  margin-top: 34px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pfm-clubs-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 5px;
+  border-radius: 9999px;
+  background: rgba(2, 6, 23, 0.55);
+  border: 1px solid var(--clubs-line);
+}
+
+.pfm-clubs-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px 10px 12px;
+  border: 0;
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--clubs-muted);
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease;
+}
+
+.pfm-clubs-tab:hover {
+  color: #ffffff;
+}
+
+.pfm-clubs-tab.is-active {
+  background: var(--clubs-accent);
+  color: #04101f;
+}
+
+.pfm-clubs-tab:focus-visible,
+.pfm-club-toggle:focus-visible {
+  outline: 2px solid var(--clubs-accent);
+  outline-offset: 3px;
+}
+
+.pfm-clubs-tab-icon {
+  display: flex;
+  font-size: 1.25rem;
+}
+
+.pfm-clubs-tab-count {
+  min-width: 26px;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 0.78rem;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.pfm-clubs-tab.is-active .pfm-clubs-tab-count {
+  background: rgba(4, 16, 31, 0.18);
+}
+
+.pfm-clubs-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex: 1 1 320px;
+  justify-content: flex-end;
+}
+
+.pfm-clubs-search,
+.pfm-clubs-select {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 46px;
+  border-radius: 9999px;
+  background: rgba(2, 6, 23, 0.55);
+  border: 1px solid var(--clubs-line);
+  color: var(--clubs-muted);
+  transition: border-color 160ms ease;
+}
+
+.pfm-clubs-search:focus-within,
+.pfm-clubs-select:focus-within {
+  border-color: var(--clubs-accent);
+}
+
+.pfm-clubs-search {
+  flex: 1 1 220px;
+  max-width: 360px;
+  gap: 10px;
+  padding: 0 16px;
+}
+
+.pfm-clubs-search svg {
+  flex: none;
+}
+
+.pfm-clubs-search input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  background: none;
+  border: 0;
+  outline: 0;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.pfm-clubs-search input::placeholder {
+  color: rgba(255, 255, 255, 0.42);
+  font-weight: 500;
+}
+
+.pfm-clubs-select select {
+  appearance: none;
+  height: 100%;
+  padding: 0 40px 0 18px;
+  background: none;
+  border: 0;
+  outline: 0;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color-scheme: dark;
+}
+
+.pfm-clubs-select svg {
+  position: absolute;
+  right: 14px;
+  pointer-events: none;
+}
+
+/* The list: full-width rows divided by hairlines */
+.pfm-club-list {
+  list-style: none;
+  margin: 26px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--clubs-line);
+}
+
+.pfm-club-row {
+  position: relative;
+  border-bottom: 1px solid var(--clubs-line);
+  animation: pfm-club-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(min(var(--i), 14) * 28ms);
+}
+
+@keyframes pfm-club-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+/* Accent bar that grows in on the open row */
+.pfm-club-row::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--clubs-accent);
+  transform: scaleY(0);
+  transition: transform 220ms ease;
+}
+
+.pfm-club-row.is-open::before {
+  transform: scaleY(1);
+}
+
+.pfm-club-row.is-open {
+  background: linear-gradient(90deg, rgba(56, 189, 248, 0.09), rgba(56, 189, 248, 0) 70%);
+}
+
+.pfm-club-toggle {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 22px 12px 22px 18px;
+  background: none;
+  border: 0;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+
+.pfm-club-num {
+  color: var(--clubs-accent);
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.8;
+}
+
+.pfm-club-name {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 800;
+  font-size: clamp(1.05rem, 2vw, 1.45rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+  transition: transform 220ms ease, color 160ms ease;
+}
+
+.pfm-club-toggle:hover .pfm-club-name,
+.pfm-club-row.is-open .pfm-club-name {
+  color: #ffffff;
+  transform: translateX(6px);
+}
+
+.pfm-club-icon {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.05rem;
+  transition: transform 240ms ease, background 160ms ease, color 160ms ease,
+    border-color 160ms ease;
+}
+
+.pfm-club-toggle:hover .pfm-club-icon {
+  border-color: var(--clubs-accent);
+  color: #ffffff;
+}
+
+.pfm-club-row.is-open .pfm-club-icon {
+  transform: rotate(45deg);
+  background: var(--clubs-accent);
+  border-color: var(--clubs-accent);
+  color: #04101f;
+}
+
+/* Collapsed to 0fr, expanded to 1fr, so the height animates without JS. */
+.pfm-club-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows 260ms ease, visibility 0s linear 260ms;
+}
+
+.pfm-club-row.is-open .pfm-club-panel {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition: grid-template-rows 260ms ease, visibility 0s;
+}
+
+.pfm-club-panel-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.pfm-club-details {
+  margin: 0;
+  padding: 4px 12px 30px 90px;
+  display: grid;
+  gap: 22px 28px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.pfm-club-detail {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.pfm-club-detail-icon {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  color: var(--clubs-accent);
+}
+
+.pfm-club-detail-text {
+  min-width: 0;
+}
+
+.pfm-club-detail dt {
+  color: var(--clubs-muted);
+  font-weight: 800;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.pfm-club-detail dd {
+  margin: 3px 0 0;
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 600;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.pfm-club-detail dd a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(56, 189, 248, 0.5);
+  text-underline-offset: 3px;
+}
+
+.pfm-club-detail dd a:hover {
+  color: var(--clubs-accent);
+}
+
+.pfm-clubs-empty {
+  margin: 26px 0 0;
+  padding: 48px 0;
+  border-top: 1px solid var(--clubs-line);
+  border-bottom: 1px solid var(--clubs-line);
+  color: var(--clubs-muted);
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .pfm-club-details {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pfm-clubs-filters {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 600px) {
+  .pfm-clubs-tabs {
+    width: 100%;
+  }
+
+  .pfm-clubs-tab {
+    flex: 1;
+    justify-content: center;
+    padding: 10px 8px;
+    gap: 6px;
+    font-size: 0.85rem;
+  }
+
+  .pfm-clubs-tab-icon {
+    display: none;
+  }
+
+  .pfm-clubs-search {
+    max-width: none;
+  }
+
+  .pfm-club-toggle {
+    grid-template-columns: 40px minmax(0, 1fr) auto;
+    padding: 18px 6px 18px 12px;
+  }
+
+  .pfm-club-details {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 2px 6px 24px 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pfm-club-row,
+  .pfm-club-row::before,
+  .pfm-club-panel,
+  .pfm-club-row.is-open .pfm-club-panel,
+  .pfm-club-name,
+  .pfm-club-icon {
+    animation: none;
+    transition: none;
+  }
+}

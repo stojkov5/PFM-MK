@@ -17,7 +17,7 @@ const HomeAbout = () => {
       icon: <FiUsers />,
       value: t("homeAbout.stats.0.value"),
       label: t("homeAbout.stats.0.label"),
-      to: "/swimming/clubs",
+      to: "/clubs",
     },
     {
       icon: <FiAward />,

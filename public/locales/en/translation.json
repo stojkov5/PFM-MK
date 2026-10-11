@@ -12,7 +12,7 @@
       "distanceSwimming": "DISTANCE SWIMMING",
       "sports": "SPORTS",
       "calendar": "CALENDAR",
-      "about": "ABOUT US"
+      "more": "MORE"
     },
     "swimming": {
       "home": "Swimming",
@@ -51,7 +51,7 @@
         "desc": "Open-water calendar and the Ohrid marathon"
       }
     },
-    "about": {
+    "more": {
       "about": {
         "title": "About us",
         "desc": "Who we are and what we do"
@@ -63,6 +63,10 @@
       "partners": {
         "title": "Partners",
         "desc": "Memberships, partners and sponsors"
+      },
+      "clubs": {
+        "title": "Clubs",
+        "desc": "Registered clubs and contact details"
       }
     }
   },
@@ -191,9 +195,14 @@
     "dash": "—"
   },
   "clubs": {
-    "kicker": "Swimming Clubs",
+    "kicker": "Clubs",
     "title": "Registered Clubs",
-    "subtitle": "Browse the officially registered clubs, search by name or contact details, and filter them by city.",
+    "subtitle": "Browse the officially registered clubs, search by name or contact details, and filter them by city. Switch between swimming and water polo clubs, and click a club to see its details.",
+    "groups": {
+      "swimming": "Swimming clubs",
+      "waterpolo": "Water polo clubs"
+    },
+    "empty": "No clubs match your search.",
     "searchPlaceholder": "Search by club, city, president, email, phone...",
     "allCities": "All cities",
     "total": "Total:",
@@ -203,7 +212,8 @@
       "type": "Type",
       "address": "Address",
       "phone": "Phone",
-      "president": "President"
+      "president": "President",
+      "email": "Email"
     },
     "note": "The list is shown from a separate data file so the component stays clean and easier to maintain."
   },

@@ -10,6 +10,7 @@ import {
   FiArrowRight,
   FiInfo,
   FiGitBranch,
+  FiUsers,
 } from "react-icons/fi";
 import { TbSwimming, TbWaterpolo } from "react-icons/tb";
 import { TiWaves } from "react-icons/ti";
@@ -93,17 +94,18 @@ const Navbar = () => {
       { key: "news", label: t("navbar.items.news"), path: "/news" },
       { key: "calendar", label: t("navbar.items.calendar"), path: "/calendar" },
       {
-        key: "about",
-        label: t("navbar.items.about"),
-        match: ["/about"],
+        key: "more",
+        label: t("navbar.items.more"),
+        match: ["/about", "/clubs"],
         items: [
           { key: "about", path: "/about", icon: <FiInfo /> },
           { key: "structure", path: "/about/structure", icon: <FiGitBranch /> },
           { key: "partners", path: "/about/partners", icon: <PiHandshake /> },
+          { key: "clubs", path: "/clubs", icon: <FiUsers /> },
         ].map((i) => ({
           ...i,
-          label: t(`navbar.about.${i.key}.title`),
-          desc: t(`navbar.about.${i.key}.desc`),
+          label: t(`navbar.more.${i.key}.title`),
+          desc: t(`navbar.more.${i.key}.desc`),
         })),
       },
     ],

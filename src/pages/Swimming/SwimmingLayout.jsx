@@ -14,7 +14,7 @@ const SwimmingLayout = () => {
   const { t } = useTranslation();
 
   const cards = [
-    { to: "/swimming/clubs", key: "clubs", icon: <FiUsers /> },
+    { to: "/clubs", key: "clubs", icon: <FiUsers /> },
     { to: "/swimming/calendar-national", key: "calendarNational", icon: <FiCalendar /> },
     { to: "/swimming/calendar-international", key: "calendarInternational", icon: <FiGlobe /> },
     { to: "/swimming/criteria", key: "criteria", icon: <FiFileText /> },

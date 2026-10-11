@@ -1,6 +1,6 @@
 // src/routes.jsx
 import React from "react";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, redirect } from "react-router-dom";
 
 import AppLayout from "./layout/AppLayout.jsx";
 
@@ -8,7 +8,6 @@ import AppLayout from "./layout/AppLayout.jsx";
 import HomePage from "./pages/Home/HomePage.jsx";
 
 import SwimmingLayout from "./pages/Swimming/SwimmingLayout.jsx";
-import Clubs from "./pages/Swimming/Clubs.jsx";
 import SwimmingCalendarNational from "./pages/Swimming/CalendarNational.jsx";
 import SwimmingCalendarInternational from "./pages/Swimming/CalendarInternational.jsx";
 import SwimmingRecords from "./pages/Swimming/Records.jsx";
@@ -30,6 +29,7 @@ import DistanceSwimmingNews from "./pages/DistanceSwimming/DistanceSwimmingNews.
 import News from "./pages/News/News.jsx";
 import NewsArticle from "./pages/News/NewsArticle.jsx";
 import CalendarHub from "./pages/Calendar/CalendarHub.jsx";
+import Clubs from "./pages/Clubs/Clubs.jsx";
 import AboutPage from "./pages/About/AboutPage.jsx";
 import StructurePage from "./pages/About/StructurePage.jsx";
 import PartnersPage from "./pages/About/PartnersPage.jsx";
@@ -43,7 +43,8 @@ export const router = createBrowserRouter([
 
       // SWIMMING
       { path: "swimming", element: <SwimmingLayout /> },
-      { path: "swimming/clubs", element: <Clubs /> },
+      // Old clubs URL, kept so existing links still land on /clubs.
+      { path: "swimming/clubs", loader: () => redirect("/clubs") },
       {
         path: "swimming/calendar-national",
         element: <SwimmingCalendarNational />,
@@ -103,6 +104,8 @@ export const router = createBrowserRouter([
       { path: "about", element: <AboutPage /> },
       { path: "about/structure", element: <StructurePage /> },
       { path: "about/partners", element: <PartnersPage /> },
+      // CLUBS (swimming + water polo)
+      { path: "clubs", element: <Clubs /> },
       // DOCUMENTS
       { path: "documents", element: <Documents /> }
     ],
