@@ -602,13 +602,13 @@
     "partners": {
       "kicker": "About us",
       "title": "Partners",
-      "subtitle": "The international federations we are part of, and the partners who support aquatic sports in Macedonia.",
-      "memberships": "Member of",
-      "sponsors": "Partners & sponsors",
-      "empty": "The list of partners and sponsors will be published here soon.",
+      "subtitle": "The international federations we are part of, and the institutions that support aquatic sports in Macedonia.",
       "items": {
-        "worldAquatics": "The international federation for aquatic sports.",
-        "europeanAquatics": "The European federation for aquatic sports."
+        "worldAquatics": "World Aquatics",
+        "europeanAquatics": "European Aquatics",
+        "olympicCommittee": "Olympic Committee of North Macedonia",
+        "ministryOfSport": "Ministry of Sport",
+        "sportsFederationsUnion": "Union of Sports Federations of Macedonia"
       }
     }
   },

@@ -1,34 +1,67 @@
 // src/pages/About/PartnersPage.jsx
-// Membership in the international federations, plus a section for
-// partners/sponsors — add entries to PARTNERS as they are confirmed.
+// Logo grid of the federations and institutions we work with. Logos live in
+// public/Partners — add an entry to PARTNERS for every new file.
 import React from "react";
-import { FiGlobe, FiExternalLink } from "react-icons/fi";
-import { PiHandshake } from "react-icons/pi";
 import { useTranslation } from "react-i18next";
 import Reveal from "../../components/fx/Reveal.jsx";
 import AboutHero from "./AboutHero.jsx";
 
-const MEMBERSHIPS = [
-  { key: "worldAquatics", name: "World Aquatics", url: "https://www.worldaquatics.com" },
-  { key: "europeanAquatics", name: "European Aquatics", url: "https://www.europeanaquatics.org" },
+// Files with their own solid background fill the whole tile (`fit: "cover"`);
+// the rest sit centred on `bg`. `zoom` evens out how much empty margin each
+// file has around the logo.
+const PARTNERS = [
+  {
+    key: "worldAquatics",
+    file: "Svetska Plivacka federacija copy.png",
+    bg: "#110e09",
+    zoom: 1.1,
+    url: "https://www.worldaquatics.com",
+  },
+  {
+    key: "europeanAquatics",
+    file: "European Aquatics copy.jpg",
+    bg: "#ffffff",
+    fit: "cover",
+    url: "https://www.europeanaquatics.org",
+  },
+  { key: "olympicCommittee", file: "Olimiski Komitet copy.png", bg: "#ffffff", zoom: 0.72 },
+  {
+    key: "ministryOfSport",
+    file: "Ministerstvo za Sport copy.jpg",
+    bg: "#01b7c4",
+    fit: "cover",
+    zoom: 1.35,
+  },
+  {
+    key: "sportsFederationsUnion",
+    file: "Sojus na sportski federacii copy.jpg",
+    bg: "#ffffff",
+    fit: "cover",
+  },
 ];
 
-// Example entry: { name: "Company", url: "https://...", logo: "/partners/company.png" }
-const PARTNERS = [];
+const PartnerTile = ({ partner, name }) => {
+  const Tag = partner.url ? "a" : "div";
+  const linkProps = partner.url
+    ? { href: partner.url, target: "_blank", rel: "noopener noreferrer", title: name }
+    : {};
 
-const PartnerCard = ({ name, desc, url, logo, icon }) => (
-  <a className="pfm-partner" href={url} target="_blank" rel="noopener noreferrer">
-    <span className="pfm-partner-logo">
-      {logo ? <img src={logo} alt={name} /> : icon}
-    </span>
-    <span className="pfm-partner-text">
-      <span className="pfm-partner-name">
-        {name} <FiExternalLink />
+  return (
+    <Tag className="pfm-partner" {...linkProps}>
+      <span className="pfm-partner-logo" style={{ background: partner.bg }}>
+        <img
+          src={`/Partners/${encodeURIComponent(partner.file)}`}
+          alt={name}
+          loading="lazy"
+          style={{
+            objectFit: partner.fit ?? "contain",
+            transform: partner.zoom ? `scale(${partner.zoom})` : undefined,
+          }}
+        />
       </span>
-      {desc && <span className="pfm-partner-desc">{desc}</span>}
-    </span>
-  </a>
-);
+    </Tag>
+  );
+};
 
 const PartnersPage = () => {
   const { t } = useTranslation();
@@ -40,34 +73,13 @@ const PartnersPage = () => {
       subtitle={t("about.partners.subtitle")}
     >
       <Reveal>
-        <h2 className="pfm-hub-group-title">{t("about.partners.memberships")}</h2>
-        <div className="pfm-partner-grid">
-          {MEMBERSHIPS.map((m) => (
-            <PartnerCard
-              key={m.key}
-              name={m.name}
-              url={m.url}
-              icon={<FiGlobe />}
-              desc={t(`about.partners.items.${m.key}`)}
-            />
+        <ul className="pfm-partner-grid">
+          {PARTNERS.map((partner) => (
+            <li key={partner.key}>
+              <PartnerTile partner={partner} name={t(`about.partners.items.${partner.key}`)} />
+            </li>
           ))}
-        </div>
-      </Reveal>
-
-      <Reveal delay={0.08}>
-        <h2 className="pfm-hub-group-title">{t("about.partners.sponsors")}</h2>
-        {PARTNERS.length ? (
-          <div className="pfm-partner-grid">
-            {PARTNERS.map((p) => (
-              <PartnerCard key={p.name} {...p} icon={<PiHandshake />} />
-            ))}
-          </div>
-        ) : (
-          <div className="pfm-aboutpg-panel pfm-aboutpg-empty">
-            <PiHandshake />
-            <p>{t("about.partners.empty")}</p>
-          </div>
-        )}
+        </ul>
       </Reveal>
     </AboutHero>
   );
