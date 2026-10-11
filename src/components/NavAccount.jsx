@@ -4,6 +4,7 @@
 // account, sign out), plus an "Admin panel" link for admins.
 // Only rendered when Clerk is configured (see Navbar.jsx).
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { SignInButton, UserButton, useAuth, useUser } from "@clerk/react";
 import { FiShield, FiUser } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
@@ -15,6 +16,7 @@ const NavAccount = () => {
   const { t } = useTranslation();
   const { isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
+  const navigate = useNavigate();
 
   let content = null; // empty circle while Clerk loads, so the navbar doesn't shift
   if (isLoaded && !isSignedIn) {
@@ -34,10 +36,12 @@ const NavAccount = () => {
     content = (
       <UserButton appearance={avatarAppearance}>
         <UserButton.MenuItems>
-          <UserButton.Link
+          {/* An action with our own router call, not UserButton.Link: Clerk's
+              link navigation did nothing on the deployed site. */}
+          <UserButton.Action
             label={t("navbar.actions.adminPanel")}
             labelIcon={<FiShield />}
-            href="/admin"
+            onClick={() => navigate("/admin")}
           />
         </UserButton.MenuItems>
       </UserButton>
