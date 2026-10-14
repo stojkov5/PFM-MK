@@ -1,0 +1,519 @@
+/* src/pages/About/structure.css — organisational chart + descriptions */
+
+/* Box colours follow the official PDF, tuned for the dark page. */
+.tone-assembly { --org-bg: #fb6178; --org-ink: #22040c; }
+.tone-governance { --org-bg: #5ccbbd; --org-ink: #03211d; }
+.tone-executive { --org-bg: #6dcff6; --org-ink: #031b28; }
+.tone-vps { --org-bg: #c4b5fd; --org-ink: #1b1036; }
+.tone-expertRow { --org-bg: #fde047; --org-ink: #241d00; }
+.tone-commissions { --org-bg: #e2e8f0; --org-ink: #0f172a; }
+.tone-other { --org-bg: #eaa98d; --org-ink: #2b1006; }
+
+/* ---- toolbar ---------------------------------------------------------- */
+.pfm-org-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+}
+
+.pfm-org-hint {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.pfm-org-hint-wide {
+  display: none;
+}
+
+/* ---- layout ----------------------------------------------------------- */
+.pfm-org-layout {
+  margin-top: 18px;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 1280px) {
+  .pfm-org-layout {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    align-items: start;
+  }
+}
+
+@media (min-width: 1440px) {
+  .pfm-org-layout {
+    grid-template-columns: minmax(0, 1fr) 360px;
+  }
+}
+
+.pfm-org-chart,
+.pfm-org-toc {
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+}
+
+.pfm-org-chart {
+  padding: 18px 14px;
+  background:
+    radial-gradient(700px 360px at 50% 0%, rgba(56, 189, 248, 0.1), transparent 70%),
+    rgba(255, 255, 255, 0.04);
+}
+
+.pfm-org-chart-wide {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .pfm-org-chart {
+    padding: 22px 18px 18px;
+  }
+
+  .pfm-org-chart-wide {
+    display: block;
+  }
+
+  .pfm-org-chart-narrow,
+  .pfm-org-hint-narrow {
+    display: none;
+  }
+
+  .pfm-org-hint-wide {
+    display: inline;
+  }
+}
+
+/* ---- SVG chart -------------------------------------------------------- */
+.pfm-org-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: inherit;
+  user-select: none;
+}
+
+.pfm-org-lines path {
+  fill: none;
+  stroke: rgba(148, 197, 255, 0.4);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.pfm-org-node {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 200ms ease,
+    filter 200ms ease;
+  outline: none;
+}
+
+.pfm-org-node.is-linked {
+  cursor: pointer;
+}
+
+.pfm-org-box {
+  fill: var(--org-bg);
+  stroke: transparent;
+  stroke-width: 3;
+  transition: stroke 160ms ease;
+}
+
+.pfm-org-node.is-hover {
+  transform: scale(1.08);
+  filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.5));
+}
+
+/* Fade the rest of the chart while one box is highlighted. */
+.pfm-org-svg:has(.is-hover) .pfm-org-node:not(.is-hover) {
+  opacity: 0.5;
+}
+
+.pfm-org-node.is-active .pfm-org-box {
+  stroke: #ffffff;
+}
+
+.pfm-org-node:focus-visible .pfm-org-box {
+  stroke: #ffffff;
+  stroke-dasharray: 7 5;
+}
+
+.pfm-org-title {
+  font-weight: 800;
+  fill: var(--org-ink);
+}
+
+.pfm-org-sub {
+  font-weight: 500;
+  fill: var(--org-ink);
+  opacity: 0.78;
+}
+
+.pfm-org-badge circle {
+  fill: #0b1220;
+  stroke: rgba(255, 255, 255, 0.28);
+  stroke-width: 1.5;
+}
+
+.pfm-org-badge svg {
+  color: var(--org-bg);
+}
+
+.pfm-org-photo-ring {
+  fill: #0b1220;
+  stroke: var(--org-bg);
+  stroke-width: 3;
+}
+
+/* Legend under the chart */
+.pfm-org-legend {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 14px 4px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 18px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.pfm-org-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.pfm-org-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  background: var(--org-bg);
+}
+
+/* ---- stacked tiers (phones / portrait tablets) ------------------------- */
+.pfm-org-tiers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 26px;
+}
+
+.pfm-org-tier {
+  position: relative;
+}
+
+.pfm-org-tier + .pfm-org-tier::before {
+  content: "";
+  position: absolute;
+  top: -26px;
+  left: 50%;
+  width: 2px;
+  height: 26px;
+  transform: translateX(-1px);
+  background: rgba(148, 197, 255, 0.4);
+}
+
+.pfm-org-tier-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.pfm-org-tier-label::before {
+  content: "";
+  flex-shrink: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  background: var(--org-bg);
+}
+
+.pfm-org-tier-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 520px) {
+  .pfm-org-tier-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .pfm-org-tier-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.pfm-org-tier.tone-assembly .pfm-org-tier-grid {
+  grid-template-columns: minmax(0, 360px);
+  justify-content: center;
+}
+
+.pfm-org-card {
+  border-radius: 16px;
+  background: var(--org-bg);
+  color: var(--org-ink);
+  box-shadow: 0 10px 24px -14px rgba(0, 0, 0, 0.7);
+  transition: transform 180ms ease;
+}
+
+.pfm-org-card.is-open {
+  grid-column: 1 / -1;
+}
+
+.pfm-org-card-head {
+  width: 100%;
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  text-align: left;
+  color: inherit;
+  border-radius: 16px;
+}
+
+button.pfm-org-card-head {
+  cursor: pointer;
+}
+
+button.pfm-org-card-head:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.pfm-org-card:has(button.pfm-org-card-head:active) {
+  transform: scale(0.98);
+}
+
+.pfm-org-card-photo {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(0, 0, 0, 0.25);
+}
+
+.pfm-org-card-text {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.pfm-org-card-title {
+  font-weight: 800;
+  font-size: 0.95rem;
+  line-height: 1.25;
+}
+
+.pfm-org-card-sub {
+  font-size: 0.8rem;
+  opacity: 0.78;
+}
+
+.pfm-org-card-chev,
+.pfm-org-toc-chev {
+  flex-shrink: 0;
+  margin-left: auto;
+  transition: transform 200ms ease;
+}
+
+.pfm-org-card.is-open .pfm-org-card-chev,
+.pfm-org-toc-btn[aria-expanded="true"] .pfm-org-toc-chev {
+  transform: rotate(180deg);
+}
+
+.pfm-org-card-body {
+  padding: 0 16px 14px;
+}
+
+.pfm-org-card .pfm-org-points {
+  color: var(--org-ink);
+}
+
+/* ---- descriptions ("table of contents") ------------------------------- */
+.pfm-org-toc {
+  padding: 0 12px 14px;
+}
+
+@media (min-width: 1280px) {
+  .pfm-org-toc {
+    position: sticky;
+    top: 104px;
+    max-height: calc(100vh - 124px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  }
+}
+
+.pfm-org-toc-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  margin: 0 -12px 4px;
+  padding: 16px 18px 10px;
+  border-radius: 22px 22px 0 0;
+  background: rgba(10, 18, 36, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.pfm-org-toc-title {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.pfm-org-toc-all {
+  flex-shrink: 0;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+
+.pfm-org-toc-all:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.pfm-org-toc-section + .pfm-org-toc-section {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pfm-org-toc-section-title {
+  margin: 6px 6px 4px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.pfm-org-toc-section-title span {
+  color: #38bdf8;
+}
+
+.pfm-org-toc-section ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pfm-org-toc-item {
+  border-radius: 12px;
+  transition: background 160ms ease, box-shadow 160ms ease;
+}
+
+.pfm-org-toc-item.is-hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.pfm-org-toc-item.is-active {
+  background: rgba(56, 189, 248, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(56, 189, 248, 0.38);
+}
+
+.pfm-org-toc-btn {
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  text-align: left;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+}
+
+.pfm-org-toc-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.pfm-org-toc-btn:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: -2px;
+}
+
+.pfm-org-toc-num {
+  flex-shrink: 0;
+  min-width: 2.1em;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: #38bdf8;
+}
+
+.pfm-org-toc-chev {
+  align-self: center;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.pfm-org-toc-body {
+  padding: 0 12px 12px 42px;
+}
+
+/* Bullet lists shared by the descriptions and the stacked cards */
+.pfm-org-points {
+  margin: 0;
+  padding-left: 1.1em;
+  list-style: disc;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.74);
+}
+
+.pfm-org-points li + li {
+  margin-top: 3px;
+}
+
+.pfm-org-points ul {
+  margin: 3px 0 0;
+  padding-left: 1.1em;
+  list-style: circle;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pfm-org-node,
+  .pfm-org-card,
+  .pfm-org-card-chev,
+  .pfm-org-toc-chev {
+    transition: none;
+  }
+}

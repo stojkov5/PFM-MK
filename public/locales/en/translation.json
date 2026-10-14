@@ -602,8 +602,13 @@
     "structure": {
       "kicker": "About us",
       "title": "Organisational structure",
-      "subtitle": "The governing bodies and organisational structure of the federation.",
-      "hint": "If the document doesn't show on your device, use the Preview or Download button."
+      "subtitle": "The governing bodies, executive positions and technical bodies of the federation.",
+      "hintWide": "Hover over a body to highlight it, click to read its description.",
+      "hintNarrow": "Tap a body to see its description.",
+      "download": "Download PDF",
+      "tocTitle": "Description of the bodies",
+      "expandAll": "Expand all",
+      "collapseAll": "Collapse all"
     },
     "partners": {
       "kicker": "About us",
