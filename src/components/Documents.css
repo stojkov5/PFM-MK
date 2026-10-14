@@ -1,242 +1,194 @@
-/* =========================
-   DOCUMENTS PAGE
-========================= */
+/* src/components/Documents.css — /documents: a plain list of PDF documents */
 .pfm-documents-page {
+  --doc-accent: #38bdf8;
+  --doc-line: rgba(255, 255, 255, 0.1);
+  --doc-muted: rgba(255, 255, 255, 0.58);
   padding-top: 96px;
-  padding-bottom: 50px;
-  
+  padding-bottom: 96px;
   min-height: 100vh;
 }
 
 .pfm-documents-hero {
-  padding: 46px 0 28px;
- 
+  padding: 46px 0 0;
+  max-width: 70ch;
 }
 
 .pfm-documents-kicker {
-  font-size: 0.72rem;
-  letter-spacing: 0.2em;
+  display: inline-flex;
+  padding: 7px 12px;
+  border-radius: 9999px;
+  background: rgba(56, 189, 248, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 900;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.68);
-  font-weight: 800;
+  font-size: 0.72rem;
 }
 
 .pfm-documents-title {
-  margin-top: 10px;
-  font-size: clamp(2rem, 4vw, 2.85rem);
+  margin-top: 14px;
   font-weight: 900;
   color: #ffffff;
-  line-height: 1.15;
-  max-width: 14ch;
-  text-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-size: clamp(2rem, 4.4vw, 3.2rem);
+  text-wrap: balance;
 }
 
 .pfm-documents-subtitle {
   margin-top: 14px;
-  max-width: 72ch;
-  line-height: 1.75;
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 0.98rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 1.02rem;
 }
 
-.pfm-documents-stats {
-  margin-top: 24px;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
+/* The list */
+.pfm-doclist {
+  list-style: none;
+  margin: 40px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--doc-line);
 }
 
-@media (min-width: 640px) {
-  .pfm-documents-stats {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.pfm-documents-stat {
-  border-radius: 20px;
-  padding: 16px 18px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
-}
-
-.pfm-documents-stat strong {
-  display: block;
-  color: #ffffff;
-  font-size: 1.15rem;
-  font-weight: 900;
-  margin-bottom: 4px;
-}
-
-.pfm-documents-stat span {
-  color: rgba(255, 255, 255, 0.74);
-  font-size: 0.93rem;
-  line-height: 1.5;
-}
-
-.pfm-documents-body {
-  padding-top: 30px;
-}
-
-.pfm-documents-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 18px;
-}
-
-@media (min-width: 768px) {
-  .pfm-documents-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1200px) {
-  .pfm-documents-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.pfm-document-card {
+.pfm-doclist-row {
   position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 305px;
-  padding: 22px;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.88);
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
-  backdrop-filter: blur(10px);
-  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
-  overflow: hidden;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--doc-line);
+  animation: pfm-doclist-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i) * 50ms);
+  transition: background 160ms ease;
 }
 
-.pfm-document-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.14);
+@keyframes pfm-doclist-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
 }
 
-.pfm-document-card::before {
+.pfm-doclist-row:hover {
+  background: linear-gradient(90deg, rgba(56, 189, 248, 0.07), rgba(56, 189, 248, 0) 70%);
+}
+
+/* Accent bar on hover, like the records list */
+.pfm-doclist-row::before {
   content: "";
   position: absolute;
-  inset: 0 0 auto 0;
-  height: 5px;
-  border-radius: 24px 24px 0 0;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--doc-accent);
+  transform: scaleY(0);
+  transition: transform 220ms ease;
 }
 
-.pfm-document-card--blue::before {
-  background: linear-gradient(90deg, #0ea5e9, #2563eb);
-}
-.pfm-document-card--emerald::before {
-  background: linear-gradient(90deg, #10b981, #059669);
-}
-.pfm-document-card--rose::before {
-  background: linear-gradient(90deg, #f43f5e, #e11d48);
-}
-.pfm-document-card--amber::before {
-  background: linear-gradient(90deg, #f59e0b, #d97706);
-}
-.pfm-document-card--violet::before {
-  background: linear-gradient(90deg, #8b5cf6, #7c3aed);
+.pfm-doclist-row:hover::before {
+  transform: scaleY(1);
 }
 
-.pfm-document-card-top {
-  display: flex;
-  align-items: flex-start;
+.pfm-doclist-open {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  align-items: center;
   gap: 14px;
+  padding: 26px 12px 26px 18px;
+  color: inherit;
+  text-decoration: none;
 }
 
-.pfm-document-icon-wrap {
-  width: 54px;
-  height: 54px;
-  flex-shrink: 0;
-  border-radius: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.35rem;
-  color: #0f172a;
-  background: linear-gradient(135deg, rgba(56, 189, 248, 0.14), rgba(37, 99, 235, 0.12));
-  border: 1px solid rgba(59, 130, 246, 0.16);
-}
-
-.pfm-document-meta h3 {
-  margin: 8px 0 0;
-  font-size: 1.08rem;
-  line-height: 1.35;
-  color: #0f172a;
-  font-weight: 900;
-}
-
-.pfm-document-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: #e0f2fe;
-  color: #075985;
-  font-size: 0.76rem;
+.pfm-doclist-num {
+  color: var(--doc-accent);
   font-weight: 800;
-  letter-spacing: 0.04em;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.8;
+}
+
+.pfm-doclist-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pfm-doclist-title {
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 800;
+  font-size: clamp(1.15rem, 2.2vw, 1.6rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  transition: transform 220ms ease, color 160ms ease;
+}
+
+.pfm-doclist-open:hover .pfm-doclist-title {
+  color: #ffffff;
+  transform: translateX(6px);
+}
+
+.pfm-doclist-meta {
+  color: var(--doc-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
-.pfm-document-desc {
-  margin: 18px 0 22px;
-  color: #475569;
-  line-height: 1.72;
-  font-size: 0.96rem;
-  flex-grow: 1;
-}
-
-.pfm-document-footer {
+.pfm-doclist-dl {
+  flex: none;
+  width: 46px;
+  height: 46px;
+  margin-right: 12px;
   display: flex;
-  flex-direction: column;
-  gap: 14px;
-  margin-top: auto;
-}
-
-.pfm-document-filetype {
-  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  color: #64748b;
-  font-size: 0.92rem;
-  font-weight: 700;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.15rem;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease;
 }
 
-.pfm-document-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+.pfm-doclist-dl:hover {
+  background: var(--doc-accent);
+  border-color: var(--doc-accent);
+  color: #04101f;
+  transform: translateY(2px);
 }
 
-.pfm-document-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 11px 15px;
-  border-radius: 14px;
-  text-decoration: none;
-  font-weight: 800;
-  font-size: 0.92rem;
-  transition: transform 160ms ease, opacity 160ms ease, background 160ms ease;
+.pfm-doclist-open:focus-visible,
+.pfm-doclist-dl:focus-visible {
+  outline: 2px solid var(--doc-accent);
+  outline-offset: 3px;
 }
 
-.pfm-document-btn:hover {
-  transform: translateY(-1px);
+@media (max-width: 720px) {
+  .pfm-doclist-open {
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 10px;
+    padding: 20px 6px 20px 12px;
+  }
+
+  .pfm-doclist-meta {
+    font-size: 0.74rem;
+  }
+
+  .pfm-doclist-dl {
+    width: 42px;
+    height: 42px;
+    margin-right: 6px;
+  }
 }
 
-.pfm-document-btn-primary {
-  background: linear-gradient(135deg, #0284c7, #2563eb);
-  color: #ffffff;
-  box-shadow: 0 12px 26px rgba(37, 99, 235, 0.22);
-}
-
-.pfm-document-btn-secondary {
-  background: #f8fafc;
-  color: #0f172a;
-  border: 1px solid rgba(148, 163, 184, 0.26);
+@media (prefers-reduced-motion: reduce) {
+  .pfm-doclist-row,
+  .pfm-doclist-row::before,
+  .pfm-doclist-title,
+  .pfm-doclist-dl {
+    animation: none;
+    transition: none;
+  }
 }

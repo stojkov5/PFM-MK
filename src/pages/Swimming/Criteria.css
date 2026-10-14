@@ -1,227 +1,317 @@
-.pfm-criteria-head {
-  max-width: 78ch;
+/* src/pages/Swimming/Criteria.css — swimming criteria.
+   Header, switches, buttons and accordion rows come from Records.css
+   (the page root has both .pfm-rec and .pfm-crit). */
+
+.pfm-crit-section {
+  margin-top: 64px;
 }
 
-.pfm-criteria-kicker {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 7px 12px;
-  border-radius: 9999px;
-  background: rgba(56, 189, 248, 0.14);
-  border: 1px solid rgba(56, 189, 248, 0.18);
-  color: rgba(255, 255, 255, 0.92);
+.pfm-crit-title {
+  margin: 0;
   font-weight: 900;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-size: 0.72rem;
-}
-
-.pfm-criteria-title {
-  margin-top: 12px;
-  font-weight: 900;
-  color: rgba(255, 255, 255, 0.94);
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
   line-height: 1.15;
-  font-size: clamp(1.6rem, 2.2vw, 2rem);
-  text-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
 }
 
-.pfm-criteria-sub {
-  margin-top: 10px;
-  color: rgba(255, 255, 255, 0.76);
-  line-height: 1.7;
-  font-size: 1.02rem;
+.pfm-crit-section > .pfm-rec-sub {
+  margin-top: 8px;
 }
 
-/* Document cards */
-.pfm-doc-card {
-  height: 100%;
-  border-radius: 26px;
-  padding: 18px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.34);
-  display: grid;
-  gap: 12px;
+.pfm-crit-section .pfm-rec-list {
+  margin-top: 22px;
 }
 
-.pfm-doc-top {
-  display: grid;
-  grid-template-columns: 46px 1fr;
-  gap: 12px;
-  align-items: start;
-}
-
-.pfm-doc-ico {
-  width: 46px;
-  height: 46px;
-  border-radius: 16px;
+/* Competition name + "Graz · 50m pool" under it */
+.pfm-crit .pfm-rec-name {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(56, 189, 248, 0.14);
-  border: 1px solid rgba(56, 189, 248, 0.18);
-  color: rgba(255, 255, 255, 0.92);
-  font-size: 1.2rem;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.pfm-doc-title {
-  font-weight: 900;
-  color: rgba(255, 255, 255, 0.92);
-  font-size: 1.02rem;
-  line-height: 1.25;
+.pfm-crit-sub {
+  color: var(--rec-muted);
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0;
 }
 
-.pfm-doc-sub {
-  margin-top: 6px;
-  color: rgba(255, 255, 255, 0.74);
-  line-height: 1.6;
+/* Open competition: facts on the left, norms on the right */
+.pfm-crit-body {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+  gap: 28px;
+  padding: 4px 12px 30px 96px;
 }
 
-.pfm-doc-tags {
+.pfm-crit-facts {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  flex-direction: column;
+  gap: 18px;
 }
 
-.pfm-doc-tag {
-  border-radius: 9999px !important;
-  padding: 4px 10px !important;
-  font-weight: 900 !important;
-  background: rgba(37, 99, 235, 0.18) !important;
-  color: rgba(255, 255, 255, 0.88) !important;
-  border: 1px solid rgba(37, 99, 235, 0.18) !important;
+.pfm-crit-birth {
+  margin: 0;
+  display: grid;
+  gap: 14px;
 }
 
-.pfm-doc-note {
+.pfm-crit-birth dt {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rec-accent);
+}
+
+.pfm-crit-birth dt span {
+  color: var(--rec-muted);
+}
+
+.pfm-crit-birth dd {
+  margin: 4px 0 0;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 1.15rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.pfm-crit-note {
+  margin: 0;
   padding: 12px 14px;
-  border-radius: 18px;
-  background: rgba(2, 6, 23, 0.28);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.72);
-  line-height: 1.6;
+  border-left: 3px solid var(--rec-accent);
+  border-radius: 0 12px 12px 0;
+  background: rgba(56, 189, 248, 0.08);
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.55;
+  font-size: 0.95rem;
 }
 
-.pfm-doc-actions {
+.pfm-crit-note strong {
+  color: #ffffff;
+}
+
+.pfm-crit-docs {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 
-.pfm-doc-btn {
-  border-radius: 9999px !important;
-  height: 44px !important;
-  padding: 0 16px !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
-  background: rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(12px);
-  color: rgba(255, 255, 255, 0.92) !important;
-  font-weight: 900 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 10px !important;
-  text-decoration: none;
+.pfm-crit-facts .pfm-crit-docs .pfm-rec-btn {
+  height: 42px;
+  padding: 0 16px;
+  font-size: 0.9rem;
 }
 
-.pfm-doc-btn:hover {
-  border-color: rgba(56, 189, 248, 0.35) !important;
-  color: #ffffff !important;
+/* --- Tables ------------------------------------------------------------- */
+
+.pfm-crit-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
-.pfm-doc-btn-primary {
-  background: rgba(37, 99, 235, 0.22) !important;
-  border-color: rgba(37, 99, 235, 0.35) !important;
-}
-
-/* Preview block */
-.pfm-criteria-preview {
-  margin-top: 8px;
-}
-.ant-collapse {
-  border: none !important;
-}
-.ant-collapse-body {
-  background-color: rgba(2, 6, 23, 0.96);
-}
-.pfm-preview-block {
-  display: grid;
-  gap: 14px;
-  background-color: rgba(2, 6, 23, 0.96);
-}
-
-.pfm-preview-text {
-  color: rgba(255, 255, 255, 0.78);
-  line-height: 1.7;
-}
-
-.pfm-preview-ul {
-  margin-top: 10px;
-  padding-left: 18px;
-  display: grid;
-  gap: 8px;
-}
-
-.pfm-preview-warn {
-  margin-top: 10px;
-  padding: 12px 14px;
-  border-radius: 16px;
-  background: rgba(56, 189, 248, 0.1);
-  border: 1px solid rgba(56, 189, 248, 0.18);
-}
-
-/* Collapse */
-.pfm-collapse {
-  background: transparent !important;
-}
-
-.pfm-collapse .ant-collapse-item {
-  border-radius: 18px !important;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
-  background: rgba(255, 255, 255, 0.08) !important;
-  backdrop-filter: blur(14px);
-  margin-bottom: 12px;
-}
-
-.pfm-collapse .ant-collapse-header {
-  color: rgba(255, 255, 255, 0.92) !important;
-  font-weight: 900 !important;
-}
-
-.pfm-collapse .ant-collapse-content {
-  background: rgba(2, 6, 23, 0.22) !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-/* Dark table */
-.pfm-table-wrap {
+.pfm-crit-table {
   width: 100%;
-  overflow-x: auto !important;
+  border-collapse: collapse;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
 }
 
-.pfm-table-dark .ant-table {
-  background: transparent !important;
-  color: rgba(255, 255, 255, 0.86) !important;
-}
-
-.pfm-table-dark .ant-table-thead > tr > th {
-  background: transparent !important;
-  color: rgba(255, 255, 255, 0.7) !important;
-  font-weight: 900 !important;
+.pfm-crit-table thead th {
+  padding: 0 12px 10px;
+  color: var(--rec-muted);
+  font-weight: 800;
+  font-size: 0.7rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  font-size: 0.72rem !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14) !important;
+  white-space: nowrap;
+  vertical-align: bottom;
 }
 
-.pfm-table-dark .ant-table-tbody > tr > td {
-  background: transparent !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: rgba(255, 255, 255, 0.82) !important;
-  font-weight: 600 !important;
+.pfm-crit-table .pfm-crit-group th {
+  padding-bottom: 6px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.74rem;
 }
 
-.pfm-table-dark .ant-table-tbody > tr:hover > td {
-  background: rgba(255, 255, 255, 0.1) !important;
+.pfm-crit-table .pfm-crit-group th[colspan] {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.pfm-crit-table tbody tr {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  transition: background 140ms ease;
+}
+
+.pfm-crit-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.pfm-crit-table tbody th,
+.pfm-crit-table tbody td {
+  padding: 12px;
+  white-space: nowrap;
+}
+
+.pfm-crit-table tbody td {
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 600;
+}
+
+.pfm-crit-table th.pfm-crit-sticky {
+  text-align: left;
+  padding-left: 0;
+}
+
+.pfm-crit-discipline {
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 700;
+}
+
+/* A norms (the harder ones) in the accent colour */
+.pfm-crit-table td.pfm-crit-a {
+  color: var(--rec-accent);
+  font-weight: 800;
+}
+
+/* Thin divider between the women's and men's columns */
+.pfm-crit-split {
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* National limits */
+.pfm-crit-card {
+  margin-top: 22px;
+  padding: 18px 22px 8px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--rec-line);
+  animation: pfm-crit-in 320ms ease both;
+}
+
+@keyframes pfm-crit-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.pfm-crit-table.is-limits tbody td {
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.pfm-crit-table.is-limits tbody tr td:last-child {
+  color: var(--rec-accent);
+  font-weight: 800;
+}
+
+/* Additional provisions: numbered list like the accordion rows */
+.pfm-crit-provisions {
+  margin-top: 40px;
+}
+
+.pfm-crit-provisions-title {
+  margin: 0 0 12px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rec-accent);
+}
+
+.pfm-crit-provisions ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--rec-line);
+}
+
+.pfm-crit-provisions li {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 14px;
+  padding: 18px 12px 18px 18px;
+  border-bottom: 1px solid var(--rec-line);
+}
+
+.pfm-crit-provisions li .pfm-rec-num {
+  padding-top: 3px;
+}
+
+.pfm-crit-provisions li p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.7;
+  max-width: 85ch;
+}
+
+@media (max-width: 960px) {
+  .pfm-crit-body {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+
+  .pfm-crit-birth {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .pfm-crit-section {
+    margin-top: 48px;
+  }
+
+  .pfm-crit-body {
+    padding: 2px 6px 24px 12px;
+  }
+
+  /* On phones the limits table sits on the page itself, so the frozen
+     column below blends in. */
+  .pfm-crit-card {
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  /* Discipline column stays put while the times scroll sideways. */
+  .pfm-crit-table th.pfm-crit-sticky {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: #040a16;
+    box-shadow: 10px 0 12px -10px rgba(0, 0, 0, 0.9);
+    padding-right: 14px;
+  }
+
+  .pfm-crit-docs .pfm-rec-btn {
+    height: 42px;
+    padding: 0 14px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  .pfm-crit-table tbody th,
+  .pfm-crit-table tbody td {
+    padding: 11px 10px;
+  }
+
+  .pfm-crit-provisions li {
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 10px;
+    padding: 16px 6px 16px 12px;
+  }
+
+  .pfm-rec-bar > .pfm-crit-docs,
+  .pfm-rec-bar > .pfm-crit-docs .pfm-rec-btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pfm-crit-card {
+    animation: none;
+  }
 }

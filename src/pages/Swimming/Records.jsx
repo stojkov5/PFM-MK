@@ -7,27 +7,11 @@ import { apiGet, apiUrl } from "../../lib/api.js";
 import { antDarkTheme } from "../../lib/antDarkTheme.js";
 import Reveal from "../../components/fx/Reveal.jsx";
 import RecordApplicationForm from "./RecordApplicationForm.jsx";
+import PillSwitch from "./PillSwitch.jsx";
 import "./Records.css";
 
 const POOLS = ["25", "50"];
 const GENDERS = ["female", "male"];
-
-// Pill switch between a few options (pool length, gender).
-const Switch = ({ label, options, value, onChange }) => (
-  <div className="pfm-rec-switch" role="group" aria-label={label}>
-    {options.map((option) => (
-      <button
-        key={option.value}
-        type="button"
-        className={`pfm-rec-switch-btn ${option.value === value ? "is-active" : ""}`}
-        aria-pressed={option.value === value}
-        onClick={() => onChange(option.value)}
-      >
-        {option.label}
-      </button>
-    ))}
-  </div>
-);
 
 const CategoryRow = ({ category, index, open, onToggle }) => {
   const { t } = useTranslation();
@@ -116,13 +100,13 @@ const Records = () => {
 
           <div className="pfm-rec-bar">
             <div className="pfm-rec-filters">
-              <Switch
+              <PillSwitch
                 label={t("records.controls.pool")}
                 value={pool}
                 onChange={setPool}
                 options={POOLS.map((value) => ({ value, label: `${value}m` }))}
               />
-              <Switch
+              <PillSwitch
                 label={t("records.controls.gender")}
                 value={gender}
                 onChange={setGender}

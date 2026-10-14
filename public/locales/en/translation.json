@@ -354,6 +354,12 @@
       "3": "Each swimmer may compete only in the discipline for the corresponding category in which they have achieved the required standard.",
       "4": "A swimmer earns the right to participate if they achieve the limit in the 200m individual medley in the corresponding category, thereby gaining the right to swim 8 events prescribed by the competition regulations of the National Swimming Federation of Macedonia.",
       "5": "If a swimmer achieves the required limit in a 25m pool, it will be taken into account for participation in 50m pool competitions as well, and vice versa."
+    },
+    "topChip": "Top {{n}}",
+    "birthYears": "born",
+    "international": {
+      "title": "International competitions",
+      "subtitle": "A and B qualification norms for each competition. Open one to see its norms, birth years and official document."
     }
   },
   "swimming": {
@@ -488,7 +494,8 @@
         "category": "Organization",
         "description": "Overview of the NSF structure: assembly, executive and supervisory board, president, secretary, sports director, commissions, and sports sectors."
       }
-    }
+    },
+    "footerTitle": "Documents"
   },
   "waterpolo": {
     "hero": {
@@ -757,5 +764,15 @@
         "submitFailed": "Submission failed. Please try again."
       }
     }
+  },
+  "footer": {
+    "contact": "Contact",
+    "email": "Email",
+    "phone": "Phone",
+    "location": "Location",
+    "address": "Skopje, Republic of North Macedonia",
+    "follow": "Follow us",
+    "rights": "All rights reserved.",
+    "backToTop": "Back to top"
   }
 }
