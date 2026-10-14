@@ -7,6 +7,8 @@ import { applicationsRouter } from "./routes/applications.js";
 import { adminRouter } from "./routes/admin.js";
 import { newsRouter } from "./routes/news.js";
 import { mediaRouter } from "./routes/media.js";
+import { competitionsRouter } from "./routes/competitions.js";
+import { createMailer } from "./lib/mailer.js";
 import { createClerkAuth } from "./auth/clerk.js";
 
 // Comma-separated list of allowed browser origins (the Vercel site URL(s)).
@@ -16,10 +18,15 @@ const allowedOrigins = (process.env.CLIENT_ORIGIN ?? "")
   .map((s) => s.trim())
   .filter(Boolean);
 
-// `auth` is injectable so tests can run without real Clerk keys.
+// `auth` and `mailer` are injectable so tests can run without real Clerk keys
+// and without sending email.
 export const createApp = (
   db,
-  { rateLimit: enableRateLimit = true, auth = createClerkAuth({ authorizedParties: allowedOrigins }) } = {}
+  {
+    rateLimit: enableRateLimit = true,
+    auth = createClerkAuth({ authorizedParties: allowedOrigins }),
+    mailer = createMailer(),
+  } = {}
 ) => {
   const app = express();
   app.set("trust proxy", 1);
@@ -47,7 +54,11 @@ export const createApp = (
   app.use("/api/news", newsRouter(db));
   app.use("/api/media", mediaRouter(db));
   app.use("/api/applications", limiter(60 * 60 * 1000, 5), applicationsRouter(db));
-  app.use("/api/admin", limiter(60 * 1000, 120), adminRouter(db, auth, { allowedOrigins }));
+  app.use(
+    "/api/competitions",
+    competitionsRouter(db, { mailer, allowedOrigins, writeLimit: limiter(60 * 60 * 1000, 20) })
+  );
+  app.use("/api/admin", limiter(60 * 1000, 120), adminRouter(db, auth, { allowedOrigins, mailer }));
 
   app.use("/api", (req, res) => res.status(404).json({ error: "Not found" }));
 

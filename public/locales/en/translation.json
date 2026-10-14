@@ -648,5 +648,114 @@
       "title": "Distance swimming news",
       "subtitle": "Open water announcements, results and stories."
     }
+  },
+  "competitions": {
+    "kicker": "Calendar",
+    "title": "Competition calendar",
+    "empty": "There are no competitions in the {{year}} calendar yet.",
+    "loadFailed": "The calendar couldn't be loaded. Please try again later.",
+    "finished": "Finished",
+    "details": "Details",
+    "hide": "Close",
+    "courses": {
+      "SC": "25m pool",
+      "LC": "50m pool",
+      "OW": "Open water"
+    },
+    "courseShort": {
+      "SC": "25m",
+      "LC": "50m",
+      "OW": "Open water"
+    },
+    "labels": {
+      "dates": "Dates",
+      "startsAt": "starts at {{time}}",
+      "place": "Place",
+      "organizer": "Organizer",
+      "course": "Pool",
+      "entryDeadline": "Entry deadline",
+      "criteria": "Criteria for participation",
+      "description": "Additional information",
+      "info": "Competition bulletin"
+    },
+    "window": {
+      "open": "Registration of competitions for the {{season}} calendar is open until {{date}}.",
+      "upcoming": "Clubs can register competitions for the {{season}} calendar from {{from}} to {{to}}.",
+      "cta": "Add competition"
+    },
+    "upcoming": {
+      "title": "Upcoming swimming competitions",
+      "all": "Full calendar",
+      "empty": "No upcoming competitions in the calendar yet."
+    },
+    "form": {
+      "kicker": "Calendar registration",
+      "title": "Add a competition",
+      "editTitle": "Your competition",
+      "subtitle": "Register your club's competition for the {{season}} calendar (open until {{date}}). The federation reviews every submission and may ask you to change the dates if competitions overlap. Once approved, it appears in the calendar.",
+      "sections": {
+        "event": "Competition",
+        "when": "Date and place",
+        "details": "Criteria and information",
+        "contact": "Contact person"
+      },
+      "fields": {
+        "club": "Organizing club",
+        "clubPlaceholder": "Select your club",
+        "name": "Name of the competition",
+        "namePlaceholder": "e.g. Delfin Cup 2027",
+        "course": "Pool",
+        "dates": "Dates (first – last day)",
+        "startTime": "Start time",
+        "city": "City",
+        "venue": "Venue / pool",
+        "venuePlaceholder": "e.g. Karpos swimming pool",
+        "criteria": "Criteria for participation",
+        "criteriaPlaceholder": "Age groups, entry standards, disciplines, number of starts…",
+        "entryDeadline": "Entry deadline",
+        "infoUrl": "Link to the bulletin (optional)",
+        "description": "Additional information (optional)",
+        "contactName": "Name and surname",
+        "contactEmail": "Email",
+        "contactPhone": "Phone",
+        "contactHint": "The federation's answers are sent to this email and to the club's official email."
+      },
+      "submit": "Submit competition",
+      "save": "Save changes",
+      "back": "Back to the calendar",
+      "success": {
+        "title": "Competition submitted",
+        "text": "We've emailed you a confirmation with a private link for editing it. The federation will let you know by email once it's reviewed.",
+        "another": "Add another competition"
+      },
+      "saved": {
+        "title": "Changes saved",
+        "text": "The federation will review your competition again and let you know by email.",
+        "again": "Edit again"
+      },
+      "closed": {
+        "title": "Registration is closed",
+        "text": "Clubs can't register competitions at the moment. The federation announces when the registration period opens."
+      },
+      "statusLabel": "Status",
+      "status": {
+        "pending": "Waiting for review",
+        "changes": "Changes requested",
+        "approved": "Approved — in the calendar",
+        "denied": "Not approved"
+      },
+      "messageFromFederation": "Message from the federation",
+      "locked": "This submission has been reviewed and can't be edited any more. Reply to the federation's email if something needs to change.",
+      "notFound": "This edit link isn't valid.",
+      "errors": {
+        "required": "This field is required",
+        "email": "Enter a valid email address",
+        "url": "Enter a valid link (https://...)",
+        "deadline": "Must be before the competition ends",
+        "invalid": "Check this field",
+        "checkFields": "Some fields need fixing — see the highlighted fields.",
+        "submitFailed": "Submission failed. Please try again."
+      }
+    }
   }
 }

@@ -110,6 +110,22 @@ trailing slash), or the frontend and API using keys from different Clerk instanc
   **before** deploying the code that uses them. It only adds tables; existing data is
   not touched.
 
+## Swimming calendar (club submissions)
+- Clubs submit competitions at `/swimming/calendar-national/submit` — only while the
+  registration period set in `/admin` → **Swimming calendar** is open. No login: each
+  submission gets a private edit link that is emailed to the club.
+- Admins approve / ask for changes / deny in `/admin`. Each action emails the club
+  (the contact email from the form + the club's email from `src/data/Clubs.json`).
+- Tables `competitions`, `competition_messages`, `competition_windows` were added after
+  the first deploy: run `npm run db:push` once (with the Railway `DATABASE_PUBLIC_URL`
+  in `.env`) **before** deploying this code. It only adds tables.
+- Email is sent through **Resend** over HTTPS (Railway blocks SMTP on Hobby). Set on
+  Railway: `RESEND_API_KEY`, and optionally `MAIL_FROM`, `MAIL_REPLY_TO`,
+  `FEDERATION_EMAIL`, `SITE_URL` (defaults: info@npf.mk and https://npf.mk). The
+  `npf.mk` domain must be verified in Resend (DNS records). Without the key nothing is
+  emailed: the actions still work and the admin panel warns that the email failed.
+  Locally the emails are printed to the server console instead.
+
 ## Database commands
 | Command | What it does |
 |---|---|

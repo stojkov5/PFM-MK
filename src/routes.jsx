@@ -14,6 +14,7 @@ import SwimmingCalendarInternational from "./pages/Swimming/CalendarInternationa
 import SwimmingRecords from "./pages/Swimming/Records.jsx";
 import SwimmingCriteria from "./pages/Swimming/Criteria.jsx";
 import RecordApplication from "./pages/Swimming/RecordApplication.jsx";
+import CompetitionSubmit from "./pages/Swimming/CompetitionSubmit.jsx";
 
 import WaterpoloHome from "./pages/Waterpolo/WaterpoloHome.jsx";
 import WaterpoloPrograms from "./pages/Waterpolo/WaterpoloPrograms.jsx";
@@ -49,6 +50,8 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <SwimmingHome /> },
           { path: "calendar-national", element: <SwimmingCalendarNational /> },
+          // Clubs register competitions here (and fix them via their emailed edit link).
+          { path: "calendar-national/submit", element: <CompetitionSubmit /> },
           { path: "calendar-international", element: <SwimmingCalendarInternational /> },
           { path: "records", element: <SwimmingRecords /> },
           { path: "criteria", element: <SwimmingCriteria /> },

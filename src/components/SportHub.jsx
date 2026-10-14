@@ -26,8 +26,9 @@ const HubCard = ({ card }) => {
 /**
  * @param groups  [{ key, title?, icon?, cards: [{ to, label, desc, icon }] }]
  *                Use a single group without a title for a plain card grid.
+ * @param children  extra content shown under the groups
  */
-const SportHub = ({ kicker, title, subtitle, groups }) => (
+const SportHub = ({ kicker, title, subtitle, groups, children }) => (
   <section className="pfm-swimming">
     <div className="pfm-swimming-hero">
       <div className="pfm-swimming-hero-inner max-w-6xl mx-auto px-4 md:px-6">
@@ -54,6 +55,8 @@ const SportHub = ({ kicker, title, subtitle, groups }) => (
             </div>
           </Reveal>
         ))}
+
+        {children}
       </div>
     </div>
     <div className="pfm-swimming-content" />

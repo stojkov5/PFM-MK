@@ -3,9 +3,10 @@ import React, { Suspense, lazy, useState } from "react";
 import { UserButton } from "@clerk/react";
 import { useQuery } from "@tanstack/react-query";
 import { Badge, Spin, Tabs } from "antd";
-import { FiEdit3, FiFileText, FiUsers } from "react-icons/fi";
+import { FiCalendar, FiEdit3, FiFileText, FiUsers } from "react-icons/fi";
 import { useAdminApi } from "./useAdminApi.js";
 import ApplicationsTab from "./ApplicationsTab.jsx";
+import CompetitionsTab from "./CompetitionsTab.jsx";
 import NewsTab from "./NewsTab.jsx";
 import TeamTab from "./TeamTab.jsx";
 
@@ -21,6 +22,10 @@ const AdminPanel = ({ me }) => {
   const counts = useQuery({
     queryKey: ["admin-application-counts"],
     queryFn: () => api.get("/api/admin/applications/counts"),
+  });
+  const competitionCounts = useQuery({
+    queryKey: ["admin-competition-counts"],
+    queryFn: () => api.get("/api/admin/competitions/counts"),
   });
 
   const tabLabel = (icon, text, count) => (
@@ -66,6 +71,11 @@ const AdminPanel = ({ me }) => {
             key: "applications",
             label: tabLabel(<FiFileText />, "Record applications", counts.data?.pending),
             children: <ApplicationsTab counts={counts.data} />,
+          },
+          {
+            key: "calendar",
+            label: tabLabel(<FiCalendar />, "Swimming calendar", competitionCounts.data?.pending),
+            children: <CompetitionsTab counts={competitionCounts.data} />,
           },
           {
             key: "news",

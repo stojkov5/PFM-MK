@@ -4,6 +4,7 @@ import { requireAdmin } from "../middleware/requireAdmin.js";
 import { teamRouter } from "./team.js";
 import { adminNewsRouter } from "./adminNews.js";
 import { adminMediaRouter } from "./media.js";
+import { adminCompetitionsRouter } from "./adminCompetitions.js";
 
 const STATUSES = ["pending", "approved", "denied"];
 
@@ -14,7 +15,7 @@ const recordSlot = (a) => ({
   discipline: a.discipline,
 });
 
-export const adminRouter = (db, auth, { allowedOrigins = [] } = {}) => {
+export const adminRouter = (db, auth, { allowedOrigins = [], mailer } = {}) => {
   const router = Router();
   router.use(auth.middleware, requireAdmin(auth));
 
@@ -114,6 +115,7 @@ export const adminRouter = (db, auth, { allowedOrigins = [] } = {}) => {
   router.use("/team", teamRouter(auth, { allowedOrigins }));
   router.use("/news", adminNewsRouter(db));
   router.use("/media", adminMediaRouter(db));
+  router.use("/competitions", adminCompetitionsRouter(db, { mailer, allowedOrigins }));
 
   return router;
 };

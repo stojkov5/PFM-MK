@@ -74,10 +74,24 @@ export const createFakeAuth = () => {
   };
 };
 
+// Collects emails instead of sending them.
+export const createFakeMailer = () => {
+  const sent = [];
+  return {
+    sent,
+    federation: "info@npf.mk",
+    send: async (mail) => {
+      sent.push({ ...mail, to: [mail.to].flat() });
+      return true;
+    },
+  };
+};
+
 export const createTestApp = async () => {
   const db = new PrismockClient();
   await db.record.createMany({ data: SEED_RECORDS });
   const auth = createFakeAuth();
-  const app = createApp(db, { rateLimit: false, auth });
-  return { app, db, auth };
+  const mailer = createFakeMailer();
+  const app = createApp(db, { rateLimit: false, auth, mailer });
+  return { app, db, auth, mailer };
 };

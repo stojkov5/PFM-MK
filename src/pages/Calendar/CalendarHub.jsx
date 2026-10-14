@@ -6,6 +6,7 @@ import { TbSwimming, TbWaterpolo } from "react-icons/tb";
 import { TiWaves } from "react-icons/ti";
 import { useTranslation } from "react-i18next";
 import SportHub from "../../components/SportHub.jsx";
+import UpcomingCompetitions from "../../components/competitions/UpcomingCompetitions.jsx";
 
 const CalendarHub = () => {
   const { t } = useTranslation();
@@ -63,7 +64,9 @@ const CalendarHub = () => {
       title={t("calendarHub.hero.title")}
       subtitle={t("calendarHub.hero.subtitle")}
       groups={groups}
-    />
+    >
+      <UpcomingCompetitions />
+    </SportHub>
   );
 };
 

@@ -89,3 +89,44 @@
   background: rgba(37, 99, 235, 0.22) !important;
   border: 1px solid rgba(37, 99, 235, 0.35) !important;
 }
+
+/* Calendar tab */
+.pfm-admin-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pfm-admin-actions-wrap { flex-wrap: wrap; max-width: 330px; }
+.pfm-admin-overlaps { display: flex; flex-wrap: wrap; gap: 4px; max-width: 260px; }
+.pfm-admin-pre { white-space: pre-line; }
+
+.pfm-admin-comp-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 8px;
+}
+
+.pfm-admin-comp-msg {
+  margin-top: 6px;
+  padding: 8px 12px;
+  border-left: 3px solid #38bdf8;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 6px;
+}
+
+.pfm-admin-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+
+.pfm-admin-form-grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+@media (max-width: 640px) {
+  .pfm-admin-form-grid,
+  .pfm-admin-form-grid-3 { grid-template-columns: 1fr; }
+}

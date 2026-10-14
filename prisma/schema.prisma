@@ -82,3 +82,76 @@ model Media {
 
   @@map("media")
 }
+
+// A competition in the calendar. Clubs submit them through the public form
+// while the registration window is open; admins review them (and can add
+// their own, which are approved right away). Only approved ones are public.
+model Competition {
+  id            Int       @id @default(autoincrement())
+  // One of SPORTS in server/lib/competitions.js.
+  sport         String    @default("swimming")
+  name          String
+  // Organizer. clubId points into src/data/Clubs.json; null when an admin
+  // typed an organizer that isn't a club (e.g. the federation itself).
+  clubId        Int?      @map("club_id")
+  clubName      String    @map("club_name")
+  startDate     DateTime  @map("start_date") @db.Date
+  endDate       DateTime  @map("end_date") @db.Date
+  // "HH:MM", optional.
+  startTime     String?   @map("start_time")
+  city          String
+  venue         String    @default("")
+  // SC (25m), LC (50m) or OW (open water).
+  course        String
+  // Who can take part: age groups, entry standards…
+  criteria      String    @default("")
+  description   String    @default("")
+  entryDeadline DateTime? @map("entry_deadline") @db.Date
+  infoUrl       String?   @map("info_url")
+  contactName   String    @default("") @map("contact_name")
+  contactEmail  String    @default("") @map("contact_email")
+  contactPhone  String    @default("") @map("contact_phone")
+  // pending → approved / denied, or "changes" when an admin asked the club
+  // to fix something (the club edits it and it goes back to pending).
+  status        String    @default("pending")
+  // "club" (public form) or "admin".
+  source        String    @default("club")
+  // Secret for the club's edit link (sent by email). Never sent to the public.
+  editToken     String    @unique @map("edit_token")
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt     DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz()
+  reviewedAt    DateTime? @map("reviewed_at") @db.Timestamptz()
+  reviewerId    String?   @map("reviewer_id")
+  reviewerName  String?   @map("reviewer_name")
+
+  @@index([sport, status, startDate])
+  @@map("competitions")
+}
+
+// Messages an admin emailed to the club about a competition (change requests,
+// denial reasons), kept so the admin panel can show the history.
+model CompetitionMessage {
+  id            Int      @id @default(autoincrement())
+  competitionId Int      @map("competition_id")
+  // "changes", "denied" or "approved" — what the admin did when sending it.
+  kind          String
+  body          String
+  authorName    String?  @map("author_name")
+  emailed       Boolean  @default(false)
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  @@index([competitionId])
+  @@map("competition_messages")
+}
+
+// When clubs may submit competitions, one row per sport (set in the admin panel).
+model CompetitionWindow {
+  sport     String   @id
+  // The calendar year the clubs are registering competitions for.
+  season    Int
+  opensAt   DateTime @map("opens_at") @db.Timestamptz()
+  closesAt  DateTime @map("closes_at") @db.Timestamptz()
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@map("competition_windows")
+}
