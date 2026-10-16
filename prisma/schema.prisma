@@ -188,3 +188,34 @@ model Club {
   @@index([status])
   @@map("clubs")
 }
+
+// A criteria PDF on a sport's Criteria page (/swimming/criteria,
+// /distance-swimming/criteria), managed in the admin panel's Criteria tab.
+// The file itself is a Media row (served by /api/media/<mediaId>).
+model CriteriaDocument {
+  id          Int      @id @default(autoincrement())
+  // One of CRITERIA_SPORTS in server/lib/criteria.js.
+  sport       String
+  title       String
+  // Short line under the title, e.g. "Грац · 50м базен". Optional.
+  description String   @default("")
+  mediaId     String   @map("media_id")
+  // Lower comes first on the page.
+  sortOrder   Int      @default(0) @map("sort_order")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz()
+  // Display name of the admin who last changed it.
+  updatedBy   String?  @map("updated_by")
+
+  @@index([sport, sortOrder])
+  @@map("criteria_documents")
+}
+
+// One-time data imports that already ran (e.g. "criteria-pdfs"), so they
+// never run twice — even after an admin deletes what they imported.
+model SeedRun {
+  name  String   @id
+  ranAt DateTime @default(now()) @map("ran_at") @db.Timestamptz()
+
+  @@map("seed_runs")
+}

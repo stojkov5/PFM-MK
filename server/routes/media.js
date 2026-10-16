@@ -29,7 +29,9 @@ const cleanFilename = (name) =>
     .slice(0, 200) || "file";
 
 // Public: serves a stored file. Ids are random and files never change, so
-// browsers can cache them forever.
+// browsers can cache them forever. ?download=1 asks the browser to save the
+// file instead of opening it (the HTML download attribute is ignored for files
+// on another domain, which is where the API lives).
 export const mediaRouter = (db) => {
   const router = Router();
 
@@ -39,7 +41,7 @@ export const mediaRouter = (db) => {
 
     res.set({
       "Content-Type": file.mimeType,
-      "Content-Disposition": `inline; filename*=UTF-8''${encodeURIComponent(file.filename)}`,
+      "Content-Disposition": `${req.query.download ? "attachment" : "inline"}; filename*=UTF-8''${encodeURIComponent(file.filename)}`,
       "Cache-Control": "public, max-age=31536000, immutable",
       "X-Content-Type-Options": "nosniff",
     });

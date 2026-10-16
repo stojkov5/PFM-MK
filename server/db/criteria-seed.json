@@ -1,0 +1,9 @@
+[
+  { "sport": "swimming", "title": "Мултинации Австрија", "description": "Грац · 50м базен", "file": "public/criteria/МУЛТИНАЦИИ АВСТРИЈА, ГРАЦ 50м.pdf" },
+  { "sport": "swimming", "title": "Мултинации Чешка", "description": "Прага · 50м базен", "file": "public/criteria/МУЛТИНАЦИИ ПРАГА, ЧЕШКА.pdf" },
+  { "sport": "swimming", "title": "КОМЕН Куп Србија", "description": "Белград · 50м базен", "file": "public/criteria/КОМЕН Куп СРБИЈА, Белград 50м.pdf" },
+  { "sport": "swimming", "title": "Централно Европско Првенство", "description": "Љубљана · 50м базен", "file": "public/criteria/ЦЕНТРАЛНО ЕВРОПСКО ПРВЕНСТВО СЛОВЕНИЈА, ЉУБЉАНА 50м.pdf" },
+  { "sport": "swimming", "title": "Европско Првенство во Пливање", "description": "Јуниори · Германија · 50м базен", "file": "public/criteria/ЕВРОПСКО ПРВЕНСТВО ВО ПЛИВАЊЕ 50м - Јуниори ГЕРМАНИЈА.pdf" },
+  { "sport": "swimming", "title": "Европско Првенство во Пливање", "description": "Сениори · Париз · 50м базен", "file": "public/criteria/ЕВРОПСКО ПРВЕНСТВО ВО ПЛИВАЊЕ 50м - Сениори ПАРИЗ.pdf" },
+  { "sport": "swimming", "title": "Државно првенство – лимити", "description": "25м и 50м базен", "file": "public/criteria/ДРЖАВНО ПРВЕНСТВО, ЛИМИТИ_1.pdf" }
+]

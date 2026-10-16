@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import { createApp } from "./app.js";
 import { createPrisma } from "./db/client.js";
 import { ensureClubs } from "./lib/clubs.js";
+import { ensureCriteria } from "./lib/criteria.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -28,6 +29,16 @@ try {
   console.error(
     "[pfm] Could not fill the clubs table — run `npm run db:push` (with the Railway " +
       "DATABASE_PUBLIC_URL in .env), then restart this service.",
+    err.message
+  );
+}
+// First start after the criteria table was added: import the criteria PDFs.
+try {
+  const imported = await ensureCriteria(db);
+  if (imported) console.log(`[pfm] Imported ${imported} criteria PDFs.`);
+} catch (err) {
+  console.error(
+    "[pfm] Could not import the criteria PDFs — run `npm run db:push`, then restart this service.",
     err.message
   );
 }

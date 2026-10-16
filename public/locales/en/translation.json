@@ -289,36 +289,8 @@
     "kicker": "Criteria",
     "title": "Swimming Criteria",
     "subtitle": "Official competition criteria: qualification norms for international competitions and the national championship limits. Click a document to open it, or download it with the button on the right.",
-    "events": {
-      "graz": {
-        "title": "Multinations Austria",
-        "subtitle": "Graz · 50m pool"
-      },
-      "prague": {
-        "title": "Multinations Czech Republic",
-        "subtitle": "Prague · 50m pool"
-      },
-      "comen": {
-        "title": "COMEN Cup Serbia",
-        "subtitle": "Belgrade · 50m pool"
-      },
-      "ljubljana": {
-        "title": "Central European Championship Slovenia",
-        "subtitle": "Ljubljana · 50m pool"
-      },
-      "juniors": {
-        "title": "European Swimming Championship",
-        "subtitle": "Juniors · Germany · 50m pool"
-      },
-      "seniors": {
-        "title": "European Swimming Championship",
-        "subtitle": "Seniors · Paris · 50m pool"
-      },
-      "national": {
-        "title": "National championships – limits",
-        "subtitle": "25m and 50m pool"
-      }
-    }
+    "empty": "No swimming criteria have been published yet.",
+    "loadError": "Couldn’t load the documents."
   },
   "swimming": {
     "hero": {

@@ -3,11 +3,12 @@ import React, { Suspense, lazy, useState } from "react";
 import { UserButton } from "@clerk/react";
 import { useQuery } from "@tanstack/react-query";
 import { Badge, Spin, Tabs } from "antd";
-import { FiCalendar, FiEdit3, FiFileText, FiFlag, FiUsers } from "react-icons/fi";
+import { FiAward, FiCalendar, FiEdit3, FiFileText, FiFlag, FiUsers } from "react-icons/fi";
 import { useAdminApi } from "./useAdminApi.js";
 import ApplicationsTab from "./ApplicationsTab.jsx";
 import ClubsTab from "./ClubsTab.jsx";
 import CompetitionsTab from "./CompetitionsTab.jsx";
+import CriteriaTab from "./CriteriaTab.jsx";
 import NewsTab from "./NewsTab.jsx";
 import TeamTab from "./TeamTab.jsx";
 
@@ -86,6 +87,11 @@ const AdminPanel = ({ me }) => {
             key: "clubs",
             label: tabLabel(<FiFlag />, "Clubs", clubCounts.data?.pending),
             children: <ClubsTab counts={clubCounts.data} />,
+          },
+          {
+            key: "criteria",
+            label: tabLabel(<FiAward />, "Criteria"),
+            children: <CriteriaTab />,
           },
           {
             key: "news",

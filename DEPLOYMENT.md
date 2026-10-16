@@ -146,3 +146,13 @@ trailing slash), or the frontend and API using keys from different Clerk instanc
 | `npm run db:seed-records` | Import the JSON record files (skips existing rows) |
 | `npm run admin:grant -- you@example.com` | Give an existing Clerk user the admin role |
 | `npx prisma studio` | Browse/edit the database in a GUI |
+
+## Criteria documents (admin → Criteria tab)
+- The criteria PDFs on `/swimming/criteria` and `/distance-swimming/criteria` live in the
+  database (tables `criteria_documents` and `seed_runs`; the files themselves in `media`).
+  Admins add, rename, replace, reorder and delete them in `/admin` → **Criteria**.
+- After pulling this change, run `npm run db:push` once (with the Railway
+  `DATABASE_PUBLIC_URL` in `.env`) **before** deploying. It only adds tables.
+- On its next start the API imports the 7 swimming PDFs from `public/criteria/` (listed in
+  `server/db/criteria-seed.json`). This runs only once, ever: documents deleted in the admin
+  panel are not imported again. The files in `public/criteria/` are no longer used after that.

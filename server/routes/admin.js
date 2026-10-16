@@ -6,6 +6,7 @@ import { adminNewsRouter } from "./adminNews.js";
 import { adminMediaRouter } from "./media.js";
 import { adminCompetitionsRouter } from "./adminCompetitions.js";
 import { adminClubsRouter } from "./adminClubs.js";
+import { adminCriteriaRouter } from "./criteria.js";
 
 const STATUSES = ["pending", "approved", "denied"];
 
@@ -118,6 +119,7 @@ export const adminRouter = (db, auth, { allowedOrigins = [], mailer } = {}) => {
   router.use("/media", adminMediaRouter(db));
   router.use("/competitions", adminCompetitionsRouter(db, { mailer, allowedOrigins }));
   router.use("/clubs", adminClubsRouter(db, auth, { mailer, allowedOrigins }));
+  router.use("/criteria", adminCriteriaRouter(db));
 
   return router;
 };
