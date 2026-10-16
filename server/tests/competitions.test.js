@@ -22,12 +22,15 @@ const submission = (over = {}) => ({
   ...over,
 });
 
-const admin = {
-  get: (url) => request(app).get(url).set("x-test-user", "user_admin"),
-  post: (url, body) => request(app).post(url).set("x-test-user", "user_admin").send(body),
-  put: (url, body) => request(app).put(url).set("x-test-user", "user_admin").send(body),
-  delete: (url) => request(app).delete(url).set("x-test-user", "user_admin"),
-};
+const as = (user) => ({
+  get: (url) => request(app).get(url).set("x-test-user", user),
+  post: (url, body) => request(app).post(url).set("x-test-user", user).send(body),
+  put: (url, body) => request(app).put(url).set("x-test-user", user).send(body),
+  delete: (url) => request(app).delete(url).set("x-test-user", user),
+});
+const admin = as("user_admin");
+const club = as("user_club"); // ПК Делфин Скопје (14)
+const club2 = as("user_club2"); // ПК Младост Скопје (8)
 
 const openWindow = () =>
   admin.put("/api/admin/competitions/window", {
@@ -36,8 +39,8 @@ const openWindow = () =>
     closesAt: new Date(Date.now() + 86_400_000).toISOString(),
   });
 
-const submit = async (over) => {
-  const res = await request(app).post("/api/competitions").send(submission(over));
+const submit = async (over, by = club) => {
+  const res = await by.post("/api/competitions", submission(over));
   expect(res.status).toBe(201);
   return res.body;
 };
@@ -47,8 +50,8 @@ beforeEach(async () => {
 });
 
 describe("validateCompetition", () => {
-  it("requires a listed club, contact details and criteria from clubs", () => {
-    const v = validateCompetition({ ...submission(), clubId: 999, contactEmail: "", criteria: "" });
+  it("requires a club, contact details and criteria from clubs", () => {
+    const v = validateCompetition({ ...submission(), contactEmail: "", criteria: "" });
     expect(v.ok).toBe(false);
     expect(v.errors).toEqual(expect.arrayContaining(["clubId", "contactEmail", "criteria"]));
   });
@@ -70,12 +73,12 @@ describe("validateCompetition", () => {
 
 describe("registration window", () => {
   it("refuses submissions when no window is set or it is closed", async () => {
-    expect((await request(app).post("/api/competitions").send(submission())).status).toBe(403);
+    expect((await club.post("/api/competitions", submission())).status).toBe(403);
     await openWindow();
     await admin.post("/api/admin/competitions/window/close", {});
     const res = await request(app).get("/api/competitions/window");
     expect(res.body.status).toBe("closed");
-    expect((await request(app).post("/api/competitions").send(submission())).status).toBe(403);
+    expect((await club.post("/api/competitions", submission())).status).toBe(403);
   });
   it("reports an open window publicly", async () => {
     await openWindow();
@@ -91,14 +94,24 @@ describe("registration window", () => {
 describe("club submission", () => {
   beforeEach(openWindow);
 
-  it("stores it as pending and emails the club and the federation", async () => {
-    const { id } = await submit();
+  it("needs an approved club account", async () => {
+    expect((await request(app).post("/api/competitions").send(submission())).status).toBe(401);
+    expect((await as("user_regular").post("/api/competitions", submission())).status).toBe(403);
+    expect((await as("user_club_pending").post("/api/competitions", submission())).status).toBe(403);
+    expect(await db.competition.count()).toBe(0);
+  });
+
+  it("stores it as pending for the signed-in club and emails the club and the federation", async () => {
+    // The body names another club; the account's own club wins.
+    const { id } = await submit({ clubId: 8 });
     const c = await db.competition.findUnique({ where: { id } });
-    expect(c).toMatchObject({ status: "pending", clubName: "ПК Делфин Скопје", contactEmail: "ana@example.com" });
+    expect(c).toMatchObject({ status: "pending", clubId: 14, clubName: "ПК Делфин Скопје", contactEmail: "ana@example.com" });
     expect(mailer.sent).toHaveLength(2);
     expect(mailer.sent[0].to).toEqual(["ana@example.com", "aleksandarf@yahoo.com"]);
-    expect(mailer.sent[0].text).toContain(`submit?edit=${c.editToken}`);
+    expect(mailer.sent[0].text).toContain("/club");
+    expect(mailer.sent[0].text).not.toContain(c.editToken);
     expect(mailer.sent[1].to).toEqual(["info@npf.mk"]);
+    expect(mailer.sent[1].text).toContain("delfin@example.com");
   });
 
   it("is not public until approved", async () => {
@@ -107,17 +120,24 @@ describe("club submission", () => {
     expect(res.body.competitions).toEqual([]);
   });
 
-  it("can be edited through the edit link while pending", async () => {
-    const { editToken } = await submit();
-    const view = await request(app).get(`/api/competitions/edit/${editToken}`);
-    expect(view.body).toMatchObject({ canEdit: true, competition: { name: "Delfin Kup", status: "pending" } });
-    const res = await request(app).put(`/api/competitions/edit/${editToken}`).send(submission({ name: "Delfin Cup" }));
+  it("is listed for the club only, and editable while pending", async () => {
+    const { id } = await submit();
+    const mine = await club.get("/api/competitions/mine");
+    expect(mine.body.club).toEqual({ id: 14, name: "ПК Делфин Скопје" });
+    expect(mine.body.competitions).toMatchObject([{ id, name: "Delfin Kup", status: "pending", canEdit: true }]);
+    expect(mine.body.competitions[0]).not.toHaveProperty("editToken");
+    expect((await club2.get("/api/competitions/mine")).body.competitions).toEqual([]);
+
+    const res = await club.put(`/api/competitions/mine/${id}`, submission({ name: "Delfin Cup" }));
     expect(res.status).toBe(200);
     expect((await db.competition.findFirst()).name).toBe("Delfin Cup");
   });
 
-  it("rejects unknown edit links", async () => {
-    expect((await request(app).get("/api/competitions/edit/nope-nope-nope-nope-nope")).status).toBe(404);
+  it("hides other clubs' competitions", async () => {
+    const { id } = await submit();
+    expect((await club2.get(`/api/competitions/mine/${id}`)).status).toBe(404);
+    expect((await club2.put(`/api/competitions/mine/${id}`, submission({ name: "Hijacked" }))).status).toBe(404);
+    expect((await db.competition.findFirst()).name).toBe("Delfin Kup");
   });
 });
 
@@ -126,7 +146,7 @@ describe("admin review", () => {
 
   it("lists pending submissions with overlapping ones", async () => {
     const a = await submit();
-    await submit({ name: "Neptun Kup", clubId: 8, startDate: inDays(61), endDate: inDays(62) });
+    await submit({ name: "Neptun Kup", startDate: inDays(61), endDate: inDays(62) }, club2);
     await submit({ name: "Far away", startDate: inDays(90), endDate: inDays(90) });
     const res = await admin.get("/api/admin/competitions?status=pending");
     expect(res.status).toBe(200);
@@ -149,30 +169,43 @@ describe("admin review", () => {
   });
 
   it("asking for changes needs a message, emails it, and the club's edit sends it back to pending", async () => {
-    const { id, editToken } = await submit();
+    const { id } = await submit();
     expect((await admin.post(`/api/admin/competitions/${id}/changes`, {})).status).toBe(400);
     mailer.sent.length = 0;
     await admin.post(`/api/admin/competitions/${id}/changes`, { message: "Overlaps with Neptun Kup" });
     expect((await db.competition.findUnique({ where: { id } })).status).toBe("changes");
     expect(mailer.sent[0].text).toContain("Overlaps with Neptun Kup");
-    expect(mailer.sent[0].text).toContain(editToken);
+    expect(mailer.sent[0].text).toContain("/club");
 
     // Even with the window closed, the club can still fix it.
     await admin.post("/api/admin/competitions/window/close", {});
-    const view = await request(app).get(`/api/competitions/edit/${editToken}`);
+    const view = await club.get(`/api/competitions/mine/${id}`);
     expect(view.body.canEdit).toBe(true);
     expect(view.body.messages[0].body).toBe("Overlaps with Neptun Kup");
-    await request(app).put(`/api/competitions/edit/${editToken}`).send(submission({ startDate: inDays(70), endDate: inDays(70) }));
+    await club.put(`/api/competitions/mine/${id}`, submission({ startDate: inDays(70), endDate: inDays(70) }));
     expect((await db.competition.findUnique({ where: { id } })).status).toBe("pending");
   });
 
-  it("deny emails the reason and locks the edit link", async () => {
-    const { id, editToken } = await submit();
+  it("deny emails the reason and locks editing", async () => {
+    const { id } = await submit();
     await admin.post(`/api/admin/competitions/${id}/deny`, { message: "Not a sanctioned meet" });
     expect((await db.competition.findUnique({ where: { id } })).status).toBe("denied");
-    const view = await request(app).get(`/api/competitions/edit/${editToken}`);
+    const view = await club.get(`/api/competitions/mine/${id}`);
     expect(view.body.canEdit).toBe(false);
-    expect((await request(app).put(`/api/competitions/edit/${editToken}`).send(submission())).status).toBe(409);
+    expect((await club.put(`/api/competitions/mine/${id}`, submission())).status).toBe(409);
+  });
+
+  it("links an admin's competition to a club when the organizer is a club's name", async () => {
+    const res = await admin.post("/api/admin/competitions", {
+      name: "Delfin Open",
+      clubName: "ПК Делфин Скопје",
+      startDate: "2027-05-01",
+      city: "Скопје",
+      course: "SC",
+    });
+    expect(res.status).toBe(201);
+    expect(await db.competition.findUnique({ where: { id: res.body.id } })).toMatchObject({ clubId: 14 });
+    expect((await club.get("/api/competitions/mine")).body.competitions).toHaveLength(1);
   });
 
   it("admins add approved competitions directly, edit and delete them", async () => {

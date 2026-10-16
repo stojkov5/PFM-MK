@@ -83,15 +83,15 @@ model Media {
   @@map("media")
 }
 
-// A competition in the calendar. Clubs submit them through the public form
-// while the registration window is open; admins review them (and can add
+// A competition in the calendar. Club accounts submit them while the
+// registration window is open; admins review them (and can add
 // their own, which are approved right away). Only approved ones are public.
 model Competition {
   id            Int       @id @default(autoincrement())
   // One of SPORTS in server/lib/competitions.js.
   sport         String    @default("swimming")
   name          String
-  // Organizer. clubId points into src/data/Clubs.json; null when an admin
+  // Organizer. clubId points at a Club; null when an admin
   // typed an organizer that isn't a club (e.g. the federation itself).
   clubId        Int?      @map("club_id")
   clubName      String    @map("club_name")
@@ -116,7 +116,8 @@ model Competition {
   status        String    @default("pending")
   // "club" (public form) or "admin".
   source        String    @default("club")
-  // Secret for the club's edit link (sent by email). Never sent to the public.
+  // Unused since clubs edit from their account (was the emailed edit link's
+  // secret); still required, so new rows get a random one. Never sent out.
   editToken     String    @unique @map("edit_token")
   createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt     DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz()
@@ -154,4 +155,36 @@ model CompetitionWindow {
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz()
 
   @@map("competition_windows")
+}
+
+// Clubs. The federation's original list is copied in from
+// server/db/clubs-seed.json the first time the server starts (see
+// server/lib/clubs.js); clubs that sign up themselves are added as "pending"
+// and become public once an admin approves them.
+model Club {
+  // Not autoincrement: the seeded clubs keep their old ids (club accounts and
+  // competitions point at them), new clubs get max(id) + 1.
+  id        Int      @id
+  name      String
+  city      String   @default("")
+  // e.g. "Пливачки клуб", "Пливачки ватерполо клуб"
+  type      String   @default("")
+  address   String   @default("")
+  email     String   @default("")
+  phone     String   @default("")
+  president String   @default("")
+  // "approved" (public, may register competitions) or "pending" (a sign-up
+  // waiting for an admin).
+  status    String   @default("approved")
+  // The federation's own test club: works like any club but is never public.
+  test      Boolean  @default(false)
+  // What the club wrote to the federation when signing up.
+  note      String   @default("")
+  // Clerk user who signed the club up; null for the federation's list.
+  createdBy String?  @map("created_by")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@index([status])
+  @@map("clubs")
 }

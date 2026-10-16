@@ -25,7 +25,8 @@ import dayjs from "dayjs";
 import { FiAlertTriangle, FiExternalLink, FiPlus } from "react-icons/fi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAdminApi } from "./useAdminApi.js";
-import { CLUB_OPTIONS, COURSES } from "../../lib/competitions.js";
+import { COURSES } from "../../lib/competitions.js";
+import { useClubs } from "../../lib/clubs.js";
 
 const STATUSES = [
   { value: "pending", label: "Pending" },
@@ -215,7 +216,7 @@ const ReviewModal = ({ review, onClose }) => {
         {cfg.help}
       </p>
       <p className="pfm-admin-dim" style={{ marginBottom: 10 }}>
-        Email goes to: {[c.contactEmail, CLUB_OPTIONS.find((o) => o.value === c.clubId)?.email]
+        Email goes to: {[c.contactEmail, c.clubEmail]
           .filter((v, i, a) => v && a.indexOf(v) === i)
           .join(", ") || "— (no email on file)"}
       </p>
@@ -257,28 +258,26 @@ const toFormValues = (c) =>
       }
     : { course: "SC", organizer: "Национална пливачка федерација" };
 
-const toBody = (v) => {
-  const club = CLUB_OPTIONS.find((o) => o.label === v.organizer?.trim());
-  return {
-    sport: "swimming",
-    clubId: club?.value ?? null,
-    clubName: v.organizer,
-    name: v.name,
-    startDate: v.dates[0].format(DAY),
-    endDate: v.dates[1].format(DAY),
-    startTime: v.startTime ? v.startTime.format("HH:mm") : null,
-    city: v.city,
-    venue: v.venue ?? "",
-    course: v.course,
-    entryDeadline: v.entryDeadline ? v.entryDeadline.format(DAY) : null,
-    criteria: v.criteria ?? "",
-    description: v.description ?? "",
-    infoUrl: v.infoUrl || null,
-    contactName: v.contactName ?? "",
-    contactEmail: v.contactEmail ?? "",
-    contactPhone: v.contactPhone ?? "",
-  };
-};
+// The server links the competition to a club when the organizer is a club's
+// exact name.
+const toBody = (v) => ({
+  sport: "swimming",
+  clubName: v.organizer,
+  name: v.name,
+  startDate: v.dates[0].format(DAY),
+  endDate: v.dates[1].format(DAY),
+  startTime: v.startTime ? v.startTime.format("HH:mm") : null,
+  city: v.city,
+  venue: v.venue ?? "",
+  course: v.course,
+  entryDeadline: v.entryDeadline ? v.entryDeadline.format(DAY) : null,
+  criteria: v.criteria ?? "",
+  description: v.description ?? "",
+  infoUrl: v.infoUrl || null,
+  contactName: v.contactName ?? "",
+  contactEmail: v.contactEmail ?? "",
+  contactPhone: v.contactPhone ?? "",
+});
 
 const EditModal = ({ competition, onClose }) => {
   const api = useAdminApi();
@@ -287,6 +286,7 @@ const EditModal = ({ competition, onClose }) => {
   const [form] = Form.useForm();
   const isNew = !competition;
   const required = { required: true, message: "Required" };
+  const { data: clubs } = useClubs();
 
   const save = useMutation({
     mutationFn: (values) =>
@@ -331,7 +331,7 @@ const EditModal = ({ competition, onClose }) => {
           </Form.Item>
           <Form.Item name="organizer" label="Organizer (club or any name)" rules={[required]}>
             <AutoComplete
-              options={CLUB_OPTIONS.map((o) => ({ value: o.label }))}
+              options={(clubs ?? []).map((c) => ({ value: c.name }))}
               filterOption={(input, o) => o.value.toLowerCase().includes(input.toLowerCase())}
             />
           </Form.Item>

@@ -1,11 +1,12 @@
-// src/pages/Admin/useAdminApi.js
+// src/lib/useAuthedApi.js
 import { useMemo } from "react";
 import { useAuth } from "@clerk/react";
-import { apiGet, apiPost, apiPut, apiUpload, apiDelete } from "../../lib/api.js";
+import { apiGet, apiPost, apiPut, apiUpload, apiDelete } from "./api.js";
 
-// API helpers that attach a fresh Clerk session token to every admin request.
+// API helpers that attach a fresh Clerk session token to every request (admin
+// panel, club account pages). Only usable inside the ClerkProvider.
 // getToken() caches and refreshes the short-lived token for us.
-export const useAdminApi = () => {
+export const useAuthedApi = () => {
   const { getToken } = useAuth();
 
   return useMemo(

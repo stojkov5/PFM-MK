@@ -14,7 +14,8 @@
     "db:push": "prisma db push",
     "db:seed-records": "node server/db/seed-records.js",
     "test:server": "vitest run server/tests",
-    "admin:grant": "node server/scripts/grant-admin.js"
+    "admin:grant": "node server/scripts/grant-admin.js",
+    "clubs:create": "node server/scripts/create-club-accounts.js"
   },
   "dependencies": {
     "@clerk/express": "^2.1.77",

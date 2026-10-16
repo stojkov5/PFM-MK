@@ -1,6 +1,5 @@
 // server/lib/competitions.js
 // Validation and shaping of calendar competitions (see the Competition model).
-import { readFileSync } from "node:fs";
 import { randomBytes } from "node:crypto";
 import { isValidProofUrl } from "./validate.js";
 
@@ -9,12 +8,6 @@ export const COURSES = ["SC", "LC", "OW"];
 export const STATUSES = ["pending", "changes", "approved", "denied"];
 // Statuses a club (or an admin) can still change before a final decision.
 export const OPEN_STATUSES = ["pending", "changes"];
-
-// The same list the Clubs page shows, so the form's dropdown and the server agree.
-export const CLUBS = JSON.parse(
-  readFileSync(new URL("../../src/data/Clubs.json", import.meta.url), "utf8")
-);
-export const findClub = (id) => CLUBS.find((c) => c.id === Number(id)) ?? null;
 
 export const pickSport = (v) => (SPORTS.includes(v) ? v : SPORTS[0]);
 
@@ -42,11 +35,12 @@ const text = (v, max) => {
 };
 
 /**
- * Checks a competition from the public form (`admin: false`) or the admin
- * panel (`admin: true`). Clubs must pick a club from the list and give contact
- * details; admins may type any organizer and skip the contact fields.
+ * Checks a competition from a club account (`admin: false`) or the admin
+ * panel (`admin: true`). `club` is the organizing Club (looked up by the
+ * caller): clubs always have one and must give contact details; admins may
+ * type any organizer instead and skip the contact fields.
  */
-export const validateCompetition = (body = {}, { admin = false } = {}) => {
+export const validateCompetition = (body = {}, { admin = false, club = null } = {}) => {
   const errors = [];
   const field = (key, max, required) => {
     const v = text(body[key], max);
@@ -58,7 +52,6 @@ export const validateCompetition = (body = {}, { admin = false } = {}) => {
 
   let clubId = null;
   let clubName = "";
-  const club = findClub(body.clubId);
   if (club) {
     clubId = club.id;
     clubName = club.name;
@@ -164,6 +157,6 @@ export const overlaps = (a, b) =>
 // Where the registration window stands right now.
 export const windowState = (w, now = new Date()) => {
   if (!w) return { status: "none" };
-  const status = now < w.opensAt ? "upcoming" : now > w.closesAt ? "closed" : "open";
+  const status = now < w.opensAt ? "upcoming" : now >= w.closesAt ? "closed" : "open";
   return { status, season: w.season, opensAt: w.opensAt, closesAt: w.closesAt };
 };

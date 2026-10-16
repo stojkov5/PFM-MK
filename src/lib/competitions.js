@@ -1,18 +1,11 @@
 // src/lib/competitions.js
 // Helpers shared by the competition calendar, the submission form and the
 // admin panel. Dates come from the API as "YYYY-MM-DD" calendar days.
-import clubsData from "../data/Clubs.json";
-
 export const COURSES = ["SC", "LC", "OW"];
 
 // Club-type prefix (ПВК / ПСК / ПК) left out where space is short.
 const TYPE_PREFIX = /^(ПВК|ПСК|ПК|PK)\s+/i;
 export const shortClubName = (name = "") => name.trim().replace(TYPE_PREFIX, "");
-
-// All clubs for the organizer dropdown, alphabetical without the prefix.
-export const CLUB_OPTIONS = clubsData
-  .map((c) => ({ value: c.id, label: c.name.trim(), email: c.email, sort: shortClubName(c.name).replace(/^[^\p{L}\p{N}]+/u, "") }))
-  .sort((a, b) => a.sort.localeCompare(b.sort, "mk"));
 
 // "Делфин Скопје" → "ДС"
 export const clubInitials = (name = "") =>

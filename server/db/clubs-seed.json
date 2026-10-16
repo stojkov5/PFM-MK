@@ -298,5 +298,16 @@
     "email": "pkvardar2018@gmail.com",
     "phone": "+38970805002",
     "president": "Ѓорѓе Стаменов"
+  },
+  {
+    "id": 31,
+    "name": "ПК ТЕСТ",
+    "city": "Скопје",
+    "type": "Пливачки клуб",
+    "address": "",
+    "email": "stojkovaleksandar18@gmail.com",
+    "phone": "",
+    "president": "",
+    "test": true
   }
 ]

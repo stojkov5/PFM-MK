@@ -7,7 +7,6 @@ import { Router } from "express";
 import {
   OPEN_STATUSES,
   STATUSES,
-  findClub,
   newEditToken,
   overlaps,
   pickSport,
@@ -23,6 +22,7 @@ import {
   fmtRange,
 } from "../lib/competitionEmails.js";
 import { siteUrl } from "./competitions.js";
+import { findClub, findClubByName } from "../lib/clubs.js";
 
 const MAX_MESSAGE = 3000;
 
@@ -97,10 +97,16 @@ export const adminCompetitionsRouter = (db, { mailer, allowedOrigins = [] } = {}
       where: { competitionId: { in: list.map((c) => c.id) } },
       orderBy: { createdAt: "desc" },
     });
+    const clubs = await db.club.findMany({
+      where: { id: { in: [...new Set(list.map((c) => c.clubId).filter(Boolean))] } },
+      select: { id: true, email: true },
+    });
 
     res.json(
       list.map((c) => ({
         ...toFullDto(c),
+        // The club's official email, which review emails also go to.
+        clubEmail: clubs.find((club) => club.id === c.clubId)?.email || null,
         overlaps: active
           .filter((o) => overlaps(c, o))
           .map((o) => ({ ...toFullDto(o), range: fmtRange(o) })),
@@ -110,8 +116,13 @@ export const adminCompetitionsRouter = (db, { mailer, allowedOrigins = [] } = {}
   });
 
   // Admins add competitions directly to the calendar (approved right away).
+  // The organizer is a club when the admin picked one (clubId) or typed a
+  // club's exact name; otherwise it's free text.
+  const organizerClub = async (body) =>
+    (await findClub(db, body?.clubId)) ?? (await findClubByName(db, body?.clubName));
+
   router.post("/", async (req, res) => {
-    const v = validateCompetition(req.body, { admin: true });
+    const v = validateCompetition(req.body, { admin: true, club: await organizerClub(req.body) });
     if (!v.ok) return res.status(400).json({ error: "Invalid fields", errors: v.errors });
     const created = await db.competition.create({
       data: {
@@ -129,7 +140,7 @@ export const adminCompetitionsRouter = (db, { mailer, allowedOrigins = [] } = {}
   router.put("/:id", async (req, res) => {
     const c = await find(req);
     if (!c) return res.status(404).json({ error: "Not found" });
-    const v = validateCompetition(req.body, { admin: true });
+    const v = validateCompetition(req.body, { admin: true, club: await organizerClub(req.body) });
     if (!v.ok) return res.status(400).json({ error: "Invalid fields", errors: v.errors });
     await db.competition.update({ where: { id: c.id }, data: v.data });
     res.json({ ok: true });
@@ -169,7 +180,7 @@ export const adminCompetitionsRouter = (db, { mailer, allowedOrigins = [] } = {}
       data: { status: action.status, ...reviewedBy(req) },
     });
 
-    const to = clubRecipients(updated, findClub(updated.clubId));
+    const to = clubRecipients(updated, await findClub(db, updated.clubId));
     const emailed =
       to.length > 0 &&
       (await mailer.send({ to, ...action.email(updated, siteUrl(req, allowedOrigins), message) }));

@@ -1,10 +1,12 @@
 // src/pages/Swimming/CompetitionSubmit.jsx
 // Clubs register a competition for the calendar here (/swimming/calendar-national/submit)
-// while the registration window is open. No login: after submitting, the club
-// gets an email with a private edit link (?edit=<token>) that opens this same
-// page pre-filled — used to fix a submission when the federation asks for changes.
+// while the registration window is open. Only approved club accounts can use
+// it, and the organizer is always the signed-in club. ?edit=<id> opens one of
+// the club's own competitions (linked from "My club") to fix it when the
+// federation asks for changes.
 import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { SignInButton, useAuth, useUser } from "@clerk/react";
 import {
   Alert,
   Button,
@@ -14,7 +16,6 @@ import {
   Input,
   Radio,
   Result,
-  Select,
   Spin,
   TimePicker,
 } from "antd";
@@ -24,19 +25,20 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import Reveal from "../../components/fx/Reveal.jsx";
 import { useRegistrationWindow } from "../../components/competitions/hooks.js";
-import { apiGet, apiPost, apiPut } from "../../lib/api.js";
+import { useAuthedApi } from "../../lib/useAuthedApi.js";
 import { antDarkTheme } from "../../lib/antDarkTheme.js";
-import { CLUB_OPTIONS, COURSES } from "../../lib/competitions.js";
+import { CLERK_PUBLISHABLE_KEY, SIGN_UP_REDIRECT } from "../../lib/clerk.js";
+import { COURSES } from "../../lib/competitions.js";
+import { useMyAccount } from "../../lib/useMyAccount.js";
 import "../../components/competitions/competitions.css";
 
 const DAY = "YYYY-MM-DD";
 const fmtWindow = (iso, locale) =>
   new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric" }).format(new Date(iso));
 
-// Form values ⇄ API body
+// Form values ⇄ API body (no clubId: the server uses the signed-in club)
 const toBody = (v) => ({
   sport: "swimming",
-  clubId: v.clubId,
   name: v.name,
   startDate: v.dates[0].format(DAY),
   endDate: v.dates[1].format(DAY),
@@ -54,7 +56,6 @@ const toBody = (v) => ({
 });
 
 const toValues = (c) => ({
-  clubId: c.clubId,
   name: c.name,
   dates: [dayjs(c.startDate), dayjs(c.endDate)],
   startTime: c.startTime ? dayjs(`2000-01-01T${c.startTime}`) : null,
@@ -79,10 +80,69 @@ const BackLink = ({ children }) => (
   </Link>
 );
 
-const CompetitionForm = ({ initial, editToken, onDone }) => {
+const MyClubLink = ({ children }) => (
+  <Link to="/club">
+    <Button>{children}</Button>
+  </Link>
+);
+
+// Only approved club accounts get past this; children receive the club
+// (from /api/account) and the account's email.
+const ClubGate = ({ children }) => {
+  const { t } = useTranslation();
+  const { isLoaded, isSignedIn } = useAuth();
+  const { user } = useUser();
+  const account = useMyAccount();
+
+  if (!isLoaded) return <Spin />;
+  if (!isSignedIn) {
+    return (
+      <Result
+        status="info"
+        title={t("competitions.form.clubOnly.title")}
+        subTitle={t("competitions.form.clubOnly.text")}
+        extra={[
+          <SignInButton key="signin" mode="modal" signUpForceRedirectUrl={SIGN_UP_REDIRECT}>
+            <Button type="primary">{t("competitions.form.clubOnly.signIn")}</Button>
+          </SignInButton>,
+          <BackLink key="back">{t("competitions.form.back")}</BackLink>,
+        ]}
+      />
+    );
+  }
+
+  if (account.isPending) return <Spin />;
+  if (account.isError) return <Result status="error" title={account.error.message} />;
+
+  const club = account.data.club;
+  if (!club) {
+    return (
+      <Result
+        status="warning"
+        title={t("clubAccount.notClub.title")}
+        subTitle={t("clubAccount.notClub.text")}
+        extra={<BackLink>{t("competitions.form.back")}</BackLink>}
+      />
+    );
+  }
+  if (club.status !== "approved" || club.accountStatus !== "approved") {
+    return (
+      <Result
+        status="info"
+        title={t("clubAccount.pending.badge")}
+        subTitle={t("clubAccount.pending.text")}
+        extra={<BackLink>{t("competitions.form.back")}</BackLink>}
+      />
+    );
+  }
+  return children({ club, accountEmail: user.primaryEmailAddress?.emailAddress ?? club.email });
+};
+
+const CompetitionForm = ({ club, accountEmail, initial, editId, onDone }) => {
   const { t } = useTranslation();
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
+  const api = useAuthedApi();
   const required = { required: true, message: t("competitions.form.errors.required") };
 
   useEffect(() => {
@@ -91,11 +151,11 @@ const CompetitionForm = ({ initial, editToken, onDone }) => {
 
   const mutation = useMutation({
     mutationFn: (values) =>
-      editToken
-        ? apiPut(`/api/competitions/edit/${editToken}`, toBody(values))
-        : apiPost("/api/competitions", toBody(values)),
+      editId
+        ? api.put(`/api/competitions/mine/${editId}`, toBody(values))
+        : api.post("/api/competitions", toBody(values)),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["competition-edit", editToken] });
+      queryClient.invalidateQueries({ queryKey: ["club-competitions"] });
       onDone();
     },
     onError: (err) => {
@@ -109,24 +169,13 @@ const CompetitionForm = ({ initial, editToken, onDone }) => {
       form={form}
       layout="vertical"
       requiredMark={false}
-      initialValues={{ course: "SC" }}
-      onValuesChange={(changed) => {
-        // Pre-fill the contact email with the club's email from the clubs list.
-        if (changed.clubId && !form.getFieldValue("contactEmail")) {
-          const club = CLUB_OPTIONS.find((c) => c.value === changed.clubId);
-          if (club?.email) form.setFieldsValue({ contactEmail: club.email });
-        }
-      }}
+      initialValues={{ course: "SC", contactEmail: accountEmail }}
       onFinish={(values) => mutation.mutate(values)}
     >
       <h3 className="pfm-compform-section">{t("competitions.form.sections.event")}</h3>
-      <Form.Item name="clubId" label={t("competitions.form.fields.club")} rules={[required]}>
-        <Select
-          showSearch
-          optionFilterProp="label"
-          options={CLUB_OPTIONS}
-          placeholder={t("competitions.form.fields.clubPlaceholder")}
-        />
+      {/* Not a form field: the server always uses the signed-in club. */}
+      <Form.Item label={t("competitions.form.fields.club")}>
+        <Input value={club.name} disabled />
       </Form.Item>
       <Form.Item name="name" label={t("competitions.form.fields.name")} rules={[required, { max: 200 }]}>
         <Input placeholder={t("competitions.form.fields.namePlaceholder")} />
@@ -240,21 +289,22 @@ const CompetitionForm = ({ initial, editToken, onDone }) => {
         loading={mutation.isPending}
         className="pfm-compform-submit"
       >
-        {editToken ? t("competitions.form.save") : t("competitions.form.submit")} <FiSend />
+        {editId ? t("competitions.form.save") : t("competitions.form.submit")} <FiSend />
       </Button>
     </Form>
   );
 };
 
-// The edit-link view: status, the federation's messages, and the form if
-// the submission can still be changed.
-const EditSubmission = ({ token }) => {
+// One of the club's competitions: status, the federation's messages, and the
+// form if it can still be changed.
+const EditSubmission = ({ id, club, accountEmail }) => {
   const { t, i18n } = useTranslation();
   const locale = i18n.resolvedLanguage ?? "mk";
   const [saved, setSaved] = useState(false);
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["competition-edit", token],
-    queryFn: () => apiGet(`/api/competitions/edit/${encodeURIComponent(token)}`),
+  const api = useAuthedApi();
+  const { data: c, isLoading, error } = useQuery({
+    queryKey: ["club-competitions", id],
+    queryFn: () => api.get(`/api/competitions/mine/${id}`),
     retry: false,
   });
 
@@ -264,7 +314,7 @@ const EditSubmission = ({ token }) => {
       <Result
         status={error.status === 404 ? "404" : "error"}
         title={error.status === 404 ? t("competitions.form.notFound") : error.message}
-        extra={<BackLink>{t("competitions.form.back")}</BackLink>}
+        extra={<MyClubLink>{t("navbar.actions.myClub")}</MyClubLink>}
       />
     );
   }
@@ -278,13 +328,13 @@ const EditSubmission = ({ token }) => {
           <Button key="again" onClick={() => setSaved(false)}>
             {t("competitions.form.saved.again")}
           </Button>,
-          <BackLink key="back">{t("competitions.form.back")}</BackLink>,
+          <MyClubLink key="club">{t("navbar.actions.myClub")}</MyClubLink>,
         ]}
       />
     );
   }
 
-  const { competition: c, messages, canEdit } = data;
+  const { messages, canEdit } = c;
   const statusType = { pending: "info", changes: "warning", approved: "success", denied: "error" }[c.status];
 
   return (
@@ -305,12 +355,20 @@ const EditSubmission = ({ token }) => {
           />
         ))}
       </div>
-      {canEdit && <CompetitionForm initial={c} editToken={token} onDone={() => setSaved(true)} />}
+      {canEdit && (
+        <CompetitionForm
+          club={club}
+          accountEmail={accountEmail}
+          initial={c}
+          editId={id}
+          onDone={() => setSaved(true)}
+        />
+      )}
     </>
   );
 };
 
-const NewSubmission = () => {
+const NewSubmission = ({ club, accountEmail }) => {
   const { t, i18n } = useTranslation();
   const locale = i18n.resolvedLanguage ?? "mk";
   const [done, setDone] = useState(false);
@@ -334,7 +392,7 @@ const NewSubmission = () => {
           >
             {t("competitions.form.success.another")}
           </Button>,
-          <BackLink key="back">{t("competitions.form.back")}</BackLink>,
+          <MyClubLink key="club">{t("navbar.actions.myClub")}</MyClubLink>,
         ]}
       />
     );
@@ -357,15 +415,46 @@ const NewSubmission = () => {
       />
     );
   }
-  return <CompetitionForm key={formKey} onDone={() => setDone(true)} />;
+  return (
+    <CompetitionForm
+      key={formKey}
+      club={club}
+      accountEmail={accountEmail}
+      onDone={() => setDone(true)}
+    />
+  );
 };
 
 const CompetitionSubmit = () => {
   const { t, i18n } = useTranslation();
   const locale = i18n.resolvedLanguage ?? "mk";
   const [params] = useSearchParams();
-  const token = params.get("edit");
+  const editParam = params.get("edit");
+  // Ids only; links from before club accounts carried a long secret token.
+  const editId = /^\d+$/.test(editParam ?? "") ? Number(editParam) : null;
   const { data: w } = useRegistrationWindow();
+
+  let body;
+  if (!CLERK_PUBLISHABLE_KEY) {
+    body = <Result status="warning" title={t("competitions.form.clubOnly.title")} />;
+  } else if (editParam && !editId) {
+    body = (
+      <Result
+        status="info"
+        title={t("competitions.form.oldLink.title")}
+        subTitle={t("competitions.form.oldLink.text")}
+        extra={<MyClubLink>{t("navbar.actions.myClub")}</MyClubLink>}
+      />
+    );
+  } else {
+    body = (
+      <ClubGate>
+        {(props) =>
+          editParam ? <EditSubmission id={editId} {...props} /> : <NewSubmission {...props} />
+        }
+      </ClubGate>
+    );
+  }
 
   return (
     <div className="pfm-compform pt-24">
@@ -373,9 +462,9 @@ const CompetitionSubmit = () => {
         <Reveal>
           <div className="pfm-compcal-kicker">{t("competitions.form.kicker")}</div>
           <h2 className="pfm-compcal-title">
-            {token ? t("competitions.form.editTitle") : t("competitions.form.title")}
+            {editParam ? t("competitions.form.editTitle") : t("competitions.form.title")}
           </h2>
-          {!token && w?.status === "open" && (
+          {!editParam && w?.status === "open" && (
             <p className="pfm-compform-sub">
               {t("competitions.form.subtitle", { season: w.season, date: fmtWindow(w.closesAt, locale) })}
             </p>
@@ -385,7 +474,7 @@ const CompetitionSubmit = () => {
         <Reveal delay={0.1}>
           <div className="pfm-compform-card">
             <ConfigProvider theme={antDarkTheme}>
-              {token ? <EditSubmission token={token} /> : <NewSubmission />}
+              {body}
             </ConfigProvider>
           </div>
         </Reveal>

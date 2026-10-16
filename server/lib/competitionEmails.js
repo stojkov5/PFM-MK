@@ -30,7 +30,7 @@ const summaryLines = (c) => [
 
 // Builds { subject, text, html } from paragraphs. A paragraph is a string or
 // { quote } for the admin's own words, or { link, label }.
-const compose = (subject, paragraphs) => {
+export const compose = (subject, paragraphs) => {
   const all = [...paragraphs, `Поздрав,\n${SIGNATURE}`];
   const text = all
     .map((p) =>
@@ -53,18 +53,19 @@ const compose = (subject, paragraphs) => {
   };
 };
 
-const editLink = (site, c) => `${site}/swimming/calendar-national/submit?edit=${c.editToken}`;
+// The club account's page, where the club sees its competitions and edits them.
+const clubPageLink = (site) => ({ link: `${site}/club`, label: "Отвори ја страницата „Мој клуб“" });
 
 export const submittedEmail = (c, site) =>
   compose(`Пријавата за „${c.name}“ е примена`, [
     "Почитувани,",
     "Ја примивме пријавата на вашиот натпревар за календарот. Федерацијата ќе ја разгледа и ќе ве извести по е-пошта кога ќе биде одобрена.",
     summaryLines(c).join("\n"),
-    "Додека пријавата чека на одобрување, можете да ја измените на следниот линк (не го споделувајте):",
-    { link: editLink(site, c), label: "Измени ја пријавата" },
+    "Додека пријавата чека на одобрување, можете да ја измените на страницата „Мој клуб“ (најавете се со сметката на клубот):",
+    clubPageLink(site),
   ]);
 
-export const federationNoticeEmail = (c, site, { updated = false } = {}) =>
+export const federationNoticeEmail = (c, site, { updated = false, by = null } = {}) =>
   compose(
     `${updated ? "Изменета пријава" : "Нова пријава"} за календарот: ${c.name} (${c.clubName})`,
     [
@@ -74,6 +75,7 @@ export const federationNoticeEmail = (c, site, { updated = false } = {}) =>
       [
         ...summaryLines(c),
         `Контакт: ${[c.contactName, c.contactEmail, c.contactPhone].filter(Boolean).join(", ")}`,
+        ...(by ? [`Пријавено од сметката: ${by}`] : []),
       ].join("\n"),
       { link: `${site}/admin`, label: "Отвори го админ панелот" },
     ]
@@ -94,8 +96,8 @@ export const changesEmail = (c, site, note) =>
     "Федерацијата ја разгледа вашата пријава и бара измени пред да ја одобри:",
     { quote: note },
     summaryLines(c).join("\n"),
-    "Изменете ја пријавата на следниот линк. Откако ќе ја зачувате, повторно ќе ја разгледаме.",
-    { link: editLink(site, c), label: "Измени ја пријавата" },
+    "Изменете ја пријавата на страницата „Мој клуб“ (најавете се со сметката на клубот). Откако ќе ја зачувате, повторно ќе ја разгледаме.",
+    clubPageLink(site),
     "Ако имате прашања, само одговорете на оваа порака.",
   ]);
 

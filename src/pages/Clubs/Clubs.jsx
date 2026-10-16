@@ -12,7 +12,7 @@ import {
 } from "react-icons/fi";
 import { TbSwimming, TbWaterpolo } from "react-icons/tb";
 import { useTranslation } from "react-i18next";
-import clubsData from "../../data/Clubs.json";
+import { useClubs } from "../../lib/clubs.js";
 import Reveal from "../../components/fx/Reveal.jsx";
 import "./Clubs.css";
 
@@ -97,17 +97,18 @@ const Clubs = () => {
   const [city, setCity] = useState("all");
   const [tab, setTab] = useState(GROUPS[0].key);
   const [openId, setOpenId] = useState(null); // id of the expanded club
+  const { data: clubsData, isLoading, isError } = useClubs();
 
   const clubs = useMemo(
     () =>
-      clubsData
+      (clubsData ?? [])
         .map((club) => ({ ...club, displayName: displayName(club) }))
         .sort((a, b) =>
           sortKey(a.displayName).localeCompare(sortKey(b.displayName), "mk", {
             sensitivity: "base",
           })
         ),
-    []
+    [clubsData]
   );
 
   const cities = useMemo(() => {
@@ -218,7 +219,9 @@ const Clubs = () => {
             ))}
           </ol>
         ) : (
-          <p className="pfm-clubs-empty">{t("clubs.empty")}</p>
+          <p className="pfm-clubs-empty">
+            {isLoading ? "…" : isError ? t("clubs.loadError") : t("clubs.empty")}
+          </p>
         )}
       </div>
     </div>

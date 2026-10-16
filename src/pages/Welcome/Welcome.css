@@ -1,0 +1,64 @@
+/* /welcome — choosing the account type. Header styles come from Clubs.css. */
+
+.pfm-welcome-choices {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.pfm-welcome-choice {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 24px;
+  border-radius: 18px;
+  background: rgba(2, 6, 23, 0.55);
+  border: 1px solid var(--clubs-line);
+  color: #ffffff;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.pfm-welcome-choice:hover:not(:disabled) {
+  border-color: var(--clubs-accent);
+  background: rgba(56, 189, 248, 0.08);
+  transform: translateY(-2px);
+}
+
+.pfm-welcome-choice:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.pfm-welcome-choice-icon {
+  display: inline-flex;
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(56, 189, 248, 0.14);
+  color: var(--clubs-accent);
+  font-size: 1.4rem;
+}
+
+.pfm-welcome-choice-title {
+  font-weight: 900;
+  font-size: 1.2rem;
+}
+
+.pfm-welcome-choice-text {
+  color: var(--clubs-muted);
+  line-height: 1.6;
+}
+
+.pfm-welcome .pfm-compform-card {
+  margin-top: 28px;
+}
+
+.pfm-welcome-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+}

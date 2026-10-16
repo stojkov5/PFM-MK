@@ -1,0 +1,156 @@
+/* /club — a club account's page. Builds on the header styles in Clubs.css. */
+
+.pfm-clubacc-badge {
+  display: inline-flex;
+  margin-top: 22px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  background: rgba(34, 197, 94, 0.14);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #86efac;
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+
+.pfm-clubacc-badge.is-pending {
+  background: rgba(250, 204, 21, 0.12);
+  border-color: rgba(250, 204, 21, 0.3);
+  color: #fde68a;
+}
+
+.pfm-clubacc-card {
+  margin-top: 28px;
+  padding: 22px;
+  border-radius: 18px;
+  background: rgba(2, 6, 23, 0.55);
+  border: 1px solid var(--clubs-line);
+}
+
+.pfm-clubacc-h {
+  margin: 0 0 16px;
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 1.15rem;
+}
+
+.pfm-clubacc-note {
+  margin: 16px 0 0;
+  color: var(--clubs-muted);
+  font-size: 0.9rem;
+}
+
+.pfm-clubacc-actions {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.pfm-clubacc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border-radius: 9999px;
+  border: 1px solid var(--clubs-line);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 180ms ease;
+}
+
+.pfm-clubacc-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.pfm-clubacc-btn.is-primary {
+  background: var(--clubs-accent);
+  border-color: var(--clubs-accent);
+  color: #020617;
+}
+
+.pfm-clubacc-btn.is-primary:hover {
+  background: #7dd3fc;
+}
+
+.pfm-clubacc-btn.is-small {
+  padding: 8px 14px;
+  font-size: 0.88rem;
+}
+
+/* The club's competitions */
+.pfm-clubacc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pfm-clubacc-comp {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--clubs-line);
+}
+
+.pfm-clubacc-comp-main {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+.pfm-clubacc-comp-name {
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.pfm-clubacc-comp-meta {
+  margin-top: 2px;
+  color: var(--clubs-muted);
+  font-size: 0.9rem;
+}
+
+.pfm-clubacc-comp-msg {
+  margin: 8px 0 0;
+  color: #fde68a;
+  font-size: 0.9rem;
+  white-space: pre-line;
+}
+
+.pfm-clubacc-status {
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  border: 1px solid transparent;
+}
+
+.pfm-clubacc-status.is-pending {
+  background: rgba(56, 189, 248, 0.12);
+  border-color: rgba(56, 189, 248, 0.3);
+  color: #7dd3fc;
+}
+
+.pfm-clubacc-status.is-changes {
+  background: rgba(250, 204, 21, 0.12);
+  border-color: rgba(250, 204, 21, 0.3);
+  color: #fde68a;
+}
+
+.pfm-clubacc-status.is-approved {
+  background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(34, 197, 94, 0.3);
+  color: #86efac;
+}
+
+.pfm-clubacc-status.is-denied {
+  background: rgba(248, 113, 113, 0.12);
+  border-color: rgba(248, 113, 113, 0.3);
+  color: #fca5a5;
+}

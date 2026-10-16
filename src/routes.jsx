@@ -32,6 +32,8 @@ import News from "./pages/News/News.jsx";
 import NewsArticle from "./pages/News/NewsArticle.jsx";
 import CalendarHub from "./pages/Calendar/CalendarHub.jsx";
 import Clubs from "./pages/Clubs/Clubs.jsx";
+import ClubAccount from "./pages/ClubAccount/ClubAccount.jsx";
+import Welcome from "./pages/Welcome/Welcome.jsx";
 import AboutPage from "./pages/About/AboutPage.jsx";
 import StructurePage from "./pages/About/StructurePage.jsx";
 import PartnersPage from "./pages/About/PartnersPage.jsx";
@@ -110,6 +112,10 @@ export const router = createBrowserRouter([
       { path: "about/partners", element: <PartnersPage /> },
       // CLUBS (swimming + water polo)
       { path: "clubs", element: <Clubs /> },
+      // A club account's own page ("My club" in the navbar's account menu).
+      { path: "club", element: <ClubAccount /> },
+      // After sign-up: choose swimmer / player or club (see SIGN_UP_REDIRECT).
+      { path: "welcome", element: <Welcome /> },
       // DOCUMENTS
       { path: "documents", element: <Documents /> }
     ],

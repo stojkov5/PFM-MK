@@ -6,6 +6,7 @@ import express from "express";
 import { fileURLToPath } from "node:url";
 import { createApp } from "./app.js";
 import { createPrisma } from "./db/client.js";
+import { ensureClubs } from "./lib/clubs.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -18,6 +19,9 @@ if (missingClerk.length) {
 }
 
 const db = createPrisma();
+// First start after the clubs table was added: copy in the federation's list.
+const seeded = await ensureClubs(db);
+if (seeded) console.log(`[pfm] Added ${seeded} clubs to the clubs table.`);
 const app = createApp(db);
 
 // Serve the built SPA only if a build is present. When the frontend is hosted

@@ -37,7 +37,9 @@
       "changeLanguage": "Change language",
       "language": "Language",
       "signIn": "Sign in or register",
-      "adminPanel": "Admin panel"
+      "adminPanel": "Admin panel",
+      "myClub": "My club",
+      "chooseAccountType": "Choose account type"
     },
     "sports": {
       "swimming": {
@@ -217,7 +219,8 @@
       "president": "President",
       "email": "Email"
     },
-    "note": "The list is shown from a separate data file so the component stays clean and easier to maintain."
+    "note": "The list is shown from a separate data file so the component stays clean and easier to maintain.",
+    "loadError": "Couldn’t load the clubs. Please try again."
   },
   "calendar": {
     "kicker": "Calendar",
@@ -732,7 +735,7 @@
       "back": "Back to the calendar",
       "success": {
         "title": "Competition submitted",
-        "text": "We've emailed you a confirmation with a private link for editing it. The federation will let you know by email once it's reviewed.",
+        "text": "The federation will review it and let you know by email. You can follow its status and edit it on the “My club” page.",
         "another": "Add another competition"
       },
       "saved": {
@@ -753,7 +756,7 @@
       },
       "messageFromFederation": "Message from the federation",
       "locked": "This submission has been reviewed and can't be edited any more. Reply to the federation's email if something needs to change.",
-      "notFound": "This edit link isn't valid.",
+      "notFound": "Competition not found.",
       "errors": {
         "required": "This field is required",
         "email": "Enter a valid email address",
@@ -762,6 +765,15 @@
         "invalid": "Check this field",
         "checkFields": "Some fields need fixing — see the highlighted fields.",
         "submitFailed": "Submission failed. Please try again."
+      },
+      "clubOnly": {
+        "title": "Clubs only",
+        "text": "Only clubs can register competitions, using the account they received from the federation. Sign in with your club’s email and password.",
+        "signIn": "Club sign-in"
+      },
+      "oldLink": {
+        "title": "This link is no longer used",
+        "text": "Submissions are now edited from the club account. Sign in and open “My club”."
       }
     }
   },
@@ -774,5 +786,80 @@
     "follow": "Follow us",
     "rights": "All rights reserved.",
     "backToTop": "Back to top"
+  },
+  "clubAccount": {
+    "kicker": "Club account",
+    "subtitle": "This is your club’s account on the federation website.",
+    "approvedBadge": "✓ Verified club account",
+    "detailsTitle": "Club details",
+    "detailsNote": "If any of these details are wrong, write to info@npf.mk.",
+    "submitCompetition": "Register a competition",
+    "changePassword": "Change password",
+    "signedOut": {
+      "title": "Club sign-in",
+      "text": "Sign in with the email and password you received from the federation.",
+      "button": "Sign in"
+    },
+    "notClub": {
+      "title": "This isn’t a club account",
+      "text": "You’re signed in with an account that isn’t linked to a club. If you represent a club, contact info@npf.mk."
+    },
+    "pending": {
+      "badge": "Waiting for approval",
+      "text": "This account was registered as a club and is waiting for an admin to approve it."
+    },
+    "competitions": {
+      "title": "Club competitions",
+      "empty": "Your club hasn’t registered any competitions yet.",
+      "edit": "Edit",
+      "view": "View"
+    }
+  },
+  "welcome": {
+    "kicker": "New account",
+    "title": "Welcome! What is this account for?",
+    "subtitle": "Choose whether you are a swimmer / water polo player or are opening the account for a club.",
+    "back": "Back",
+    "athlete": {
+      "title": "Swimmer / player",
+      "text": "A personal account for athletes, coaches and parents."
+    },
+    "clubChoice": {
+      "title": "Club",
+      "text": "An account for a club: register competitions in the calendar. The federation approves every new club account."
+    },
+    "athleteDone": {
+      "title": "Your account is ready",
+      "text": "Your account is set up as a swimmer / player account.",
+      "home": "Go to the home page"
+    },
+    "signedOut": {
+      "title": "Create an account",
+      "text": "Sign in or register to continue.",
+      "button": "Sign in or register"
+    },
+    "club": {
+      "title": "Register a club",
+      "text": "Enter your club’s details. The federation will check them and let you know by email. Once approved, the club appears on the Clubs page and can register competitions.",
+      "alreadyListed": "If your club is already on the Clubs page, don’t register it again — write to info@npf.mk and we’ll send you the club’s login.",
+      "sections": {
+        "club": "Club",
+        "contact": "Contact"
+      },
+      "fields": {
+        "name": "Club name",
+        "namePlaceholder": "e.g. PK Delfin Skopje",
+        "type": "Club type",
+        "city": "City",
+        "address": "Address",
+        "president": "President",
+        "email": "Club email",
+        "phone": "Phone",
+        "note": "Message to the federation (optional)",
+        "notePlaceholder": "e.g. registration number, since when the club exists…"
+      },
+      "submit": "Send for approval",
+      "nameTaken": "A club with this name already exists. If it’s yours, write to info@npf.mk to get its login."
+    }
   }
 }

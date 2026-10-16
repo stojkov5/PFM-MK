@@ -112,10 +112,22 @@ trailing slash), or the frontend and API using keys from different Clerk instanc
 
 ## Swimming calendar (club submissions)
 - Clubs submit competitions at `/swimming/calendar-national/submit` — only while the
-  registration period set in `/admin` → **Swimming calendar** is open. No login: each
-  submission gets a private edit link that is emailed to the club.
+  registration period set in `/admin` → **Swimming calendar** is open, and only when
+  signed in with an approved **club account** (the organizer is always their own club).
+  They follow and edit their submissions on `/club` ("My club" in the account menu).
+- Club accounts: `npm run clubs:create` creates a Clerk login for every approved club
+  in the database (passwords go to the git-ignored `club-accounts/` folder).
+  Options: `--only 4,7`, `--dry-run`, `--only 4 --new-password`. Run it against the
+  Clerk instance the live site uses (production keys → new accounts there).
 - Admins approve / ask for changes / deny in `/admin`. Each action emails the club
-  (the contact email from the form + the club's email from `src/data/Clubs.json`).
+  (the contact email from the form + the club's email from the clubs table).
+- **Clubs** live in the `clubs` table (added with club sign-ups): run `npm run db:push`
+  once (with the Railway `DATABASE_PUBLIC_URL` in `.env`) **before** deploying that code.
+  On its first start the API copies the original list from `server/db/clubs-seed.json`
+  into the table; after that, edit clubs in the database (`npx prisma studio`), not in
+  the JSON file (or in `/admin` → **Clubs** → Edit). Clubs that sign up on `/welcome`
+  are added as "pending" and only show on the Clubs page once approved in `/admin` →
+  **Clubs**; rejecting one deletes the club and the Clerk account that signed it up.
 - Tables `competitions`, `competition_messages`, `competition_windows` were added after
   the first deploy: run `npm run db:push` once (with the Railway `DATABASE_PUBLIC_URL`
   in `.env`) **before** deploying this code. It only adds tables.

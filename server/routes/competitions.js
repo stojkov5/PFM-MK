@@ -1,11 +1,11 @@
 // server/routes/competitions.js
-// Public calendar API: the approved competitions, the registration window,
-// and the clubs' submission form (no login — each submission gets a secret
-// edit link that is emailed to the club).
+// Calendar API: the approved competitions and the registration window are
+// public; submitting and editing competitions needs an approved club account
+// (see middleware/requireClub.js), which only ever acts for its own club.
 import { Router } from "express";
+import { requireClub } from "../middleware/requireClub.js";
 import {
   OPEN_STATUSES,
-  findClub,
   newEditToken,
   pickSport,
   toFullDto,
@@ -31,8 +31,12 @@ export const siteUrl = (req, allowedOrigins = []) => {
   return "https://npf.mk";
 };
 
-export const competitionsRouter = (db, { mailer, allowedOrigins = [], writeLimit = noLimit } = {}) => {
+export const competitionsRouter = (
+  db,
+  { auth, mailer, allowedOrigins = [], writeLimit = noLimit } = {}
+) => {
   const router = Router();
+  const clubOnly = [auth.middleware, requireClub(auth, db)];
 
   const currentWindow = async (sport) =>
     windowState(await db.competitionWindow.findUnique({ where: { sport } }));
@@ -55,60 +59,90 @@ export const competitionsRouter = (db, { mailer, allowedOrigins = [], writeLimit
     res.json(await currentWindow(pickSport(req.query.sport)));
   });
 
-  router.post("/", writeLimit, async (req, res) => {
+  router.post("/", writeLimit, ...clubOnly, async (req, res) => {
     const sport = pickSport(req.body?.sport);
     const window = await currentWindow(sport);
     if (window.status !== "open") {
       return res.status(403).json({ error: "Registration is closed", window });
     }
 
-    const v = validateCompetition(req.body);
+    // The organizer is always the signed-in club, whatever the body says.
+    const v = validateCompetition(req.body, { club: req.club });
     if (!v.ok) return res.status(400).json({ error: "Invalid fields", errors: v.errors });
 
     const created = await db.competition.create({
+      // editToken is no longer used (clubs edit from their account) but the
+      // column is required and unique, so every row still gets one.
       data: { ...v.data, sport, status: "pending", source: "club", editToken: newEditToken() },
     });
 
     const site = siteUrl(req, allowedOrigins);
     await Promise.all([
-      mailer.send({ to: clubRecipients(created, findClub(created.clubId)), ...submittedEmail(created, site) }),
-      mailer.send({ to: mailer.federation, ...federationNoticeEmail(created, site) }),
+      mailer.send({ to: clubRecipients(created, req.club), ...submittedEmail(created, site) }),
+      mailer.send({
+        to: mailer.federation,
+        ...federationNoticeEmail(created, site, { by: req.clubUser.email }),
+      }),
     ]);
-    res.status(201).json({ id: created.id, editToken: created.editToken });
+    res.status(201).json({ id: created.id });
   });
 
-  // --- The club's edit link -------------------------------------------------
-
-  const byToken = (token) =>
-    typeof token === "string" && token.length >= 20
-      ? db.competition.findUnique({ where: { editToken: token } })
-      : null;
+  // --- The club's own competitions -------------------------------------------
 
   // Clubs can edit while the admin asks for changes, or while it's still
   // pending and the window is open. Decided submissions are read-only.
   const canEdit = (c, window) =>
     c.status === "changes" || (c.status === "pending" && window.status === "open");
 
-  router.get("/edit/:token", async (req, res) => {
-    const c = await byToken(req.params.token);
-    if (!c) return res.status(404).json({ error: "Not found" });
-    const window = await currentWindow(c.sport);
+  const withReview = async (list) => {
     const messages = await db.competitionMessage.findMany({
-      where: { competitionId: c.id },
+      where: { competitionId: { in: list.map((c) => c.id) } },
       orderBy: { createdAt: "desc" },
-      select: { kind: true, body: true, createdAt: true },
+      select: { competitionId: true, kind: true, body: true, createdAt: true },
     });
-    res.json({ competition: toFullDto(c), messages, canEdit: canEdit(c, window), window });
+    const windows = new Map();
+    for (const sport of new Set(list.map((c) => c.sport))) windows.set(sport, await currentWindow(sport));
+    return list.map((c) => ({
+      ...toFullDto(c),
+      canEdit: canEdit(c, windows.get(c.sport)),
+      messages: messages
+        .filter((m) => m.competitionId === c.id)
+        .map(({ kind, body, createdAt }) => ({ kind, body, createdAt })),
+    }));
+  };
+
+  const findOwn = (req) => {
+    const id = Number(req.params.id);
+    return Number.isInteger(id)
+      ? db.competition.findFirst({ where: { id, clubId: req.club.id } })
+      : null;
+  };
+
+  // Everything the club has submitted (and what admins added for it), newest
+  // dates first.
+  router.get("/mine", ...clubOnly, async (req, res) => {
+    const list = await db.competition.findMany({
+      where: { clubId: req.club.id },
+      orderBy: [{ startDate: "desc" }, { id: "desc" }],
+    });
+    res.json({ club: { id: req.club.id, name: req.club.name }, competitions: await withReview(list) });
   });
 
-  router.put("/edit/:token", writeLimit, async (req, res) => {
-    const c = await byToken(req.params.token);
+  router.get("/mine/:id", ...clubOnly, async (req, res) => {
+    const c = await findOwn(req);
+    if (!c) return res.status(404).json({ error: "Not found" });
+    const [competition] = await withReview([c]);
+    res.json(competition);
+  });
+
+  router.put("/mine/:id", writeLimit, ...clubOnly, async (req, res) => {
+    const c = await findOwn(req);
     if (!c) return res.status(404).json({ error: "Not found" });
     if (!OPEN_STATUSES.includes(c.status) || !canEdit(c, await currentWindow(c.sport))) {
       return res.status(409).json({ error: "This submission can no longer be edited" });
     }
 
-    const v = validateCompetition(req.body);
+    const v = validateCompetition(req.body, { club: req.club });
     if (!v.ok) return res.status(400).json({ error: "Invalid fields", errors: v.errors });
 
     const updated = await db.competition.update({
@@ -117,7 +151,10 @@ export const competitionsRouter = (db, { mailer, allowedOrigins = [], writeLimit
     });
     await mailer.send({
       to: mailer.federation,
-      ...federationNoticeEmail(updated, siteUrl(req, allowedOrigins), { updated: true }),
+      ...federationNoticeEmail(updated, siteUrl(req, allowedOrigins), {
+        updated: true,
+        by: req.clubUser.email,
+      }),
     });
     res.json({ ok: true });
   });

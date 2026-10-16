@@ -8,6 +8,8 @@ import { adminRouter } from "./routes/admin.js";
 import { newsRouter } from "./routes/news.js";
 import { mediaRouter } from "./routes/media.js";
 import { competitionsRouter } from "./routes/competitions.js";
+import { clubsRouter } from "./routes/clubs.js";
+import { accountRouter } from "./routes/account.js";
 import { createMailer } from "./lib/mailer.js";
 import { createClerkAuth } from "./auth/clerk.js";
 
@@ -56,7 +58,12 @@ export const createApp = (
   app.use("/api/applications", limiter(60 * 60 * 1000, 5), applicationsRouter(db));
   app.use(
     "/api/competitions",
-    competitionsRouter(db, { mailer, allowedOrigins, writeLimit: limiter(60 * 60 * 1000, 20) })
+    competitionsRouter(db, { auth, mailer, allowedOrigins, writeLimit: limiter(60 * 60 * 1000, 20) })
+  );
+  app.use("/api/clubs", clubsRouter(db));
+  app.use(
+    "/api/account",
+    accountRouter(db, auth, { mailer, allowedOrigins, writeLimit: limiter(60 * 60 * 1000, 10) })
   );
   app.use("/api/admin", limiter(60 * 1000, 120), adminRouter(db, auth, { allowedOrigins, mailer }));
 
