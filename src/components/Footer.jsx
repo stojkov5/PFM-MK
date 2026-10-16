@@ -11,13 +11,13 @@ import "./Footer.css";
 
 // ✅ Replace with real info later
 const CONTACT = {
-  email: "info@pfm.mk",
+  email: "info@npf.mk",
   phone: "+389 XX XXX XXX",
 };
 
 const SOCIALS = [
-  { key: "facebook", label: "Facebook", href: "https://facebook.com", Icon: FaFacebookF },
-  { key: "instagram", label: "Instagram", href: "https://instagram.com", Icon: FaInstagram },
+  { key: "facebook", label: "Facebook", href: "https://www.facebook.com/profile.php?id=61574990019250", Icon: FaFacebookF },
+  { key: "instagram", label: "Instagram", href: "https://www.instagram.com/nacionalna_plivacka_federacija/", Icon: FaInstagram },
 ];
 
 const ContactItem = ({ icon, label, value, href }) => {
