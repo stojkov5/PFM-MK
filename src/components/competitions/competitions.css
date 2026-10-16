@@ -499,3 +499,15 @@
 .pfm-compform-picker {
   width: 100%;
 }
+
+/* Buttons under a result message (e.g. "Clubs only") keep a gap when they wrap. */
+.pfm-compform-card .ant-result-extra {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.pfm-compform-card .ant-result-extra > * {
+  margin: 0 !important;
+}

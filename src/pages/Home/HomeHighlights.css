@@ -8,6 +8,18 @@
   width: 100%;
 }
 
+/* The news and events cards side by side get the same height. */
+.pfm-card-reveal {
+  height: 100%;
+}
+
+.pfm-card-news,
+.pfm-card-events {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 /* Dark glass card */
 .pfm-card {
   border-radius: 26px;
@@ -119,62 +131,71 @@
   font-weight: 800;
 }
 
-/* TABLE styling */
-.pfm-table {
-  margin-top: 6px;
-  overflow-x:auto !important;
+/* Upcoming events list */
+.pfm-events-list {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.pfm-table .ant-table {
-  background: transparent !important;
-  color: rgba(255, 255, 255, 0.86) !important;
+.pfm-event-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.04);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 180ms ease, border-color 180ms ease;
 }
 
-.pfm-table .ant-table-container {
-  background: transparent !important;
+.pfm-event-item:hover {
+  background: rgba(56, 189, 248, 0.10);
+  border-color: rgba(56, 189, 248, 0.25);
 }
 
-.pfm-table .ant-table-thead > tr > th {
-  background: transparent !important;
-  color: rgba(255, 255, 255, 0.70) !important;
-  font-weight: 900 !important;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-size: 0.72rem !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14) !important;
-}
-
-.pfm-table .ant-table-tbody > tr > td {
-  background: transparent !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.10) !important;
-  color: rgba(255, 255, 255, 0.82) !important;
-}
-
-.pfm-table-row:hover td {
-  background: rgba(56, 189, 248, 0.10) !important;
-}
-
-.pfm-table-date {
-  font-weight: 900;
+.pfm-event-date {
+  flex: 0 0 auto;
+  min-width: 76px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: rgba(37, 99, 235, 0.18);
   color: rgba(255, 255, 255, 0.92);
+  font-weight: 900;
+  font-size: 0.82rem;
+  text-align: center;
+  text-transform: capitalize;
 }
 
-.pfm-table-event {
-  color: rgba(255, 255, 255, 0.80);
+.pfm-event-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.pfm-tag {
-  border-radius: 9999px !important;
-  padding: 0.2rem 0.5rem !important;
-  font-weight: 900 !important;
-  background: rgba(37, 99, 235, 0.18) !important;
-  color: rgba(255, 255, 255, 0.88) !important;
-  border: 1px solid rgba(37, 99, 235, 0.18) !important;
+.pfm-event-name {
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.pfm-event-meta {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
 }
 
 /* footer button */
 .pfm-events-foot {
-  margin-top: 14px;
+  margin-top: auto;
+  padding-top: 14px;
 }
 
 .pfm-btn-outline {

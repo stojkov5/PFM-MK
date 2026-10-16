@@ -263,7 +263,10 @@
     "status": {
       "tbc": "TBC",
       "ok": "OK"
-    }
+    },
+    "waterpoloNationalTitle": "Ватерполо – национален календар",
+    "distanceSwimmingTitle": "Календар за далечинско пливање",
+    "noEventsMonth": "Нема настани овој месец."
   },
   "records": {
     "kicker": "Рекорди",

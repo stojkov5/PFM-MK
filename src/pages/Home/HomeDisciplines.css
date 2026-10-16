@@ -123,13 +123,18 @@
 .pfm-discipline-actions {
   margin-top: 16px;
   display: grid;
+  /* minmax(0, …) lets long button labels wrap instead of widening the card */
+  grid-template-columns: minmax(0, 1fr);
   gap: 10px;
 }
 
 .pfm-discipline-primary {
   border-radius: 9999px !important;
-  height: 44px !important;
-  padding: 0 18px !important;
+  height: auto !important;
+  min-height: 44px;
+  padding: 8px 18px !important;
+  white-space: normal !important;
+  text-align: center;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -139,8 +144,11 @@
 
 .pfm-discipline-ghost {
   border-radius: 9999px !important;
-  height: 44px !important;
-  padding: 0 18px !important;
+  height: auto !important;
+  min-height: 44px;
+  padding: 8px 18px !important;
+  white-space: normal !important;
+  text-align: center;
 
   border: 1px solid rgba(255, 255, 255, 0.18) !important;
   background: rgba(255, 255, 255, 0.10) !important;

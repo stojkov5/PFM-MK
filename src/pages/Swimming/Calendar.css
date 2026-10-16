@@ -137,6 +137,7 @@
 .pfm-schedule-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
   min-width: 980px;
 }
 
@@ -159,6 +160,7 @@
 }
 
 .pfm-schedule-table tbody td {
+  overflow-wrap: anywhere;
   padding: 10px 10px;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -248,5 +250,73 @@
     min-width: 50px;
     padding: 5px 8px;
     font-size: 0.72rem;
+  }
+}
+/* Phones and portrait tablets: the month's events as cards instead of the
+   wide week table (see components/ScheduleCalendar.jsx). */
+.pfm-schedule-cards,
+.pfm-schedule-none {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  .pfm-schedule-table-wrap {
+    display: none;
+  }
+
+  .pfm-schedule-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pfm-schedule-none {
+    display: block;
+    margin: 0;
+    padding: 12px 14px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.88rem;
+  }
+
+  .pfm-schedule-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .pfm-schedule-card + .pfm-schedule-card {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .pfm-schedule-card-when {
+    color: #7dd3fc;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .pfm-schedule-card-name {
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 1rem;
+    overflow-wrap: anywhere;
+  }
+
+  .pfm-schedule-card-meta {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.88rem;
+  }
+
+  .pfm-schedule-card-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
   }
 }

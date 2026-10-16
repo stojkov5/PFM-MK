@@ -249,7 +249,10 @@
     "status": {
       "tbc": "TBC",
       "ok": "OK"
-    }
+    },
+    "waterpoloNationalTitle": "Water polo – national calendar",
+    "distanceSwimmingTitle": "Distance swimming calendar",
+    "noEventsMonth": "No events this month."
   },
   "records": {
     "kicker": "Records",

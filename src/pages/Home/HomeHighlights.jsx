@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Button, Table, Tag } from "antd";
+import { Row, Col, Button } from "antd";
 import { FiArrowRight, FiCalendar, FiBell } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -7,6 +7,8 @@ import { useQuery } from "@tanstack/react-query";
 import { apiGet } from "../../lib/api.js";
 import { categoryLabelKey, formatNewsDate } from "../../lib/news.js";
 import Reveal from "../../components/fx/Reveal.jsx";
+import { useCompetitions } from "../../components/competitions/hooks.js";
+import { formatRange, todayString } from "../../lib/competitions.js";
 import "./HomeHighlights.css";
 
 const HomeHighlights = () => {
@@ -20,32 +22,12 @@ const HomeHighlights = () => {
   });
   const news = latest.data?.items ?? [];
 
-  const columns = [
-    {
-      title: t("homeHighlights.table.date"),
-      dataIndex: "date",
-      key: "date",
-      width: 110,
-      render: (v) => <span className="pfm-table-date">{v}</span>,
-    },
-    {
-      title: t("homeHighlights.table.event"),
-      dataIndex: "event",
-      key: "event",
-      render: (v) => <span className="pfm-table-event">{v}</span>,
-    },
-    {
-      title: t("homeHighlights.table.type"),
-      dataIndex: "type",
-      key: "type",
-      width: 140,
-      render: (v) => (
-        <Tag className="pfm-tag" bordered={false}>
-          {v}
-        </Tag>
-      ),
-    },
-  ];
+  // The next few approved competitions from the calendar.
+  const competitions = useCompetitions();
+  const today = todayString();
+  const upcoming = (competitions.data?.competitions ?? [])
+    .filter((c) => c.endDate >= today)
+    .slice(0, 4);
 
   return (
     <section className="pfm-home-section">
@@ -53,7 +35,7 @@ const HomeHighlights = () => {
         <Row gutter={[22, 22]} align="stretch">
           {/* LEFT: Latest News */}
           <Col xs={24} lg={14}>
-            <Reveal>
+            <Reveal className="pfm-card-reveal">
             <div className="pfm-card pfm-card-news">
               <div className="pfm-card-head">
                 <div className="pfm-card-title">
@@ -107,7 +89,7 @@ const HomeHighlights = () => {
 
           {/* RIGHT: Upcoming Events */}
           <Col xs={24} lg={10}>
-            <Reveal delay={0.12}>
+            <Reveal delay={0.12} className="pfm-card-reveal">
             <div className="pfm-card pfm-card-events">
               <div className="pfm-card-head">
                 <div className="pfm-card-title">
@@ -122,11 +104,33 @@ const HomeHighlights = () => {
                 </Button>
               </div>
 
-              <Table
-                columns={columns}
-                className="pfm-table"
-                rowClassName={() => "pfm-table-row"}
-              />
+              {upcoming.length === 0 ? (
+                <p className="pfm-news-excerpt">
+                  {competitions.isPending ? "…" : t("competitions.upcoming.empty")}
+                </p>
+              ) : (
+                <ul className="pfm-events-list">
+                  {upcoming.map((c) => (
+                    <li key={c.id}>
+                      <button
+                        type="button"
+                        className="pfm-event-item"
+                        onClick={() => navigate("/swimming/calendar-national")}
+                      >
+                        <span className="pfm-event-date">
+                          {formatRange(c.startDate, c.endDate, i18n.resolvedLanguage)}
+                        </span>
+                        <span className="pfm-event-main">
+                          <span className="pfm-event-name">{c.name}</span>
+                          <span className="pfm-event-meta">
+                            {c.city} · {t(`competitions.courses.${c.course}`)}
+                          </span>
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
 
               <div className="pfm-events-foot">
                 <Button

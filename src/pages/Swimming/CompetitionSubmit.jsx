@@ -29,12 +29,12 @@ import { useAuthedApi } from "../../lib/useAuthedApi.js";
 import { antDarkTheme } from "../../lib/antDarkTheme.js";
 import { CLERK_PUBLISHABLE_KEY, SIGN_UP_REDIRECT } from "../../lib/clerk.js";
 import { COURSES } from "../../lib/competitions.js";
+import { formatLongDate } from "../../lib/dates.js";
 import { useMyAccount } from "../../lib/useMyAccount.js";
 import "../../components/competitions/competitions.css";
 
 const DAY = "YYYY-MM-DD";
-const fmtWindow = (iso, locale) =>
-  new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric" }).format(new Date(iso));
+const fmtWindow = (iso, locale) => formatLongDate(iso, locale);
 
 // Form values ⇄ API body (no clubId: the server uses the signed-in club)
 const toBody = (v) => ({
@@ -350,7 +350,7 @@ const EditSubmission = ({ id, club, accountEmail }) => {
           <Alert
             key={i}
             type="warning"
-            message={`${t("competitions.form.messageFromFederation")} · ${new Date(m.createdAt).toLocaleDateString(locale)}`}
+            message={`${t("competitions.form.messageFromFederation")} · ${formatLongDate(m.createdAt, locale)}`}
             description={<span className="pfm-comp-text">{m.body}</span>}
           />
         ))}

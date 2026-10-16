@@ -1,5 +1,11 @@
 /* /club — a club account's page. Builds on the header styles in Clubs.css. */
 
+/* Short states (signed out, waiting for approval) keep the footer low. */
+.pfm-clubacc,
+.pfm-welcome {
+  min-height: 72vh;
+}
+
 .pfm-clubacc-badge {
   display: inline-flex;
   margin-top: 22px;

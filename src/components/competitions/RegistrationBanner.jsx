@@ -6,9 +6,7 @@ import { Link } from "react-router-dom";
 import { FiPlus } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import { useRegistrationWindow } from "./hooks.js";
-
-const fmt = (iso, locale) =>
-  new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", year: "numeric" }).format(new Date(iso));
+import { formatLongDate as fmt } from "../../lib/dates.js";
 
 const RegistrationBanner = () => {
   const { t, i18n } = useTranslation();
