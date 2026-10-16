@@ -27,7 +27,7 @@ const HomeDisciplines = () => {
       icon: <TbWaterpolo />,
       bulletsCount: 3,
       primaryTo: "/waterpolo",
-      secondaryTo: "/waterpolo/calendar-national",
+      secondaryTo: "/waterpolo/calendar",
     },
     {
       key: "distance",

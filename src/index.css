@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+/* Date-range pickers show two months side by side, which is wider than a
+   phone: stack them instead (admin calendar, club competition form). */
+@media (max-width: 640px) {
+  .ant-picker-dropdown .ant-picker-panels {
+    flex-direction: column;
+  }
+}

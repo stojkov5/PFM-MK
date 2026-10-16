@@ -16,6 +16,7 @@ import {
   Popconfirm,
   Radio,
   Segmented,
+  Select,
   Table,
   Tag,
   TimePicker,
@@ -25,6 +26,7 @@ import dayjs from "dayjs";
 import { FiAlertTriangle, FiExternalLink, FiPlus } from "react-icons/fi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAdminApi } from "./useAdminApi.js";
+import { useIsPhone } from "./useIsPhone.js";
 import { COURSES } from "../../lib/competitions.js";
 import { useClubs } from "../../lib/clubs.js";
 
@@ -59,6 +61,7 @@ const WINDOW_TAGS = {
 
 const WindowCard = () => {
   const api = useAdminApi();
+  const isPhone = useIsPhone();
   const { message } = AntApp.useApp();
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
@@ -118,7 +121,7 @@ const WindowCard = () => {
         <Form
           key={w ? `${w.status}-${w.opensAt}-${w.closesAt}` : "none"}
           form={form}
-          layout="inline"
+          layout={isPhone ? "vertical" : "inline"}
           className="pfm-admin-invite"
           initialValues={initial}
           onFinish={(v) => save.mutate(v)}
@@ -129,20 +132,22 @@ const WindowCard = () => {
           <Form.Item name="range" label="Open from – to" rules={[{ required: true, message: "Pick the dates" }]}>
             <DatePicker.RangePicker format="DD.MM.YYYY" />
           </Form.Item>
-          <Button type="primary" htmlType="submit" loading={save.isPending}>
-            Save
-          </Button>
-          {w?.status === "open" && (
-            <Popconfirm
-              title="Close registration now?"
-              okText="Close it"
-              onConfirm={() => close.mutateAsync().catch(() => {})}
-            >
-              <Button danger loading={close.isPending} style={{ marginLeft: 8 }}>
-                Close now
-              </Button>
-            </Popconfirm>
-          )}
+          <div className="pfm-admin-actions">
+            <Button type="primary" htmlType="submit" loading={save.isPending}>
+              Save
+            </Button>
+            {w?.status === "open" && (
+              <Popconfirm
+                title="Close registration now?"
+                okText="Close it"
+                onConfirm={() => close.mutateAsync().catch(() => {})}
+              >
+                <Button danger loading={close.isPending}>
+                  Close now
+                </Button>
+              </Popconfirm>
+            )}
+          </div>
         </Form>
       )}
     </div>
@@ -431,8 +436,59 @@ const Details = ({ c }) => (
   </div>
 );
 
+// One competition as a card (phones).
+const CompetitionCard = ({ c, actions }) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="pfm-admin-mcard">
+      <div className="pfm-admin-mcard-top">
+        <span className="pfm-admin-strong">{fmtRange(c)}</span>
+        {c.startTime && <span className="pfm-admin-dim">from {c.startTime}</span>}
+        <Tag>{COURSE_LABELS[c.course]}</Tag>
+      </div>
+      <div className="pfm-admin-mcard-name">{c.name}</div>
+      <div className="pfm-admin-dim">{c.clubName}</div>
+      <div className="pfm-admin-dim">{[c.venue, c.city].filter(Boolean).join(", ")}</div>
+      {c.overlaps.length > 0 && (
+        <div className="pfm-admin-overlaps" style={{ marginTop: 8 }}>
+          {c.overlaps.map((o) => (
+            <Tag
+              key={o.id}
+              color={o.status === "approved" ? "red" : "orange"}
+              icon={<FiAlertTriangle style={{ marginRight: 4 }} />}
+            >
+              {o.name} · {o.range}
+            </Tag>
+          ))}
+        </div>
+      )}
+      {(c.contactName || c.contactEmail || c.contactPhone) && (
+        <div className="pfm-admin-mcard-contact">
+          {c.contactName && <span>{c.contactName}</span>}
+          {c.contactEmail && (
+            <a href={`mailto:${c.contactEmail}`} className="pfm-admin-dim">
+              {c.contactEmail}
+            </a>
+          )}
+          {c.contactPhone && (
+            <a href={`tel:${c.contactPhone.replace(/[^\d+]/g, "")}`} className="pfm-admin-dim">
+              {c.contactPhone}
+            </a>
+          )}
+        </div>
+      )}
+      <div className="pfm-admin-mcard-actions">{actions}</div>
+      <Button type="link" size="small" className="pfm-admin-mcard-more" onClick={() => setOpen((v) => !v)}>
+        {open ? "Hide details" : "More details"}
+      </Button>
+      {open && <Details c={c} />}
+    </div>
+  );
+};
+
 const CompetitionsTab = ({ counts }) => {
   const api = useAdminApi();
+  const isPhone = useIsPhone();
   const { message } = AntApp.useApp();
   const queryClient = useQueryClient();
   const [status, setStatus] = useState("pending");
@@ -454,6 +510,44 @@ const CompetitionsTab = ({ counts }) => {
   });
 
   const reviewable = status === "pending" || status === "changes";
+
+  const actionsFor = (c) => (
+    <div className="pfm-admin-actions pfm-admin-actions-wrap">
+      {reviewable && (
+        <>
+          <Button type="primary" size="small" onClick={() => setReview({ action: "approve", competition: c })}>
+            Approve
+          </Button>
+          <Button size="small" onClick={() => setReview({ action: "changes", competition: c })}>
+            Ask for changes
+          </Button>
+          <Button danger size="small" onClick={() => setReview({ action: "deny", competition: c })}>
+            Deny
+          </Button>
+        </>
+      )}
+      <Button size="small" onClick={() => setEditing(c)}>
+        Edit
+      </Button>
+      {!reviewable && (
+        <Popconfirm
+          title="Delete this competition permanently?"
+          okText="Delete"
+          okButtonProps={{ danger: true }}
+          onConfirm={() => remove.mutateAsync(c.id).catch(() => {})}
+        >
+          <Button size="small" danger type="text">
+            Delete
+          </Button>
+        </Popconfirm>
+      )}
+    </div>
+  );
+
+  const statusOptions = STATUSES.map((s) => ({
+    value: s.value,
+    label: counts ? `${s.label} (${counts[s.value]})` : s.label,
+  }));
 
   const columns = [
     {
@@ -518,38 +612,7 @@ const CompetitionsTab = ({ counts }) => {
     {
       title: "Actions",
       key: "actions",
-      render: (_, c) => (
-        <div className="pfm-admin-actions pfm-admin-actions-wrap">
-          {reviewable && (
-            <>
-              <Button type="primary" size="small" onClick={() => setReview({ action: "approve", competition: c })}>
-                Approve
-              </Button>
-              <Button size="small" onClick={() => setReview({ action: "changes", competition: c })}>
-                Ask for changes
-              </Button>
-              <Button danger size="small" onClick={() => setReview({ action: "deny", competition: c })}>
-                Deny
-              </Button>
-            </>
-          )}
-          <Button size="small" onClick={() => setEditing(c)}>
-            Edit
-          </Button>
-          {!reviewable && (
-            <Popconfirm
-              title="Delete this competition permanently?"
-              okText="Delete"
-              okButtonProps={{ danger: true }}
-              onConfirm={() => remove.mutateAsync(c.id).catch(() => {})}
-            >
-              <Button size="small" danger type="text">
-                Delete
-              </Button>
-            </Popconfirm>
-          )}
-        </div>
-      ),
+      render: (_, c) => actionsFor(c),
     },
   ];
 
@@ -558,37 +621,54 @@ const CompetitionsTab = ({ counts }) => {
       <WindowCard />
 
       <div className="pfm-admin-toolbar">
-        <Segmented
-          value={status}
-          onChange={setStatus}
-          options={STATUSES.map((s) => ({
-            value: s.value,
-            label: counts ? `${s.label} (${counts[s.value]})` : s.label,
-          }))}
-        />
-        <Button type="primary" icon={<FiPlus />} onClick={() => setEditing(null)}>
+        {isPhone ? (
+          <Select
+            className="pfm-admin-status-select"
+            value={status}
+            onChange={setStatus}
+            options={statusOptions}
+          />
+        ) : (
+          <Segmented value={status} onChange={setStatus} options={statusOptions} />
+        )}
+        <Button type="primary" icon={<FiPlus />} onClick={() => setEditing(null)} block={isPhone}>
           Add competition
         </Button>
       </div>
 
-      <Table
-        rowKey="id"
-        columns={columns}
-        dataSource={list.data ?? []}
-        loading={list.isLoading}
-        expandable={{ expandedRowRender: (c) => <Details c={c} /> }}
-        pagination={{ pageSize: 20, hideOnSinglePage: true }}
-        scroll={{ x: "max-content" }}
-        locale={{
-          emptyText: (
+      {isPhone ? (
+        <div className="pfm-admin-mcards">
+          {list.isLoading && <div className="pfm-admin-dim">Loading…</div>}
+          {list.data?.length === 0 && (
             <Empty
               image={Empty.PRESENTED_IMAGE_SIMPLE}
               description={status === "pending" ? "No competitions waiting for review" : "Nothing here"}
             />
-          ),
-        }}
-        className="pfm-admin-table"
-      />
+          )}
+          {(list.data ?? []).map((c) => (
+            <CompetitionCard key={c.id} c={c} actions={actionsFor(c)} />
+          ))}
+        </div>
+      ) : (
+        <Table
+          rowKey="id"
+          columns={columns}
+          dataSource={list.data ?? []}
+          loading={list.isLoading}
+          expandable={{ expandedRowRender: (c) => <Details c={c} /> }}
+          pagination={{ pageSize: 20, hideOnSinglePage: true }}
+          scroll={{ x: "max-content" }}
+          locale={{
+            emptyText: (
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description={status === "pending" ? "No competitions waiting for review" : "Nothing here"}
+              />
+            ),
+          }}
+          className="pfm-admin-table"
+        />
+      )}
 
       {review && <ReviewModal key={`${review.action}-${review.competition.id}`} review={review} onClose={() => setReview(null)} />}
       {editing !== undefined && <EditModal competition={editing} onClose={() => setEditing(undefined)} />}

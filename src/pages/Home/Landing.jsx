@@ -60,7 +60,7 @@ const Landing = () => {
       key: "waterpolo",
       icon: <TbWaterpolo />,
       href: "/waterpolo",
-      chips: ["programs", "calendar", "criteria"],
+      chips: ["news", "calendar"],
     },
     {
       key: "distance",

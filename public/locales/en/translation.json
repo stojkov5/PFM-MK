@@ -48,7 +48,7 @@
       },
       "waterpolo": {
         "title": "Water polo",
-        "desc": "Programs, calendars and criteria"
+        "desc": "News and competition calendar"
       },
       "distance": {
         "title": "Distance swimming",
@@ -100,7 +100,7 @@
       },
       "waterpolo": {
         "title": "WATERPOLO",
-        "desc": "Programs and official information for water polo competitions."
+        "desc": "Water polo news and competition calendar."
       },
       "distance": {
         "title": "DISTANCE SWIMMING",
@@ -173,11 +173,11 @@
       },
       "waterpolo": {
         "title": "WATERPOLO",
-        "desc": "Programs and official information for water polo competitions, including national and international calendars.",
+        "desc": "The latest news, results and announcements from Macedonian water polo, plus the competition calendar.",
         "bullets": [
-          "Calendar – National",
-          "Calendar – International",
-          "Criteria / regulations"
+          "News and announcements",
+          "Competition calendar",
+          "Water polo clubs"
         ],
         "primaryText": "Open Water polo",
         "secondaryText": "Calendar"
@@ -288,27 +288,7 @@
   "criteria": {
     "kicker": "Criteria",
     "title": "Swimming Criteria",
-    "subtitle": "Official competition criteria, qualification standards, and national championship limits.",
-    "eligibilityTitle": "Eligibility:",
-    "eligibilityText": "Swimmers must meet the required standards for participation.",
-    "aNormInfo": "A norm information goes here.",
-    "bNormInfo": "B norm information goes here.",
-    "birthLabel": "Birth years:",
-    "birthGroups": "Birth groups",
-    "officialDocsTitle": "Official Documents",
-    "openPdf": "Open PDF",
-    "downloadPdf": "Download PDF",
-    "notes": {
-      "top10": "Right to participate have swimmers ranked up to 10th place.",
-      "top16": "Right to participate have swimmers ranked up to 16th place."
-    },
-    "table": {
-      "discipline": "Discipline",
-      "female": "Female",
-      "male": "Male",
-      "aNorm": "A Norm",
-      "bNorm": "B Norm"
-    },
+    "subtitle": "Official competition criteria: qualification norms for international competitions and the national championship limits. Click a document to open it, or download it with the button on the right.",
     "events": {
       "graz": {
         "title": "Multinations Austria",
@@ -333,39 +313,11 @@
       "seniors": {
         "title": "European Swimming Championship",
         "subtitle": "Seniors · Paris · 50m pool"
+      },
+      "national": {
+        "title": "National championships – limits",
+        "subtitle": "25m and 50m pool"
       }
-    },
-    "national": {
-      "title": "National Championship Limits",
-      "subtitle": "Limits by pool length, gender, and age category.",
-      "poolLabel": "Pool",
-      "genderLabel": "Gender",
-      "additionalProvisions": "Additional provisions",
-      "men50": "Men · 50m Pool",
-      "women50": "Women · 50m Pool",
-      "men25": "Men · 25m Pool",
-      "women25": "Women · 25m Pool",
-      "columns": {
-        "youngerPioneers": "Younger Pioneers",
-        "olderPioneers": "Older Pioneers",
-        "cadets": "Cadets",
-        "juniors": "Juniors",
-        "seniors": "Seniors"
-      }
-    },
-    "nationalExtra": {
-      "0": "The limits are set according to the achieved results from the last National Championship (separately for 25m and 50m pool). For all disciplines and categories, the 16th best time is taken, except for the 50m and 100m freestyle where the 40th best time is taken.",
-      "1": "The criterion for participation in the National Championship is meeting the limit set by the National Swimming Federation of Macedonia.",
-      "2": "The standards apply to all registered swimmers in the Republic of Macedonia and remain valid for one year.",
-      "3": "Each swimmer may compete only in the discipline for the corresponding category in which they have achieved the required standard.",
-      "4": "A swimmer earns the right to participate if they achieve the limit in the 200m individual medley in the corresponding category, thereby gaining the right to swim 8 events prescribed by the competition regulations of the National Swimming Federation of Macedonia.",
-      "5": "If a swimmer achieves the required limit in a 25m pool, it will be taken into account for participation in 50m pool competitions as well, and vice versa."
-    },
-    "topChip": "Top {{n}}",
-    "birthYears": "born",
-    "international": {
-      "title": "International competitions",
-      "subtitle": "A and B qualification norms for each competition. Open one to see its norms, birth years and official document."
     }
   },
   "swimming": {
@@ -506,30 +458,20 @@
   "waterpolo": {
     "hero": {
       "kicker": "Discipline",
-      "title": "Water polo",
-      "subtitle": "Official information about water polo programs, national and international calendars, records and criteria."
+      "title": "Water polo"
     },
-    "cards": {
-      "programs": {
-        "title": "Programs",
-        "desc": "Water polo programs and development activities."
-      },
-      "calendarNational": {
-        "title": "Calendar – National",
-        "desc": "Domestic water polo competitions and leagues."
-      },
-      "calendarInternational": {
-        "title": "Calendar – International",
-        "desc": "International tournaments and events."
-      },
-      "records": {
-        "title": "Record List",
-        "desc": "Results and records in water polo."
-      },
-      "criteria": {
-        "title": "Criteria",
-        "desc": "Rules and criteria for participation and selections."
-      }
+    "subnav": {
+      "label": "Water polo sections",
+      "latest": "Latest",
+      "calendar": "Calendar"
+    },
+    "latest": {
+      "title": "Latest from water polo",
+      "subtitle": "News, results and announcements from Macedonian water polo."
+    },
+    "calendar": {
+      "title": "Water polo calendar",
+      "empty": "There are no competitions in the water polo calendar yet."
     }
   },
   "distance": {

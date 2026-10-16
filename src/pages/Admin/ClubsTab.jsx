@@ -8,6 +8,7 @@ import { App as AntApp, Button, Empty, Form, Input, Modal, Segmented, Select, Ta
 import dayjs from "dayjs";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAdminApi } from "./useAdminApi.js";
+import { useIsPhone } from "./useIsPhone.js";
 import { CLUB_TYPES } from "../../lib/clubs.js";
 
 const STATUSES = [
@@ -197,8 +198,42 @@ const Details = ({ c }) => (
   </div>
 );
 
+// One club as a card (phones).
+const ClubCard = ({ c, actions }) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="pfm-admin-mcard">
+      <div className="pfm-admin-mcard-name">
+        {c.name} {c.test && <Tag color="purple">test — hidden</Tag>}
+      </div>
+      <div className="pfm-admin-dim">{[c.type, c.city].filter(Boolean).join(" · ")}</div>
+      <div className="pfm-admin-mcard-contact">
+        <span>{c.president || "—"}</span>
+        {c.email && (
+          <a href={`mailto:${c.email}`} className="pfm-admin-dim">
+            {c.email}
+          </a>
+        )}
+        {c.phone && <span className="pfm-admin-dim">{c.phone}</span>}
+      </div>
+      <div className="pfm-admin-dim" style={{ marginTop: 8 }}>
+        Logins:{" "}
+        {c.accounts.length === 0
+          ? "none"
+          : c.accounts.map((a) => `${a.email}${a.status !== "approved" ? " (pending)" : ""}`).join(", ")}
+      </div>
+      <div className="pfm-admin-mcard-actions">{actions}</div>
+      <Button type="link" size="small" className="pfm-admin-mcard-more" onClick={() => setOpen((v) => !v)}>
+        {open ? "Hide details" : "More details"}
+      </Button>
+      {open && <Details c={c} />}
+    </div>
+  );
+};
+
 const ClubsTab = ({ counts }) => {
   const api = useAdminApi();
+  const isPhone = useIsPhone();
   const [status, setStatus] = useState("pending");
   const [review, setReview] = useState(null); // { action, club }
   const [editing, setEditing] = useState(null);
@@ -207,6 +242,30 @@ const ClubsTab = ({ counts }) => {
     queryKey: ["admin-clubs", status],
     queryFn: () => api.get(`/api/admin/clubs?status=${status}`),
   });
+
+  const actionsFor = (c) => (
+    <div className="pfm-admin-actions pfm-admin-actions-wrap">
+      {c.status === "pending" && (
+        <>
+          <Button type="primary" size="small" onClick={() => setReview({ action: "approve", club: c })}>
+            Approve
+          </Button>
+          <Button danger size="small" onClick={() => setReview({ action: "reject", club: c })}>
+            Reject
+          </Button>
+        </>
+      )}
+      <Button size="small" onClick={() => setEditing(c)}>
+        Edit
+      </Button>
+    </div>
+  );
+
+  const statusOptions = STATUSES.map((s) => ({
+    value: s.value,
+    label: counts ? `${s.label} (${counts[s.value]})` : s.label,
+  }));
+  const emptyText = status === "pending" ? "No clubs waiting for approval" : "No clubs";
 
   const columns = [
     {
@@ -265,23 +324,7 @@ const ClubsTab = ({ counts }) => {
     {
       title: "Actions",
       key: "actions",
-      render: (_, c) => (
-        <div className="pfm-admin-actions pfm-admin-actions-wrap">
-          {c.status === "pending" && (
-            <>
-              <Button type="primary" size="small" onClick={() => setReview({ action: "approve", club: c })}>
-                Approve
-              </Button>
-              <Button danger size="small" onClick={() => setReview({ action: "reject", club: c })}>
-                Reject
-              </Button>
-            </>
-          )}
-          <Button size="small" onClick={() => setEditing(c)}>
-            Edit
-          </Button>
-        </div>
-      ),
+      render: (_, c) => actionsFor(c),
     },
   ];
 
@@ -297,34 +340,36 @@ const ClubsTab = ({ counts }) => {
       </div>
 
       <div className="pfm-admin-toolbar">
-        <Segmented
-          value={status}
-          onChange={setStatus}
-          options={STATUSES.map((s) => ({
-            value: s.value,
-            label: counts ? `${s.label} (${counts[s.value]})` : s.label,
-          }))}
-        />
+        {isPhone ? (
+          <Select className="pfm-admin-status-select" value={status} onChange={setStatus} options={statusOptions} />
+        ) : (
+          <Segmented value={status} onChange={setStatus} options={statusOptions} />
+        )}
       </div>
 
-      <Table
-        rowKey="id"
-        columns={columns}
-        dataSource={list.data ?? []}
-        loading={list.isLoading}
-        expandable={{ expandedRowRender: (c) => <Details c={c} /> }}
-        pagination={{ pageSize: 20, hideOnSinglePage: true }}
-        scroll={{ x: "max-content" }}
-        locale={{
-          emptyText: (
-            <Empty
-              image={Empty.PRESENTED_IMAGE_SIMPLE}
-              description={status === "pending" ? "No clubs waiting for approval" : "No clubs"}
-            />
-          ),
-        }}
-        className="pfm-admin-table"
-      />
+      {isPhone ? (
+        <div className="pfm-admin-mcards">
+          {list.isLoading && <div className="pfm-admin-dim">Loading…</div>}
+          {list.data?.length === 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={emptyText} />}
+          {(list.data ?? []).map((c) => (
+            <ClubCard key={c.id} c={c} actions={actionsFor(c)} />
+          ))}
+        </div>
+      ) : (
+        <Table
+          rowKey="id"
+          columns={columns}
+          dataSource={list.data ?? []}
+          loading={list.isLoading}
+          expandable={{ expandedRowRender: (c) => <Details c={c} /> }}
+          pagination={{ pageSize: 20, hideOnSinglePage: true }}
+          scroll={{ x: "max-content" }}
+          locale={{
+            emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={emptyText} />,
+          }}
+          className="pfm-admin-table"
+        />
+      )}
 
       {review && (
         <ReviewModal key={`${review.action}-${review.club.id}`} review={review} onClose={() => setReview(null)} />

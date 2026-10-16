@@ -130,3 +130,90 @@
   .pfm-admin-form-grid,
   .pfm-admin-form-grid-3 { grid-template-columns: 1fr; }
 }
+
+/* --- Phones ---------------------------------------------------------------- */
+
+/* Competition / club cards that replace the wide tables on phones. */
+.pfm-admin-mcards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pfm-admin-mcard {
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pfm-admin-mcard-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin-bottom: 6px;
+}
+
+.pfm-admin-mcard-name {
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.02rem;
+  overflow-wrap: anywhere;
+}
+
+.pfm-admin-mcard-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 10px;
+  overflow-wrap: anywhere;
+}
+
+.pfm-admin-mcard-actions {
+  margin-top: 12px;
+}
+
+.pfm-admin-mcard-actions .pfm-admin-actions-wrap {
+  max-width: none;
+}
+
+.pfm-admin-mcard-more {
+  padding: 0 !important;
+  margin-top: 8px;
+}
+
+.pfm-admin-mcard .pfm-admin-comp-details {
+  margin-top: 8px;
+  padding: 10px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pfm-admin-status-select {
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  .pfm-admin-title {
+    font-size: 1.3rem;
+  }
+
+  .pfm-admin-card {
+    padding: 16px;
+  }
+
+  /* Registration period form: full-width fields, stacked. */
+  .pfm-admin-invite .ant-form-item {
+    flex: 1 1 100%;
+    margin-inline-end: 0 !important;
+  }
+
+  .pfm-admin-invite .ant-picker,
+  .pfm-admin-invite .ant-input-number {
+    width: 100%;
+  }
+
+  .pfm-admin-toolbar > * {
+    flex: 1 1 100%;
+  }
+}

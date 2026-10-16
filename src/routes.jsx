@@ -16,12 +16,9 @@ import SwimmingCriteria from "./pages/Swimming/Criteria.jsx";
 import RecordApplication from "./pages/Swimming/RecordApplication.jsx";
 import CompetitionSubmit from "./pages/Swimming/CompetitionSubmit.jsx";
 
+import WaterpoloLayout from "./pages/Waterpolo/WaterpoloLayout.jsx";
 import WaterpoloHome from "./pages/Waterpolo/WaterpoloHome.jsx";
-import WaterpoloPrograms from "./pages/Waterpolo/WaterpoloPrograms.jsx";
-import WaterpoloCalendarNational from "./pages/Waterpolo/WaterpoloCalendarNational.jsx";
-import WaterpoloCalendarInternational from "./pages/Waterpolo/WaterpoloCalendarInternational.jsx";
-import WaterpoloRecords from "./pages/Waterpolo/WaterpoloRecords.jsx";
-import WaterpoloCriteria from "./pages/Waterpolo/WaterpoloCriteria.jsx";
+import WaterpoloCalendar from "./pages/Waterpolo/WaterpoloCalendar.jsx";
 
 import DistanceSwimmingHome from "./pages/DistanceSwimming/DistanceSwimmingHome.jsx";
 import DistanceSwimmingCalendar from "./pages/DistanceSwimming/DistanceSwimmingCalendar.jsx";
@@ -63,19 +60,21 @@ export const router = createBrowserRouter([
         ],
       },
 
-      // WATERPOLO
-      { path: "waterpolo", element: <WaterpoloHome /> },
-      { path: "waterpolo/programs", element: <WaterpoloPrograms /> },
+      // WATERPOLO — same hero + section bar as swimming
       {
-        path: "waterpolo/calendar-national",
-        element: <WaterpoloCalendarNational />,
+        path: "waterpolo",
+        element: <WaterpoloLayout />,
+        children: [
+          { index: true, element: <WaterpoloHome /> },
+          { path: "calendar", element: <WaterpoloCalendar /> },
+          // Old pages, kept so existing links still land somewhere useful.
+          { path: "calendar-national", loader: () => redirect("/waterpolo/calendar") },
+          { path: "calendar-international", loader: () => redirect("/waterpolo/calendar") },
+          { path: "programs", loader: () => redirect("/waterpolo") },
+          { path: "records", loader: () => redirect("/waterpolo") },
+          { path: "criteria", loader: () => redirect("/waterpolo") },
+        ],
       },
-      {
-        path: "waterpolo/calendar-international",
-        element: <WaterpoloCalendarInternational />,
-      },
-      { path: "waterpolo/records", element: <WaterpoloRecords /> },
-      { path: "waterpolo/criteria", element: <WaterpoloCriteria /> },
 
       // DISTANCE SWIMMING
       { path: "distance-swimming", element: <DistanceSwimmingHome /> },

@@ -38,10 +38,7 @@ const CalendarHub = () => {
       key: "waterpolo",
       title: t("navbar.sports.waterpolo.title"),
       icon: <TbWaterpolo />,
-      cards: [
-        national("/waterpolo/calendar-national"),
-        international("/waterpolo/calendar-international"),
-      ],
+      cards: [national("/waterpolo/calendar")],
     },
     {
       key: "distance",

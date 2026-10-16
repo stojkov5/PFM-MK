@@ -1,4 +1,4 @@
-/* src/pages/Swimming/SwimmingLayout.css — hero + section bar shared by the swimming pages */
+/* src/components/sport/SportLayout.css — hero + section bar shared by the sport sections (swimming, water polo) */
 .pfm-swimsec {
   --subnav-h: 62px;
 }
@@ -96,6 +96,10 @@
   .pfm-swimsec {
     /* two rows of links */
     --subnav-h: 106px;
+  }
+
+  .pfm-swimsec.is-one-row {
+    --subnav-h: 58px;
   }
 
   .pfm-swimhero {
