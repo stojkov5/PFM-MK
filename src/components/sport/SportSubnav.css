@@ -64,12 +64,18 @@
   border-radius: 12px;
 }
 
-/* Phones: two links per row instead of one long line */
+/* Phones: up to three links on one row, otherwise two per row
+   (--subnav-cols is set by SportLayout) */
 @media (max-width: 640px) {
   .pfm-subnav {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--subnav-cols, 2), minmax(0, 1fr));
     padding: 6px;
+  }
+
+  .is-one-row .pfm-subnav-link {
+    padding: 0 4px;
+    letter-spacing: 0.08em;
   }
 
   .pfm-subnav-link {

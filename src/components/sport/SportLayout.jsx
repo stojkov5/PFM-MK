@@ -16,8 +16,11 @@ const SportLayout = ({ image, ns, items }) => {
   const { t } = useTranslation();
 
   return (
-    // On phones the section bar shows two links per row; one row needs less height.
-    <div className={`pfm-swimsec ${items.length <= 2 ? "is-one-row" : ""}`}>
+    // On phones up to three links fit on one row; more wrap to two per row.
+    <div
+      className={`pfm-swimsec ${items.length <= 3 ? "is-one-row" : ""}`}
+      style={{ "--subnav-cols": items.length <= 3 ? items.length : 2 }}
+    >
       <header className="pfm-swimhero">
         <img className="pfm-swimhero-img" src={image} alt="" />
 

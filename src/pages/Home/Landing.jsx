@@ -66,7 +66,7 @@ const Landing = () => {
       key: "distance",
       icon: <TiWaves />,
       href: "/distance-swimming",
-      chips: ["calendar", "ohridMarathon", "news"],
+      chips: ["news", "calendar", "criteria"],
     },
   ];
 

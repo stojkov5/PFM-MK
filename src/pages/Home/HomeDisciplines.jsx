@@ -35,7 +35,7 @@ const HomeDisciplines = () => {
       icon: <TiWaves />,
       bulletsCount: 3,
       primaryTo: "/distance-swimming",
-      secondaryTo: "/distance-swimming/ohrid-marathon",
+      secondaryTo: "/distance-swimming/calendar",
     },
   ];
 

@@ -22,8 +22,8 @@ import WaterpoloCalendar from "./pages/Waterpolo/WaterpoloCalendar.jsx";
 
 import DistanceSwimmingHome from "./pages/DistanceSwimming/DistanceSwimmingHome.jsx";
 import DistanceSwimmingCalendar from "./pages/DistanceSwimming/DistanceSwimmingCalendar.jsx";
-import OhridMarathon from "./pages/DistanceSwimming/OhridMarathon.jsx";
-import DistanceSwimmingNews from "./pages/DistanceSwimming/DistanceSwimmingNews.jsx";
+import DistanceSwimmingLayout from "./pages/DistanceSwimming/DistanceSwimmingLayout.jsx";
+import DistanceSwimmingCriteria from "./pages/DistanceSwimming/DistanceSwimmingCriteria.jsx";
 
 import News from "./pages/News/News.jsx";
 import NewsArticle from "./pages/News/NewsArticle.jsx";
@@ -76,19 +76,18 @@ export const router = createBrowserRouter([
         ],
       },
 
-      // DISTANCE SWIMMING
-      { path: "distance-swimming", element: <DistanceSwimmingHome /> },
+      // DISTANCE SWIMMING — same hero + section bar as swimming
       {
-        path: "distance-swimming/calendar",
-        element: <DistanceSwimmingCalendar />,
-      },
-      {
-        path: "distance-swimming/ohrid-marathon",
-        element: <OhridMarathon />,
-      },
-      {
-        path: "distance-swimming/news",
-        element: <DistanceSwimmingNews />,
+        path: "distance-swimming",
+        element: <DistanceSwimmingLayout />,
+        children: [
+          { index: true, element: <DistanceSwimmingHome /> },
+          { path: "calendar", element: <DistanceSwimmingCalendar /> },
+          { path: "criteria", element: <DistanceSwimmingCriteria /> },
+          // Old pages, kept so existing links still land somewhere useful.
+          { path: "news", loader: () => redirect("/distance-swimming") },
+          { path: "ohrid-marathon", loader: () => redirect("/distance-swimming") },
+        ],
       },
 
       // ADMIN (admins get a link in the navbar's account menu). Lazy so the

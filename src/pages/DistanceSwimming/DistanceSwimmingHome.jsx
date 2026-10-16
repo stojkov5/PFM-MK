@@ -1,27 +1,19 @@
+// src/pages/DistanceSwimming/DistanceSwimmingHome.jsx
+// "Latest" — the first page of the distance swimming section: news from the
+// distance swimming category only, as published in the admin panel.
 import React from "react";
-import { FiCalendar, FiFlag, FiFileText } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
-import SportHub from "../../components/SportHub.jsx";
+import News from "../News/News.jsx";
 
 const DistanceSwimmingHome = () => {
   const { t } = useTranslation();
 
-  const cards = [
-    { to: "/distance-swimming/calendar", key: "calendar", icon: <FiCalendar /> },
-    { to: "/distance-swimming/ohrid-marathon", key: "ohridMarathon", icon: <FiFlag /> },
-    { to: "/distance-swimming/news", key: "news", icon: <FiFileText /> },
-  ].map((c) => ({
-    ...c,
-    label: t(`distance.cards.${c.key}.title`),
-    desc: t(`distance.cards.${c.key}.desc`),
-  }));
-
   return (
-    <SportHub
-      kicker={t("distance.hero.kicker")}
-      title={t("distance.hero.title")}
-      subtitle={t("distance.hero.subtitle")}
-      groups={[{ key: "main", cards }]}
+    <News
+      embedded
+      category="distance-swimming"
+      title={t("distance.latest.title")}
+      subtitle={t("distance.latest.subtitle")}
     />
   );
 };

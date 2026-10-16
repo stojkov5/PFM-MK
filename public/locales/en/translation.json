@@ -52,7 +52,7 @@
       },
       "distance": {
         "title": "Distance swimming",
-        "desc": "Open-water calendar and the Ohrid marathon"
+        "desc": "News, calendar and criteria"
       }
     },
     "more": {
@@ -186,12 +186,12 @@
         "title": "DISTANCE SWIMMING",
         "desc": "Open-water (distance swimming) with a marathon calendar, event information and official news.",
         "bullets": [
+          "News and announcements",
           "Marathon calendar",
-          "Ohrid swimming marathon",
-          "News and updates"
+          "Criteria"
         ],
         "primaryText": "Open Distance Swimming",
-        "secondaryText": "Ohrid marathon"
+        "secondaryText": "Calendar"
       }
     }
   },
@@ -477,22 +477,23 @@
   "distance": {
     "hero": {
       "kicker": "Discipline",
-      "title": "Distance swimming",
-      "subtitle": "Open-water swimming: the marathon calendar, the Ohrid swimming marathon and the latest news."
+      "title": "Distance swimming"
     },
-    "cards": {
-      "calendar": {
-        "title": "Calendar",
-        "desc": "Open-water and marathon events through the season."
-      },
-      "ohridMarathon": {
-        "title": "Ohrid Swimming Marathon",
-        "desc": "Information about the traditional Ohrid marathon."
-      },
-      "news": {
-        "title": "News",
-        "desc": "Updates and announcements for distance swimming."
-      }
+    "subnav": {
+      "label": "Distance swimming sections",
+      "latest": "Latest",
+      "calendar": "Calendar",
+      "criteria": "Criteria"
+    },
+    "latest": {
+      "title": "Latest from distance swimming",
+      "subtitle": "News, results and announcements from open-water swimming."
+    },
+    "criteria": {
+      "kicker": "Criteria",
+      "title": "Distance swimming criteria",
+      "subtitle": "Official criteria and documents for open-water competitions.",
+      "empty": "No distance swimming criteria have been published yet."
     }
   },
   "calendarHub": {
@@ -598,11 +599,7 @@
     "loadMore": "Load more",
     "readMore": "Read more",
     "back": "All news",
-    "notFound": "This article doesn't exist or is no longer available.",
-    "distance": {
-      "title": "Distance swimming news",
-      "subtitle": "Open water announcements, results and stories."
-    }
+    "notFound": "This article doesn't exist or is no longer available."
   },
   "competitions": {
     "kicker": "Calendar",
