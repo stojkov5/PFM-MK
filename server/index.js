@@ -20,8 +20,17 @@ if (missingClerk.length) {
 
 const db = createPrisma();
 // First start after the clubs table was added: copy in the federation's list.
-const seeded = await ensureClubs(db);
-if (seeded) console.log(`[pfm] Added ${seeded} clubs to the clubs table.`);
+// A missing table only breaks the club features, so the rest of the API still starts.
+try {
+  const seeded = await ensureClubs(db);
+  if (seeded) console.log(`[pfm] Added ${seeded} clubs to the clubs table.`);
+} catch (err) {
+  console.error(
+    "[pfm] Could not fill the clubs table — run `npm run db:push` (with the Railway " +
+      "DATABASE_PUBLIC_URL in .env), then restart this service.",
+    err.message
+  );
+}
 const app = createApp(db);
 
 // Serve the built SPA only if a build is present. When the frontend is hosted
