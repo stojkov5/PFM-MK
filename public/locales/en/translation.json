@@ -430,12 +430,6 @@
       }
     },
     "lead": "The Swimming Federation of Macedonia works on organizing, developing and improving aquatic sports at a national level. In cooperation with clubs, coaches and expert commissions, the Federation prepares competition calendars, regulations, criteria and official record lists, as well as activities related to national team selections.",
-    "memberOf": "Member of World Aquatics and European Aquatics",
-    "stats": {
-      "disciplines": "Disciplines",
-      "clubs": "Registered clubs",
-      "memberships": "International memberships"
-    },
     "partnersStrip": {
       "title": "Memberships and partners",
       "all": "All partners"

@@ -1,6 +1,6 @@
 // src/pages/About/AboutPage.jsx
 // /about — who the federation is: an intro beside photos of the three
-// disciplines, a few key numbers, what we do, our memberships and partners,
+// disciplines, what we do, our memberships and partners,
 // and links to the structure, partners and documents pages.
 import React from "react";
 import { Link } from "react-router-dom";
@@ -18,7 +18,6 @@ import { useTranslation } from "react-i18next";
 import Reveal from "../../components/fx/Reveal.jsx";
 import PartnerTile from "./PartnerTile.jsx";
 import { PARTNERS } from "../../data/partners.js";
-import { useClubs } from "../../lib/clubs.js";
 import "./about.css";
 import "./AboutPage.css";
 
@@ -41,18 +40,8 @@ const MORE = [
   { to: "/documents", key: "documents", icon: <FiFileText /> },
 ];
 
-// The international federations we belong to (the first two partners).
-const MEMBERSHIPS = PARTNERS.filter((p) => ["worldAquatics", "europeanAquatics"].includes(p.key));
-
 const AboutPage = () => {
   const { t } = useTranslation();
-  const clubs = useClubs();
-
-  const stats = [
-    { key: "disciplines", value: PHOTOS.length },
-    { key: "clubs", value: clubs.data?.length ?? "…", hidden: clubs.isError },
-    { key: "memberships", value: MEMBERSHIPS.length },
-  ].filter((s) => !s.hidden);
 
   return (
     <div className="pfm-ab pt-24">
@@ -81,29 +70,7 @@ const AboutPage = () => {
                 <figcaption>{t(`home.sports.${p.key}.title`)}</figcaption>
               </figure>
             ))}
-            <div className="pfm-ab-member">
-              <div className="pfm-ab-member-logos">
-                {MEMBERSHIPS.map((m) => (
-                  <PartnerTile key={m.key} partner={m} name={t(`about.partners.items.${m.key}`)} />
-                ))}
-              </div>
-              <span>{t("about.memberOf")}</span>
-            </div>
           </div>
-        </Reveal>
-      </section>
-
-      {/* Key numbers */}
-      <section className="max-w-6xl mx-auto px-4 md:px-6">
-        <Reveal>
-          <dl className="pfm-ab-stats">
-            {stats.map((s) => (
-              <div key={s.key} className="pfm-ab-stat">
-                <dt>{t(`about.stats.${s.key}`)}</dt>
-                <dd>{s.value}</dd>
-              </div>
-            ))}
-          </dl>
         </Reveal>
       </section>
 

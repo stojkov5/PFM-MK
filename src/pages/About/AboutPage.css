@@ -87,7 +87,7 @@
   color: #020617;
 }
 
-/* One tall photo beside two stacked ones, with the membership badge on top. */
+/* One tall photo beside two stacked ones. */
 .pfm-ab-collage {
   position: relative;
   display: grid;
@@ -130,78 +130,6 @@
   color: #ffffff;
   font-weight: 800;
   font-size: 0.95rem;
-}
-
-.pfm-ab-member {
-  position: absolute;
-  left: -24px;
-  top: 28px;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  max-width: 300px;
-  padding: 10px 14px 10px 10px;
-  border-radius: 16px;
-  background: rgba(2, 6, 23, 0.86);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
-  color: rgba(255, 255, 255, 0.86);
-  font-size: 0.82rem;
-  font-weight: 700;
-  line-height: 1.35;
-}
-
-.pfm-ab-member-logos {
-  display: flex;
-  flex: none;
-  gap: 6px;
-}
-
-.pfm-ab-member-logos .pfm-partner {
-  width: 54px;
-  border-radius: 10px;
-}
-
-/* --- Key numbers ----------------------------------------------------------- */
-
-.pfm-ab-stats {
-  margin: 64px 0 0;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  border-radius: 22px;
-  border: 1px solid var(--ab-line);
-  background: rgba(255, 255, 255, 0.03);
-  overflow: hidden;
-}
-
-.pfm-ab-stat {
-  display: flex;
-  flex-direction: column-reverse;
-  gap: 6px;
-  padding: 26px 28px;
-}
-
-.pfm-ab-stat + .pfm-ab-stat {
-  border-left: 1px solid var(--ab-line);
-}
-
-.pfm-ab-stat dd {
-  margin: 0;
-  font-weight: 900;
-  font-size: clamp(2.2rem, 4vw, 3rem);
-  line-height: 1;
-  letter-spacing: -0.03em;
-  background: linear-gradient(90deg, #7dd3fc, #2563eb);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.pfm-ab-stat dt {
-  color: var(--ab-muted);
-  font-weight: 700;
 }
 
 /* --- Sections -------------------------------------------------------------- */
@@ -404,11 +332,6 @@
     height: 400px;
   }
 
-  .pfm-ab-member {
-    left: 14px;
-    top: 14px;
-  }
-
   .pfm-ab-pillars {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -435,7 +358,7 @@
   }
 
   .pfm-ab-collage {
-    grid-template-rows: 1fr 1fr auto;
+    grid-template-rows: 1fr 1fr;
     height: auto;
     gap: 10px;
   }
@@ -446,39 +369,8 @@
     font-size: 0.82rem;
   }
 
-  /* On phones the badge sits under the photos instead of over them. */
-  .pfm-ab-member {
-    position: static;
-    grid-column: 1 / -1;
-    max-width: none;
-    box-shadow: none;
-  }
-
   .pfm-ab-photo {
     min-height: 120px;
-  }
-
-  .pfm-ab-stats {
-    grid-template-columns: 1fr;
-    margin-top: 44px;
-  }
-
-  .pfm-ab-stat {
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 16px;
-    padding: 16px 20px;
-  }
-
-  .pfm-ab-stat dd {
-    font-size: 2rem;
-    min-width: 52px;
-  }
-
-  .pfm-ab-stat + .pfm-ab-stat {
-    border-left: none;
-    border-top: 1px solid var(--ab-line);
   }
 
   .pfm-ab-section {
