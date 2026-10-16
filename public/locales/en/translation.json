@@ -74,127 +74,6 @@
       }
     }
   },
-  "landing": {
-    "badge": "Official sports federation",
-    "titleLine1": "Swimming Federation",
-    "titleLine2": "of Macedonia",
-    "subtitle": "National body for organizing, developing and improving aquatic sports — swimming, water polo and distance swimming. Here you can find calendars, criteria, records and official announcements.",
-    "actions": {
-      "news": "News & announcements",
-      "browse": "Browse content"
-    },
-    "meta": {
-      "focusLabel": "Focus",
-      "focusValue": "Competitions • Records • Development",
-      "infoLabel": "Information",
-      "infoValue": "Calendar • Documents • News"
-    },
-    "quickAccess": {
-      "title": "Quick access",
-      "subtitle": "Choose a section to continue."
-    },
-    "quickLinks": {
-      "swimming": {
-        "title": "SWIMMING",
-        "desc": "Programs, calendars, records and criteria."
-      },
-      "waterpolo": {
-        "title": "WATERPOLO",
-        "desc": "Water polo news and competition calendar."
-      },
-      "distance": {
-        "title": "DISTANCE SWIMMING",
-        "desc": "Open-water marathons and events, calendar and news."
-      },
-      "chips": {
-        "programs": "Programs",
-        "calendar": "Calendar",
-        "records": "Records",
-        "criteria": "Criteria",
-        "ohridMarathon": "Ohrid Marathon",
-        "news": "News"
-      }
-    }
-  },
-  "homeHighlights": {
-    "latestNews": "Latest news",
-    "viewMore": "View more",
-    "read": "Read",
-    "upcomingEvents": "Upcoming events",
-    "calendar": "Calendar",
-    "openNationalCalendar": "Open national calendar",
-    "table": {
-      "date": "Date",
-      "event": "Event",
-      "type": "Type"
-    }
-  },
-  "homeAbout": {
-    "kicker": "About the federation",
-    "title": "Official national body for swimming, water polo and distance swimming",
-    "text": "The Swimming Federation of Macedonia works on organizing, developing and improving aquatic sports at a national level. In cooperation with clubs, coaches and expert commissions, the Federation prepares competition calendars, regulations, criteria and official record lists, as well as activities related to national team selections.",
-    "note": "Official documents and criteria are published in the relevant sections by discipline (Swimming/Waterpolo/Distance Swimming).",
-    "actions": {
-      "nationalCalendar": "National calendar",
-      "nationalRecords": "National records",
-      "criteriaRules": "Criteria & regulations",
-      "announcements": "Announcements"
-    },
-    "stats": [
-      {
-        "value": "Clubs",
-        "label": "Registered clubs and active members working to develop swimming across the country."
-      },
-      {
-        "value": "Records",
-        "label": "Official national records by event, category and pool type (25m/50m)."
-      },
-      {
-        "value": "Competitions",
-        "label": "Organization and sanctioning of national competitions, championships and cups throughout the year."
-      }
-    ]
-  },
-  "homeDisciplines": {
-    "kicker": "Disciplines",
-    "title": "Swimming, water polo and distance swimming",
-    "subtitle": "Quick access to the most important information by discipline: programs, calendars, documents and official lists.",
-    "items": {
-      "swimming": {
-        "title": "SWIMMING",
-        "desc": "Information about programs, competitions, national and international calendars, records and participation criteria.",
-        "bullets": [
-          "National calendar and championships",
-          "Official record list",
-          "Criteria and documents"
-        ],
-        "primaryText": "Open Swimming",
-        "secondaryText": "Records"
-      },
-      "waterpolo": {
-        "title": "WATERPOLO",
-        "desc": "The latest news, results and announcements from Macedonian water polo, plus the competition calendar.",
-        "bullets": [
-          "News and announcements",
-          "Competition calendar",
-          "Water polo clubs"
-        ],
-        "primaryText": "Open Water polo",
-        "secondaryText": "Calendar"
-      },
-      "distance": {
-        "title": "DISTANCE SWIMMING",
-        "desc": "Open-water (distance swimming) with a marathon calendar, event information and official news.",
-        "bullets": [
-          "News and announcements",
-          "Marathon calendar",
-          "Criteria"
-        ],
-        "primaryText": "Open Distance Swimming",
-        "secondaryText": "Calendar"
-      }
-    }
-  },
   "common": {
     "dash": "—"
   },
@@ -549,6 +428,17 @@
         "ministryOfSport": "Ministry of Sport",
         "sportsFederationsUnion": "Union of Sports Federations of Macedonia"
       }
+    },
+    "lead": "The Swimming Federation of Macedonia works on organizing, developing and improving aquatic sports at a national level. In cooperation with clubs, coaches and expert commissions, the Federation prepares competition calendars, regulations, criteria and official record lists, as well as activities related to national team selections.",
+    "memberOf": "Member of World Aquatics and European Aquatics",
+    "stats": {
+      "disciplines": "Disciplines",
+      "clubs": "Registered clubs",
+      "memberships": "International memberships"
+    },
+    "partnersStrip": {
+      "title": "Memberships and partners",
+      "all": "All partners"
     }
   },
   "news": {
@@ -774,6 +664,50 @@
       },
       "submit": "Send for approval",
       "nameTaken": "A club with this name already exists. If it’s yours, write to info@npf.mk to get its login."
+    }
+  },
+  "home": {
+    "hero": {
+      "kicker": "National Swimming Federation",
+      "title": "Swimming Federation of Macedonia",
+      "text": "Swimming, water polo and distance swimming — news, competition calendars, records and criteria in one place.",
+      "news": "Latest news",
+      "calendar": "Calendar"
+    },
+    "sports": {
+      "title": "Sports",
+      "swimming": {
+        "title": "Swimming",
+        "desc": "News, calendar, records and criteria"
+      },
+      "waterpolo": {
+        "title": "Water polo",
+        "desc": "News and calendar"
+      },
+      "distance": {
+        "title": "Distance swimming",
+        "desc": "News, calendar and criteria"
+      }
+    },
+    "news": {
+      "title": "Latest news",
+      "all": "All news"
+    },
+    "upcoming": {
+      "title": "Upcoming competitions",
+      "all": "Full calendar"
+    },
+    "about": {
+      "kicker": "About the federation",
+      "title": "The national body for aquatic sports",
+      "text": "The Swimming Federation of Macedonia organizes and develops swimming, water polo and distance swimming at national level — together with the clubs, coaches and expert commissions.",
+      "more": "More about us",
+      "links": {
+        "documents": "Documents",
+        "clubs": "Clubs",
+        "structure": "Organisational structure",
+        "partners": "Partners"
+      }
     }
   }
 }

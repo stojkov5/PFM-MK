@@ -1,0 +1,495 @@
+/* src/pages/About/AboutPage.css — the /about page (AboutPage.jsx) */
+
+.pfm-ab {
+  --ab-line: rgba(255, 255, 255, 0.1);
+  --ab-muted: rgba(255, 255, 255, 0.66);
+  --ab-accent: #38bdf8;
+}
+
+/* --- Intro + photo collage ------------------------------------------------- */
+
+.pfm-ab-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 56px;
+  align-items: center;
+  padding-top: 48px;
+}
+
+.pfm-ab-kicker {
+  display: inline-block;
+  color: #7dd3fc;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.pfm-ab-title {
+  margin: 14px 0 0;
+  color: #ffffff;
+  font-weight: 900;
+  font-size: clamp(2.2rem, 4.6vw, 3.6rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.pfm-ab-subtitle {
+  margin: 16px 0 0;
+  color: #ffffff;
+  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.pfm-ab-lead {
+  margin: 14px 0 0;
+  color: var(--ab-muted);
+  line-height: 1.75;
+}
+
+.pfm-ab-actions {
+  margin-top: 26px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.pfm-ab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  font-weight: 800;
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.pfm-ab-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateY(-1px);
+}
+
+.pfm-ab-btn.is-primary {
+  border-color: var(--ab-accent);
+  background: var(--ab-accent);
+  color: #020617;
+}
+
+.pfm-ab-btn.is-primary:hover {
+  background: #7dd3fc;
+  color: #020617;
+}
+
+/* One tall photo beside two stacked ones, with the membership badge on top. */
+.pfm-ab-collage {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 14px;
+  height: 480px;
+}
+
+.pfm-ab-photo {
+  position: relative;
+  margin: 0;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid var(--ab-line);
+}
+
+.pfm-ab-photo.is-swimming {
+  grid-row: 1 / span 2;
+}
+
+.pfm-ab-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pfm-ab-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(2, 6, 23, 0) 50%, rgba(2, 6, 23, 0.8) 100%);
+}
+
+.pfm-ab-photo figcaption {
+  position: absolute;
+  left: 16px;
+  bottom: 14px;
+  z-index: 1;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.pfm-ab-member {
+  position: absolute;
+  left: -24px;
+  top: 28px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 300px;
+  padding: 10px 14px 10px 10px;
+  border-radius: 16px;
+  background: rgba(2, 6, 23, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.pfm-ab-member-logos {
+  display: flex;
+  flex: none;
+  gap: 6px;
+}
+
+.pfm-ab-member-logos .pfm-partner {
+  width: 54px;
+  border-radius: 10px;
+}
+
+/* --- Key numbers ----------------------------------------------------------- */
+
+.pfm-ab-stats {
+  margin: 64px 0 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-radius: 22px;
+  border: 1px solid var(--ab-line);
+  background: rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+}
+
+.pfm-ab-stat {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 6px;
+  padding: 26px 28px;
+}
+
+.pfm-ab-stat + .pfm-ab-stat {
+  border-left: 1px solid var(--ab-line);
+}
+
+.pfm-ab-stat dd {
+  margin: 0;
+  font-weight: 900;
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  background: linear-gradient(90deg, #7dd3fc, #2563eb);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.pfm-ab-stat dt {
+  color: var(--ab-muted);
+  font-weight: 700;
+}
+
+/* --- Sections -------------------------------------------------------------- */
+
+.pfm-ab-section {
+  padding-top: 72px;
+}
+
+.pfm-ab-section-last {
+  padding-bottom: 96px;
+}
+
+.pfm-ab-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+
+.pfm-ab-h2 {
+  margin: 0 0 22px;
+  color: #ffffff;
+  font-weight: 900;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  letter-spacing: -0.02em;
+}
+
+.pfm-ab-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #7dd3fc;
+  font-weight: 800;
+}
+
+.pfm-ab-more:hover {
+  color: #ffffff;
+}
+
+/* What we do */
+.pfm-ab-pillars {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.pfm-ab-pillars > li,
+.pfm-ab-pillars > li > div {
+  height: 100%;
+}
+
+.pfm-ab-pillar {
+  position: relative;
+  height: 100%;
+  padding: 22px;
+  border-radius: 20px;
+  border: 1px solid var(--ab-line);
+  background: rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+}
+
+/* Lane-rope accent along the top */
+.pfm-ab-pillar::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #38bdf8, #2563eb);
+  opacity: 0.8;
+}
+
+.pfm-ab-pillar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.pfm-ab-pillar-icon {
+  display: inline-flex;
+  padding: 11px;
+  border-radius: 14px;
+  background: rgba(56, 189, 248, 0.14);
+  color: #7dd3fc;
+  font-size: 1.2rem;
+}
+
+.pfm-ab-pillar-num {
+  color: rgba(255, 255, 255, 0.22);
+  font-weight: 900;
+  font-size: 1.6rem;
+}
+
+.pfm-ab-pillar h3 {
+  margin: 0;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 1.08rem;
+}
+
+.pfm-ab-pillar p {
+  margin: 8px 0 0;
+  color: var(--ab-muted);
+  line-height: 1.6;
+  font-size: 0.94rem;
+}
+
+/* Partner logos */
+.pfm-ab-logos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.pfm-ab-logos .pfm-partner {
+  border-radius: 16px;
+}
+
+/* More */
+.pfm-ab-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.pfm-ab-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px solid var(--ab-line);
+  background: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+  transition: border-color 180ms ease, background 180ms ease;
+}
+
+.pfm-ab-link:hover {
+  color: #ffffff;
+  border-color: rgba(56, 189, 248, 0.35);
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.pfm-ab-link-icon {
+  display: inline-flex;
+  flex: none;
+  padding: 11px;
+  border-radius: 14px;
+  background: rgba(56, 189, 248, 0.14);
+  color: #7dd3fc;
+  font-size: 1.2rem;
+}
+
+.pfm-ab-link-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pfm-ab-link-title {
+  font-weight: 800;
+}
+
+.pfm-ab-link-desc {
+  color: var(--ab-muted);
+  font-size: 0.88rem;
+}
+
+.pfm-ab-link-arrow {
+  flex: none;
+  margin-left: auto;
+  color: rgba(255, 255, 255, 0.5);
+  transition: transform 180ms ease, color 180ms ease;
+}
+
+.pfm-ab-link:hover .pfm-ab-link-arrow {
+  color: #7dd3fc;
+  transform: translateX(3px);
+}
+
+/* --- Tablets ----------------------------------------------------------------- */
+
+@media (max-width: 1023px) {
+  .pfm-ab-hero {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .pfm-ab-collage {
+    height: 400px;
+  }
+
+  .pfm-ab-member {
+    left: 14px;
+    top: 14px;
+  }
+
+  .pfm-ab-pillars {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pfm-ab-logos {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .pfm-ab-links {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Phones ------------------------------------------------------------------ */
+
+@media (max-width: 640px) {
+  .pfm-ab-hero {
+    padding-top: 28px;
+  }
+
+  .pfm-ab-actions .pfm-ab-btn {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .pfm-ab-collage {
+    grid-template-rows: 1fr 1fr auto;
+    height: auto;
+    gap: 10px;
+  }
+
+  .pfm-ab-photo figcaption {
+    left: 12px;
+    bottom: 10px;
+    font-size: 0.82rem;
+  }
+
+  /* On phones the badge sits under the photos instead of over them. */
+  .pfm-ab-member {
+    position: static;
+    grid-column: 1 / -1;
+    max-width: none;
+    box-shadow: none;
+  }
+
+  .pfm-ab-photo {
+    min-height: 120px;
+  }
+
+  .pfm-ab-stats {
+    grid-template-columns: 1fr;
+    margin-top: 44px;
+  }
+
+  .pfm-ab-stat {
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+    padding: 16px 20px;
+  }
+
+  .pfm-ab-stat dd {
+    font-size: 2rem;
+    min-width: 52px;
+  }
+
+  .pfm-ab-stat + .pfm-ab-stat {
+    border-left: none;
+    border-top: 1px solid var(--ab-line);
+  }
+
+  .pfm-ab-section {
+    padding-top: 52px;
+  }
+
+  .pfm-ab-pillars {
+    grid-template-columns: 1fr;
+  }
+
+  .pfm-ab-logos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -93,7 +93,6 @@ const Navbar = () => {
           desc: t(`navbar.sports.${i.key}.desc`),
         })),
       },
-      { key: "news", label: t("navbar.items.news"), path: "/news" },
       { key: "calendar", label: t("navbar.items.calendar"), path: "/calendar" },
       {
         key: "more",
@@ -110,6 +109,7 @@ const Navbar = () => {
           desc: t(`navbar.more.${i.key}.desc`),
         })),
       },
+      { key: "news", label: t("navbar.items.news"), path: "/news" },
     ],
     [t]
   );

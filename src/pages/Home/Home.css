@@ -1,0 +1,437 @@
+/* src/pages/Home/Home.css — the home page (HomePage.jsx) */
+
+/* --- Hero ------------------------------------------------------------------ */
+
+.pfm-home-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: min(88vh, 820px);
+  display: flex;
+  align-items: center;
+  padding: 120px 0 88px;
+}
+
+/* The photo with a dark wash so the title reads. It fades out at the bottom
+   into the site's background instead of ending in a hard edge. */
+.pfm-home-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(90deg, rgba(2, 6, 23, 0.86) 0%, rgba(2, 6, 23, 0.55) 55%, rgba(2, 6, 23, 0.35) 100%),
+    #020617 url("/Landing.webp") center / cover no-repeat;
+  -webkit-mask-image: linear-gradient(180deg, #000 65%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 65%, transparent 100%);
+}
+
+/* The moving water fades out the same way. */
+.pfm-home-hero .pfm-hero-water {
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 30%, #000 55%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 30%, #000 55%, transparent 100%);
+}
+
+.pfm-home-hero-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.pfm-home-kicker {
+  display: inline-block;
+  color: #7dd3fc;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.pfm-home-hero-title {
+  margin: 14px 0 0;
+  max-width: 14ch;
+  color: #ffffff;
+  font-weight: 900;
+  font-size: clamp(2.4rem, 6.4vw, 4.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.pfm-home-hero-text {
+  margin: 18px 0 0;
+  max-width: 52ch;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.65;
+}
+
+.pfm-home-hero-actions {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.pfm-home-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  color: #ffffff;
+  font-weight: 800;
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.pfm-home-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.16);
+  transform: translateY(-1px);
+}
+
+.pfm-home-btn.is-primary {
+  border-color: #38bdf8;
+  background: #38bdf8;
+  color: #020617;
+}
+
+.pfm-home-btn.is-primary:hover {
+  background: #7dd3fc;
+  color: #020617;
+}
+
+/* --- Sections -------------------------------------------------------------- */
+
+.pfm-home-section {
+  padding: 56px 0 0;
+}
+
+.pfm-home-section-last {
+  padding-bottom: 96px;
+}
+
+.pfm-home-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 22px;
+}
+
+.pfm-home-title {
+  margin: 0;
+  color: #ffffff;
+  font-weight: 900;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.pfm-home-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #7dd3fc;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.pfm-home-more:hover {
+  color: #ffffff;
+}
+
+.pfm-home-empty {
+  margin: 0;
+  padding: 28px 20px;
+  border-radius: 18px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+}
+
+/* --- Sports ---------------------------------------------------------------- */
+
+.pfm-home-sports {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.pfm-home-sport {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  height: 300px;
+  padding: 22px;
+  border-radius: 22px;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.pfm-home-sport img {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pfm-home-sport::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(2, 6, 23, 0.05) 30%, rgba(2, 6, 23, 0.88) 100%);
+}
+
+.pfm-home-sport:hover {
+  color: #ffffff;
+}
+
+.pfm-home-sport:hover img {
+  transform: scale(1.05);
+}
+
+.pfm-home-sport-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: 40px;
+}
+
+.pfm-home-sport-title {
+  font-weight: 900;
+  font-size: 1.35rem;
+  letter-spacing: -0.01em;
+}
+
+.pfm-home-sport-desc {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.92rem;
+}
+
+.pfm-home-sport-arrow {
+  position: absolute;
+  right: 22px;
+  bottom: 24px;
+  width: 36px;
+  height: 36px;
+  padding: 9px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.14);
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.pfm-home-sport:hover .pfm-home-sport-arrow {
+  background: #38bdf8;
+  color: #020617;
+  transform: translateX(3px);
+}
+
+/* --- News ------------------------------------------------------------------ */
+
+.pfm-home-news {
+  margin-top: 0;
+}
+
+/* Tablets show the news two per row: keep it to one full row. */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .pfm-home-news > :nth-child(3) {
+    display: none;
+  }
+}
+
+/* --- Upcoming competitions --------------------------------------------------- */
+
+.pfm-home-events {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.pfm-home-event {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 100%;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: inherit;
+  transition: background 180ms ease, border-color 180ms ease;
+}
+
+.pfm-home-event:hover {
+  color: inherit;
+  background: rgba(56, 189, 248, 0.08);
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+.pfm-home-event-date {
+  flex: 0 0 auto;
+  min-width: 82px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(37, 99, 235, 0.2);
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 0.85rem;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.pfm-home-event-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pfm-home-event-name {
+  color: #ffffff;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.pfm-home-event-meta {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.88rem;
+}
+
+/* --- About ------------------------------------------------------------------ */
+
+.pfm-home-about {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: center;
+  padding: 32px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pfm-home-about .pfm-home-title {
+  margin-top: 10px;
+}
+
+.pfm-home-about-text {
+  margin: 14px 0 18px;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.7;
+}
+
+.pfm-home-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.pfm-home-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(2, 6, 23, 0.4);
+  color: #ffffff;
+  font-weight: 800;
+  transition: border-color 180ms ease, background 180ms ease;
+}
+
+.pfm-home-link:hover {
+  color: #ffffff;
+  border-color: rgba(56, 189, 248, 0.35);
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.pfm-home-link-icon {
+  display: inline-flex;
+  padding: 8px;
+  border-radius: 10px;
+  background: rgba(56, 189, 248, 0.14);
+  color: #7dd3fc;
+}
+
+.pfm-home-link-arrow {
+  margin-left: auto;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* --- Tablets and phones ---------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .pfm-home-sports {
+    grid-template-columns: 1fr;
+  }
+
+  .pfm-home-sport {
+    height: 180px;
+  }
+
+  .pfm-home-about {
+    grid-template-columns: 1fr;
+    padding: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .pfm-home-hero {
+    min-height: 0;
+    padding: 112px 0 64px;
+  }
+
+  /* The text spans the full width on phones: darken the whole photo evenly. */
+  .pfm-home-hero::before {
+    background:
+      linear-gradient(180deg, rgba(2, 6, 23, 0.7) 0%, rgba(2, 6, 23, 0.8) 100%),
+      #020617 url("/Landing.webp") 65% center / cover no-repeat;
+  }
+
+  .pfm-home-hero-actions .pfm-home-btn {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .pfm-home-section {
+    padding-top: 44px;
+  }
+
+  .pfm-home-sport {
+    height: 150px;
+    padding: 18px;
+  }
+
+  .pfm-home-events {
+    grid-template-columns: 1fr;
+  }
+
+  .pfm-home-about {
+    padding: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pfm-home-sport img,
+  .pfm-home-btn,
+  .pfm-home-sport-arrow {
+    transition: none;
+  }
+}

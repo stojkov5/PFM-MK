@@ -8,61 +8,6 @@
   margin-top: 0;
 }
 
-.pfm-aboutpg-panel {
-  border-radius: 22px;
-  padding: 22px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(14px);
-}
-
-.pfm-aboutpg-lead {
-  max-width: 80ch;
-  font-size: 1.05rem;
-  line-height: 1.8;
-  color: rgba(255, 255, 255, 0.85);
-}
-
-/* What we do */
-.pfm-aboutpg-pillars {
-  margin-top: 14px;
-  display: grid;
-  gap: 12px;
-  grid-template-columns: 1fr;
-}
-
-@media (min-width: 768px) {
-  .pfm-aboutpg-pillars {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.pfm-aboutpg-pillar {
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
-  padding: 16px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.pfm-aboutpg-pillar .pfm-swimming-card-icon {
-  flex-shrink: 0;
-}
-
-.pfm-aboutpg-pillar-title {
-  font-weight: 800;
-  color: #ffffff;
-}
-
-.pfm-aboutpg-pillar-desc {
-  margin-top: 4px;
-  color: rgba(255, 255, 255, 0.68);
-  line-height: 1.6;
-  font-size: 0.94rem;
-}
-
 /* Structure */
 .pfm-aboutpg-actions {
   display: flex;
