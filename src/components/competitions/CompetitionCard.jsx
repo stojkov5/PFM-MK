@@ -1,6 +1,7 @@
 // src/components/competitions/CompetitionCard.jsx
 // One competition in the calendar list: date · club badge · name and place,
 // opening into the full details (criteria, deadline, bulletin link…).
+// `sport` ({ key, label }) adds a sport tag (/calendar, all sports).
 import React from "react";
 import { FiArrowRight, FiExternalLink, FiMapPin } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
@@ -14,7 +15,7 @@ const Detail = ({ label, children, wide }) =>
     </div>
   ) : null;
 
-const CompetitionCard = ({ competition: c, open, onToggle }) => {
+const CompetitionCard = ({ competition: c, open, onToggle, sport }) => {
   const { t, i18n } = useTranslation();
   const locale = i18n.resolvedLanguage ?? "mk";
   const past = c.endDate < todayString();
@@ -35,6 +36,7 @@ const CompetitionCard = ({ competition: c, open, onToggle }) => {
         <span className="pfm-comp-date">{formatRange(c.startDate, c.endDate, locale)}</span>
         <span className="pfm-comp-badge" aria-hidden="true">{clubInitials(c.clubName)}</span>
         <span className="pfm-comp-main">
+          {sport && <span className={`pfm-comp-sport is-${sport.key}`}>{sport.label}</span>}
           <span className="pfm-comp-name">
             {c.name}
             <span className="pfm-comp-org"> · {shortClubName(c.clubName)}</span>

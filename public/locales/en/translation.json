@@ -27,7 +27,6 @@
     },
     "common": {
       "calendarNational": "Calendar – National",
-      "calendarInternational": "Calendar – International",
       "recordList": "Record List",
       "criteria": "Criteria"
     },
@@ -100,38 +99,6 @@
     },
     "note": "The list is shown from a separate data file so the component stays clean and easier to maintain.",
     "loadError": "Couldn’t load the clubs. Please try again."
-  },
-  "calendar": {
-    "kicker": "Calendar",
-    "nationalTitle": "Calendar – National",
-    "internationalTitle": "Calendar – International",
-    "searchPlaceholderNational": "Search… (example: Skopje, 25m, National)",
-    "searchPlaceholderInternational": "Search… (example: Belgrade, 25m, TBC, Olympics)",
-    "total": "Total:",
-    "openPdf": "Open PDF",
-    "noResults": "No events found",
-    "eventsLabel": "events",
-    "columns": {
-      "month": "Month",
-      "week": "Week",
-      "date": "Date",
-      "event": "Event",
-      "location": "Location",
-      "organizer": "Organizer",
-      "competition": "Competition",
-      "category": "Category",
-      "place": "Place",
-      "categories": "Categories",
-      "pool": "Pool",
-      "status": "Status"
-    },
-    "status": {
-      "tbc": "TBC",
-      "ok": "OK"
-    },
-    "waterpoloNationalTitle": "Water polo – national calendar",
-    "distanceSwimmingTitle": "Distance swimming calendar",
-    "noEventsMonth": "No events this month."
   },
   "records": {
     "kicker": "Records",
@@ -321,7 +288,7 @@
       "subtitle": "News, results and announcements from Macedonian water polo."
     },
     "calendar": {
-      "title": "Water polo calendar",
+      "title": "Season calendar",
       "empty": "There are no competitions in the water polo calendar yet."
     }
   },
@@ -345,26 +312,23 @@
       "title": "Distance swimming criteria",
       "subtitle": "Official criteria and documents for open-water competitions.",
       "empty": "No distance swimming criteria have been published yet."
+    },
+    "calendar": {
+      "title": "Season calendar",
+      "empty": "There are no competitions in the distance swimming calendar yet."
     }
   },
   "calendarHub": {
     "hero": {
-      "kicker": "Calendar",
-      "title": "Competition calendar",
-      "subtitle": "All national and international competition calendars in one place, grouped by sport."
-    },
-    "national": {
-      "title": "National",
-      "desc": "Domestic competitions by month."
-    },
-    "international": {
-      "title": "International",
-      "desc": "International competitions and events."
-    },
-    "distance": {
+      "kicker": "Calendar · Season {{year}}",
       "title": "Season calendar",
-      "desc": "Open-water and marathon events."
-    }
+      "subtitle": "Every swimming, water polo and distance swimming competition, month by month. Choose a sport to see only its calendar."
+    },
+    "filter": {
+      "label": "Filter by sport",
+      "all": "All sports"
+    },
+    "openSport": "Full calendar — {{sport}}"
   },
   "about": {
     "hero": {
@@ -459,7 +423,7 @@
   },
   "competitions": {
     "kicker": "Calendar",
-    "title": "Competition calendar",
+    "title": "Season calendar",
     "empty": "There are no competitions in the {{year}} calendar yet.",
     "loadFailed": "The calendar couldn't be loaded. Please try again later.",
     "finished": "Finished",
@@ -492,8 +456,6 @@
       "cta": "Add competition"
     },
     "upcoming": {
-      "title": "Upcoming swimming competitions",
-      "all": "Full calendar",
       "empty": "No upcoming competitions in the calendar yet."
     },
     "form": {

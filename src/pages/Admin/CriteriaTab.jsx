@@ -6,14 +6,11 @@ import React, { useState } from "react";
 import {
   App as AntApp,
   Button,
-  Empty,
   Form,
   Input,
   Modal,
   Popconfirm,
-  Segmented,
   Select,
-  Table,
   Tooltip,
   Upload,
 } from "antd";
@@ -21,7 +18,8 @@ import dayjs from "dayjs";
 import { FiArrowDown, FiArrowUp, FiExternalLink, FiPlus, FiUploadCloud } from "react-icons/fi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAdminApi } from "./useAdminApi.js";
-import { useIsPhone } from "./useIsPhone.js";
+import AdminTable from "./AdminTable.jsx";
+import StatusSwitch from "./StatusSwitch.jsx";
 import { apiUrl } from "../../lib/api.js";
 import { CRITERIA_SPORTS } from "../../lib/criteria.js";
 
@@ -146,7 +144,6 @@ const CriteriaTab = () => {
   const api = useAdminApi();
   const { message } = AntApp.useApp();
   const queryClient = useQueryClient();
-  const isPhone = useIsPhone();
   const [sport, setSport] = useState(CRITERIA_SPORTS[0]);
   const [editing, setEditing] = useState(); // undefined = closed, null = new, object = edit
 
@@ -204,6 +201,7 @@ const CriteriaTab = () => {
       </Button>
       <Popconfirm
         title="Delete this document from the site?"
+        placement="topRight"
         okText="Delete"
         okButtonProps={{ danger: true }}
         onConfirm={() => remove.mutateAsync(doc.id).catch(() => {})}
@@ -216,32 +214,32 @@ const CriteriaTab = () => {
   );
 
   const columns = [
-    { title: "Order", key: "order", width: 90, render: (_, doc, index) => orderButtons(doc, index) },
     {
       title: "Document",
       key: "title",
-      render: (_, doc) => (
+      primary: true,
+      render: (doc) => (
         <div>
           <div className="pfm-admin-strong">{doc.title}</div>
           {doc.description && <div className="pfm-admin-dim">{doc.description}</div>}
         </div>
       ),
     },
-    { title: "File", key: "file", render: (_, doc) => fileLink(doc) },
+    { title: "Order", key: "order", width: 100, render: (doc, index) => orderButtons(doc, index) },
+    { title: "File", key: "file", render: (doc) => fileLink(doc) },
     {
       title: "Last changed",
       key: "updated",
-      render: (_, doc) => (
+      width: 190,
+      render: (doc) => (
         <span className="pfm-admin-dim">
           {fmtDateTime(doc.updatedAt)}
           {doc.updatedBy && ` · ${doc.updatedBy}`}
         </span>
       ),
     },
-    { title: "Actions", key: "actions", render: (_, doc) => actions(doc) },
+    { title: "Actions", key: "actions", actions: true, width: 170, render: (doc) => actions(doc) },
   ];
-
-  const empty = <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No documents on this page yet" />;
 
   return (
     <div className="pfm-admin-section">
@@ -255,49 +253,19 @@ const CriteriaTab = () => {
       </div>
 
       <div className="pfm-admin-toolbar">
-        {isPhone ? (
-          <Select className="pfm-admin-status-select" value={sport} onChange={setSport} options={SPORT_OPTIONS} />
-        ) : (
-          <Segmented value={sport} onChange={setSport} options={SPORT_OPTIONS} />
-        )}
-        <Button type="primary" icon={<FiPlus />} onClick={() => setEditing(null)} block={isPhone}>
+        <StatusSwitch value={sport} onChange={setSport} options={SPORT_OPTIONS} label="Sport" />
+        <Button type="primary" icon={<FiPlus />} onClick={() => setEditing(null)}>
           Add document
         </Button>
       </div>
 
-      {isPhone ? (
-        <div className="pfm-admin-mcards">
-          {list.isLoading && <div className="pfm-admin-dim">Loading…</div>}
-          {list.data?.length === 0 && empty}
-          {docs.map((doc, index) => (
-            <div key={doc.id} className="pfm-admin-mcard">
-              <div className="pfm-admin-mcard-top">
-                <span className="pfm-admin-dim">#{index + 1}</span>
-                {orderButtons(doc, index)}
-              </div>
-              <div className="pfm-admin-mcard-name">{doc.title}</div>
-              {doc.description && <div className="pfm-admin-dim">{doc.description}</div>}
-              <div style={{ marginTop: 8 }}>{fileLink(doc)}</div>
-              <div className="pfm-admin-dim" style={{ marginTop: 4 }}>
-                Last changed {fmtDateTime(doc.updatedAt)}
-                {doc.updatedBy && ` · ${doc.updatedBy}`}
-              </div>
-              <div className="pfm-admin-mcard-actions">{actions(doc)}</div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <Table
-          rowKey="id"
-          columns={columns}
-          dataSource={docs}
-          loading={list.isLoading}
-          pagination={false}
-          scroll={{ x: "max-content" }}
-          locale={{ emptyText: empty }}
-          className="pfm-admin-table"
-        />
-      )}
+      <AdminTable
+        columns={columns}
+        dataSource={docs}
+        loading={list.isLoading}
+        pageSize={0}
+        emptyText="No documents on this page yet"
+      />
 
       {editing !== undefined && (
         <EditModal key={editing?.id ?? "new"} doc={editing} sport={sport} onClose={() => setEditing(undefined)} />

@@ -4,8 +4,6 @@
 import React from "react";
 import SportLayout from "../../components/sport/SportLayout.jsx";
 
-// The international calendar page (/swimming/calendar-international) still
-// exists but is not linked here for now.
 const ITEMS = [
   { key: "latest", to: "/swimming", end: true },
   { key: "calendar", to: "/swimming/calendar-national" },

@@ -8,16 +8,12 @@ import {
   AutoComplete,
   Button,
   DatePicker,
-  Empty,
   Form,
   Input,
   InputNumber,
   Modal,
   Popconfirm,
   Radio,
-  Segmented,
-  Select,
-  Table,
   Tag,
   TimePicker,
   Tooltip,
@@ -27,6 +23,8 @@ import { FiAlertTriangle, FiExternalLink, FiPlus } from "react-icons/fi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAdminApi } from "./useAdminApi.js";
 import { useIsPhone } from "./useIsPhone.js";
+import AdminTable from "./AdminTable.jsx";
+import StatusSwitch from "./StatusSwitch.jsx";
 import { COURSES } from "../../lib/competitions.js";
 import { useClubs } from "../../lib/clubs.js";
 
@@ -436,59 +434,8 @@ const Details = ({ c }) => (
   </div>
 );
 
-// One competition as a card (phones).
-const CompetitionCard = ({ c, actions }) => {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="pfm-admin-mcard">
-      <div className="pfm-admin-mcard-top">
-        <span className="pfm-admin-strong">{fmtRange(c)}</span>
-        {c.startTime && <span className="pfm-admin-dim">from {c.startTime}</span>}
-        <Tag>{COURSE_LABELS[c.course]}</Tag>
-      </div>
-      <div className="pfm-admin-mcard-name">{c.name}</div>
-      <div className="pfm-admin-dim">{c.clubName}</div>
-      <div className="pfm-admin-dim">{[c.venue, c.city].filter(Boolean).join(", ")}</div>
-      {c.overlaps.length > 0 && (
-        <div className="pfm-admin-overlaps" style={{ marginTop: 8 }}>
-          {c.overlaps.map((o) => (
-            <Tag
-              key={o.id}
-              color={o.status === "approved" ? "red" : "orange"}
-              icon={<FiAlertTriangle style={{ marginRight: 4 }} />}
-            >
-              {o.name} · {o.range}
-            </Tag>
-          ))}
-        </div>
-      )}
-      {(c.contactName || c.contactEmail || c.contactPhone) && (
-        <div className="pfm-admin-mcard-contact">
-          {c.contactName && <span>{c.contactName}</span>}
-          {c.contactEmail && (
-            <a href={`mailto:${c.contactEmail}`} className="pfm-admin-dim">
-              {c.contactEmail}
-            </a>
-          )}
-          {c.contactPhone && (
-            <a href={`tel:${c.contactPhone.replace(/[^\d+]/g, "")}`} className="pfm-admin-dim">
-              {c.contactPhone}
-            </a>
-          )}
-        </div>
-      )}
-      <div className="pfm-admin-mcard-actions">{actions}</div>
-      <Button type="link" size="small" className="pfm-admin-mcard-more" onClick={() => setOpen((v) => !v)}>
-        {open ? "Hide details" : "More details"}
-      </Button>
-      {open && <Details c={c} />}
-    </div>
-  );
-};
-
 const CompetitionsTab = ({ counts }) => {
   const api = useAdminApi();
-  const isPhone = useIsPhone();
   const { message } = AntApp.useApp();
   const queryClient = useQueryClient();
   const [status, setStatus] = useState("pending");
@@ -532,6 +479,7 @@ const CompetitionsTab = ({ counts }) => {
       {!reviewable && (
         <Popconfirm
           title="Delete this competition permanently?"
+          placement="topRight"
           okText="Delete"
           okButtonProps={{ danger: true }}
           onConfirm={() => remove.mutateAsync(c.id).catch(() => {})}
@@ -551,22 +499,13 @@ const CompetitionsTab = ({ counts }) => {
 
   const columns = [
     {
-      title: "Dates",
-      key: "dates",
-      render: (_, c) => (
-        <div>
-          <div className="pfm-admin-strong">{fmtRange(c)}</div>
-          {c.startTime && <div className="pfm-admin-dim">from {c.startTime}</div>}
-        </div>
-      ),
-    },
-    {
       title: "Competition",
       key: "name",
-      render: (_, c) => (
+      primary: true,
+      render: (c) => (
         <div>
           <div className="pfm-admin-strong">
-            {c.name} <Tag style={{ marginLeft: 4 }}>{COURSE_LABELS[c.course]}</Tag>
+            {c.name} <Tag className="pfm-admin-inline-tag">{COURSE_LABELS[c.course]}</Tag>
           </div>
           <div className="pfm-admin-dim">{c.clubName}</div>
           <div className="pfm-admin-dim">{[c.venue, c.city].filter(Boolean).join(", ")}</div>
@@ -574,9 +513,21 @@ const CompetitionsTab = ({ counts }) => {
       ),
     },
     {
+      title: "Dates",
+      key: "dates",
+      width: 150,
+      render: (c) => (
+        <div>
+          <div className="pfm-admin-strong">{fmtRange(c)}</div>
+          {c.startTime && <div className="pfm-admin-dim">from {c.startTime}</div>}
+        </div>
+      ),
+    },
+    {
       title: "Overlaps",
       key: "overlaps",
-      render: (_, c) =>
+      width: 190,
+      render: (c) =>
         c.overlaps.length === 0 ? (
           <span className="pfm-admin-dim">—</span>
         ) : (
@@ -594,16 +545,20 @@ const CompetitionsTab = ({ counts }) => {
     {
       title: "Contact",
       key: "contact",
-      render: (_, c) =>
-        c.contactName || c.contactEmail ? (
-          <div>
-            <div>{c.contactName}</div>
+      render: (c) =>
+        c.contactName || c.contactEmail || c.contactPhone ? (
+          <div className="pfm-admin-contact">
+            {c.contactName && <div>{c.contactName}</div>}
             {c.contactEmail && (
               <a href={`mailto:${c.contactEmail}`} className="pfm-admin-dim">
                 {c.contactEmail}
               </a>
             )}
-            {c.contactPhone && <div className="pfm-admin-dim">{c.contactPhone}</div>}
+            {c.contactPhone && (
+              <a href={`tel:${c.contactPhone.replace(/[^\d+]/g, "")}`} className="pfm-admin-dim">
+                {c.contactPhone}
+              </a>
+            )}
           </div>
         ) : (
           <span className="pfm-admin-dim">—</span>
@@ -612,7 +567,9 @@ const CompetitionsTab = ({ counts }) => {
     {
       title: "Actions",
       key: "actions",
-      render: (_, c) => actionsFor(c),
+      actions: true,
+      width: 160,
+      render: (c) => actionsFor(c),
     },
   ];
 
@@ -621,54 +578,19 @@ const CompetitionsTab = ({ counts }) => {
       <WindowCard />
 
       <div className="pfm-admin-toolbar">
-        {isPhone ? (
-          <Select
-            className="pfm-admin-status-select"
-            value={status}
-            onChange={setStatus}
-            options={statusOptions}
-          />
-        ) : (
-          <Segmented value={status} onChange={setStatus} options={statusOptions} />
-        )}
-        <Button type="primary" icon={<FiPlus />} onClick={() => setEditing(null)} block={isPhone}>
+        <StatusSwitch value={status} onChange={setStatus} options={statusOptions} label="Status" />
+        <Button type="primary" icon={<FiPlus />} onClick={() => setEditing(null)}>
           Add competition
         </Button>
       </div>
 
-      {isPhone ? (
-        <div className="pfm-admin-mcards">
-          {list.isLoading && <div className="pfm-admin-dim">Loading…</div>}
-          {list.data?.length === 0 && (
-            <Empty
-              image={Empty.PRESENTED_IMAGE_SIMPLE}
-              description={status === "pending" ? "No competitions waiting for review" : "Nothing here"}
-            />
-          )}
-          {(list.data ?? []).map((c) => (
-            <CompetitionCard key={c.id} c={c} actions={actionsFor(c)} />
-          ))}
-        </div>
-      ) : (
-        <Table
-          rowKey="id"
-          columns={columns}
-          dataSource={list.data ?? []}
-          loading={list.isLoading}
-          expandable={{ expandedRowRender: (c) => <Details c={c} /> }}
-          pagination={{ pageSize: 20, hideOnSinglePage: true }}
-          scroll={{ x: "max-content" }}
-          locale={{
-            emptyText: (
-              <Empty
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-                description={status === "pending" ? "No competitions waiting for review" : "Nothing here"}
-              />
-            ),
-          }}
-          className="pfm-admin-table"
-        />
-      )}
+      <AdminTable
+        columns={columns}
+        dataSource={list.data ?? []}
+        loading={list.isLoading}
+        expandable={{ render: (c) => <Details c={c} /> }}
+        emptyText={status === "pending" ? "No competitions waiting for review" : "Nothing here"}
+      />
 
       {review && <ReviewModal key={`${review.action}-${review.competition.id}`} review={review} onClose={() => setReview(null)} />}
       {editing !== undefined && <EditModal competition={editing} onClose={() => setEditing(undefined)} />}

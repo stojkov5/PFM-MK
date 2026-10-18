@@ -61,13 +61,9 @@
   flex: 1 1 260px;
 }
 
-.pfm-admin-table .ant-table {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.pfm-admin-strong { color: rgba(255, 255, 255, 0.92); font-weight: 600; }
+.pfm-admin-strong { color: rgba(255, 255, 255, 0.92); font-weight: 600; overflow-wrap: anywhere; }
 .pfm-admin-dim { color: rgba(255, 255, 255, 0.6); font-size: 0.85rem; }
-.pfm-admin-actions { display: flex; gap: 8px; }
+.pfm-admin-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .pfm-admin-link { display: inline-flex; align-items: center; gap: 4px; }
 
 /* Ant Segmented – dark (status and filter switches) */
@@ -99,8 +95,7 @@
   gap: 12px;
 }
 
-.pfm-admin-actions-wrap { flex-wrap: wrap; max-width: 330px; }
-.pfm-admin-overlaps { display: flex; flex-wrap: wrap; gap: 4px; max-width: 260px; }
+.pfm-admin-overlaps { display: flex; flex-wrap: wrap; gap: 4px; }
 .pfm-admin-pre { white-space: pre-line; }
 
 .pfm-admin-comp-details {
@@ -131,68 +126,202 @@
   .pfm-admin-form-grid-3 { grid-template-columns: 1fr; }
 }
 
-/* --- Phones ---------------------------------------------------------------- */
+/* --- Lists (AdminTable) ------------------------------------------------------ */
 
-/* Competition / club cards that replace the wide tables on phones. */
-.pfm-admin-mcards {
+/* Wide screens: a real table, fixed layout so it always fits the page. */
+.pfm-admin-table .ant-table {
+  background: #0b1324;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.pfm-admin-table .ant-table-thead > tr > th {
+  background: #101b31 !important;
+  color: rgba(255, 255, 255, 0.62) !important;
+  font-size: 0.74rem;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 12px 14px !important;
+}
+
+.pfm-admin-table .ant-table-thead > tr > th::before {
+  display: none; /* the little column separators */
+}
+
+.pfm-admin-table .ant-table-tbody > tr > td {
+  padding: 14px !important;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  border-bottom-color: rgba(255, 255, 255, 0.07) !important;
+}
+
+.pfm-admin-table .ant-table-tbody > tr:last-child > td {
+  border-bottom: 0;
+}
+
+.pfm-admin-table .ant-table-tbody > tr.ant-table-row:hover > td {
+  background: #111d35 !important;
+}
+
+/* Pinned actions column: buttons stacked, each full width. */
+.pfm-admin-table td.pfm-admin-col-actions .pfm-admin-actions {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.pfm-admin-table td.pfm-admin-col-actions .ant-btn {
+  width: 100%;
+}
+
+.pfm-admin-table td.pfm-admin-col-actions .ant-btn-text {
+  border: 1px solid rgba(255, 77, 79, 0.35);
+}
+
+.pfm-admin-table .ant-table-expanded-row > td {
+  background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.pfm-admin-times,
+.pfm-admin-contact,
+.pfm-admin-tags {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.pfm-admin-tags .ant-tag {
+  margin: 0;
+}
+
+.pfm-admin-time-now {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.pfm-admin-inline-tag {
+  margin-left: 4px;
+}
+
+/* Tablets and phones: each row is a card with labelled cells. */
+.pfm-admin-rows {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.pfm-admin-mcard {
-  padding: 14px;
+.pfm-admin-rows-loading,
+.pfm-admin-rows-empty {
+  display: flex;
+  justify-content: center;
+  padding: 40px 16px;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.04);
+  background: #0b1324;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.pfm-admin-mcard-top {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px 10px;
-  margin-bottom: 6px;
+.pfm-admin-row {
+  border-radius: 16px;
+  background: #0b1324;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
 }
 
-.pfm-admin-mcard-name {
-  color: #fff;
-  font-weight: 800;
+.pfm-admin-row-head {
+  padding: 14px 16px;
+  background: #101b31;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pfm-admin-row-head .pfm-admin-strong {
   font-size: 1.02rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+/* The cells: a grid with hairlines between them, like table cells. */
+.pfm-admin-row-cells {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.pfm-admin-row-cell {
+  padding: 10px 16px 12px;
+  background: #0b1324;
+  min-width: 0;
   overflow-wrap: anywhere;
 }
 
-.pfm-admin-mcard-contact {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin-top: 10px;
-  overflow-wrap: anywhere;
+.pfm-admin-row-cell dt {
+  margin-bottom: 4px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(56, 189, 248, 0.85);
 }
 
-.pfm-admin-mcard-actions {
-  margin-top: 12px;
+.pfm-admin-row-cell dd {
+  margin: 0;
 }
 
-.pfm-admin-mcard-actions .pfm-admin-actions-wrap {
-  max-width: none;
+.pfm-admin-row-more {
+  margin: 8px 10px 0;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 4px;
 }
 
-.pfm-admin-mcard-more {
-  padding: 0 !important;
-  margin-top: 8px;
+.pfm-admin-row-more svg {
+  transition: transform 200ms ease;
 }
 
-.pfm-admin-mcard .pfm-admin-comp-details {
-  margin-top: 8px;
-  padding: 10px 0 0;
+.pfm-admin-row-more.is-open svg {
+  transform: rotate(180deg);
+}
+
+.pfm-admin-row-details {
+  margin: 6px 16px 4px;
+  padding-top: 10px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pfm-admin-row-actions {
+  padding: 12px 16px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 8px;
+}
+
+/* Touch-sized buttons on tablets and phones. */
+.pfm-admin-row-actions .ant-btn {
+  height: 36px;
+  padding-inline: 16px;
 }
 
 .pfm-admin-status-select {
   width: 100%;
 }
 
+/* Phones: section dropdown in place of the tab bar. */
+.pfm-admin-section-select {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.pfm-admin-section-select.ant-select .ant-select-selector {
+  height: 44px !important;
+  align-items: center;
+  font-weight: 700;
+}
+
+/* Phones */
 @media (max-width: 767px) {
   .pfm-admin-title {
     font-size: 1.3rem;
@@ -213,7 +342,21 @@
     width: 100%;
   }
 
+  /* Toolbar: switch, filters and the add button each on their own line. */
   .pfm-admin-toolbar > * {
     flex: 1 1 100%;
+  }
+
+  .pfm-admin-row-cells {
+    grid-template-columns: 1fr;
+  }
+
+  /* Actions: big enough to tap, sharing the row. */
+  .pfm-admin-row-actions .pfm-admin-actions > * {
+    flex: 1 1 auto;
+  }
+
+  .pfm-admin-row-actions .ant-btn {
+    width: 100%;
   }
 }

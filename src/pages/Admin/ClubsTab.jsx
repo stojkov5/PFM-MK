@@ -4,11 +4,12 @@
 // the club and its sign-up account are deleted), and any club's details can
 // be edited.
 import React, { useState } from "react";
-import { App as AntApp, Button, Empty, Form, Input, Modal, Segmented, Select, Table, Tag } from "antd";
+import { App as AntApp, Button, Form, Input, Modal, Select, Tag } from "antd";
 import dayjs from "dayjs";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAdminApi } from "./useAdminApi.js";
-import { useIsPhone } from "./useIsPhone.js";
+import AdminTable from "./AdminTable.jsx";
+import StatusSwitch from "./StatusSwitch.jsx";
 import { CLUB_TYPES } from "../../lib/clubs.js";
 
 const STATUSES = [
@@ -198,42 +199,8 @@ const Details = ({ c }) => (
   </div>
 );
 
-// One club as a card (phones).
-const ClubCard = ({ c, actions }) => {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="pfm-admin-mcard">
-      <div className="pfm-admin-mcard-name">
-        {c.name} {c.test && <Tag color="purple">test — hidden</Tag>}
-      </div>
-      <div className="pfm-admin-dim">{[c.type, c.city].filter(Boolean).join(" · ")}</div>
-      <div className="pfm-admin-mcard-contact">
-        <span>{c.president || "—"}</span>
-        {c.email && (
-          <a href={`mailto:${c.email}`} className="pfm-admin-dim">
-            {c.email}
-          </a>
-        )}
-        {c.phone && <span className="pfm-admin-dim">{c.phone}</span>}
-      </div>
-      <div className="pfm-admin-dim" style={{ marginTop: 8 }}>
-        Logins:{" "}
-        {c.accounts.length === 0
-          ? "none"
-          : c.accounts.map((a) => `${a.email}${a.status !== "approved" ? " (pending)" : ""}`).join(", ")}
-      </div>
-      <div className="pfm-admin-mcard-actions">{actions}</div>
-      <Button type="link" size="small" className="pfm-admin-mcard-more" onClick={() => setOpen((v) => !v)}>
-        {open ? "Hide details" : "More details"}
-      </Button>
-      {open && <Details c={c} />}
-    </div>
-  );
-};
-
 const ClubsTab = ({ counts }) => {
   const api = useAdminApi();
-  const isPhone = useIsPhone();
   const [status, setStatus] = useState("pending");
   const [review, setReview] = useState(null); // { action, club }
   const [editing, setEditing] = useState(null);
@@ -265,13 +232,13 @@ const ClubsTab = ({ counts }) => {
     value: s.value,
     label: counts ? `${s.label} (${counts[s.value]})` : s.label,
   }));
-  const emptyText = status === "pending" ? "No clubs waiting for approval" : "No clubs";
 
   const columns = [
     {
       title: "Club",
       key: "name",
-      render: (_, c) => (
+      primary: true,
+      render: (c) => (
         <div>
           <div className="pfm-admin-strong">
             {c.name} {c.test && <Tag color="purple">test — hidden</Tag>}
@@ -283,8 +250,8 @@ const ClubsTab = ({ counts }) => {
     {
       title: "Contact",
       key: "contact",
-      render: (_, c) => (
-        <div>
+      render: (c) => (
+        <div className="pfm-admin-contact">
           <div>{c.president || "—"}</div>
           {c.email && (
             <a href={`mailto:${c.email}`} className="pfm-admin-dim">
@@ -298,11 +265,11 @@ const ClubsTab = ({ counts }) => {
     {
       title: "Logins",
       key: "accounts",
-      render: (_, c) =>
+      render: (c) =>
         c.accounts.length === 0 ? (
           <span className="pfm-admin-dim">none</span>
         ) : (
-          <div>
+          <div className="pfm-admin-contact">
             {c.accounts.map((a) => (
               <div key={a.id} className="pfm-admin-dim">
                 {a.email} {a.status !== "approved" && <Tag color="gold">pending</Tag>}
@@ -314,7 +281,8 @@ const ClubsTab = ({ counts }) => {
     {
       title: status === "pending" ? "Signed up" : "Competitions",
       key: "when",
-      render: (_, c) =>
+      width: 140,
+      render: (c) =>
         status === "pending" ? (
           <span className="pfm-admin-dim">{fmtDateTime(c.createdAt)}</span>
         ) : (
@@ -324,7 +292,9 @@ const ClubsTab = ({ counts }) => {
     {
       title: "Actions",
       key: "actions",
-      render: (_, c) => actionsFor(c),
+      actions: true,
+      width: 120,
+      render: (c) => actionsFor(c),
     },
   ];
 
@@ -340,36 +310,16 @@ const ClubsTab = ({ counts }) => {
       </div>
 
       <div className="pfm-admin-toolbar">
-        {isPhone ? (
-          <Select className="pfm-admin-status-select" value={status} onChange={setStatus} options={statusOptions} />
-        ) : (
-          <Segmented value={status} onChange={setStatus} options={statusOptions} />
-        )}
+        <StatusSwitch value={status} onChange={setStatus} options={statusOptions} label="Status" />
       </div>
 
-      {isPhone ? (
-        <div className="pfm-admin-mcards">
-          {list.isLoading && <div className="pfm-admin-dim">Loading…</div>}
-          {list.data?.length === 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={emptyText} />}
-          {(list.data ?? []).map((c) => (
-            <ClubCard key={c.id} c={c} actions={actionsFor(c)} />
-          ))}
-        </div>
-      ) : (
-        <Table
-          rowKey="id"
-          columns={columns}
-          dataSource={list.data ?? []}
-          loading={list.isLoading}
-          expandable={{ expandedRowRender: (c) => <Details c={c} /> }}
-          pagination={{ pageSize: 20, hideOnSinglePage: true }}
-          scroll={{ x: "max-content" }}
-          locale={{
-            emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={emptyText} />,
-          }}
-          className="pfm-admin-table"
-        />
-      )}
+      <AdminTable
+        columns={columns}
+        dataSource={list.data ?? []}
+        loading={list.isLoading}
+        expandable={{ render: (c) => <Details c={c} /> }}
+        emptyText={status === "pending" ? "No clubs waiting for approval" : "No clubs"}
+      />
 
       {review && (
         <ReviewModal key={`${review.action}-${review.club.id}`} review={review} onClose={() => setReview(null)} />

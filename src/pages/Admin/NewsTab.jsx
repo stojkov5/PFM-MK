@@ -1,12 +1,14 @@
 // src/pages/Admin/NewsTab.jsx
 import React, { useState } from "react";
-import { App as AntApp, Button, Empty, Popconfirm, Segmented, Select, Table, Tag } from "antd";
+import { App as AntApp, Button, Popconfirm, Select, Tag } from "antd";
 import { FiExternalLink, FiPlus } from "react-icons/fi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { apiUrl } from "../../lib/api.js";
 import { NEWS_CATEGORIES, categoryLabelKey } from "../../lib/news.js";
 import { useAdminApi } from "./useAdminApi.js";
+import AdminTable from "./AdminTable.jsx";
+import StatusSwitch from "./StatusSwitch.jsx";
 import { articleStatus } from "./news/articleStatus.js";
 import "./news/editor.css";
 
@@ -57,7 +59,8 @@ const NewsTab = ({ onEdit }) => {
     {
       title: "Title",
       key: "title",
-      render: (_, a) => (
+      primary: true,
+      render: (a) => (
         <div className="pfm-news-list-title">
           {a.coverImage ? (
             <img className="pfm-news-list-thumb" src={apiUrl(a.coverImage)} alt="" />
@@ -71,29 +74,30 @@ const NewsTab = ({ onEdit }) => {
       ),
     },
     {
-      title: "Category",
-      dataIndex: "category",
+      title: "Category / status",
       key: "category",
-      render: (v) => <Tag color="blue">{t(categoryLabelKey(v))}</Tag>,
-    },
-    {
-      title: "Status",
-      key: "status",
-      render: (_, a) => {
+      width: 170,
+      render: (a) => {
         const s = articleStatus(a);
-        return <Tag color={s.color}>{s.label}</Tag>;
+        return (
+          <div className="pfm-admin-tags">
+            <Tag color="blue">{t(categoryLabelKey(a.category))}</Tag>
+            <Tag color={s.color}>{s.label}</Tag>
+          </div>
+        );
       },
     },
     {
       title: "Publish date",
-      dataIndex: "publishedAt",
       key: "publishedAt",
-      render: formatDate,
+      width: 160,
+      render: (a) => formatDate(a.publishedAt),
     },
     {
       title: "Last edited",
       key: "updatedAt",
-      render: (_, a) => (
+      width: 170,
+      render: (a) => (
         <div>
           <div>{formatDate(a.updatedAt)}</div>
           <div className="pfm-admin-dim">{a.authorName ?? "—"}</div>
@@ -103,7 +107,9 @@ const NewsTab = ({ onEdit }) => {
     {
       title: "Actions",
       key: "actions",
-      render: (_, a) => (
+      actions: true,
+      width: 120,
+      render: (a) => (
         <div className="pfm-admin-actions">
           <Button size="small" type="primary" onClick={() => onEdit(a.id)}>
             Edit
@@ -124,6 +130,7 @@ const NewsTab = ({ onEdit }) => {
             description="This can't be undone."
             okText="Delete"
             okButtonProps={{ danger: true }}
+            placement="topRight"
             onConfirm={() => remove.mutateAsync(a.id).catch(() => {})}
           >
             <Button danger size="small">
@@ -137,10 +144,11 @@ const NewsTab = ({ onEdit }) => {
 
   return (
     <div className="pfm-admin-section">
-      <div className="pfm-news-list-bar">
-        <Segmented
+      <div className="pfm-admin-toolbar pfm-news-list-bar">
+        <StatusSwitch
           value={status}
           onChange={setStatus}
+          label="Status"
           options={STATUS_FILTERS.map((s) => ({
             value: s.value,
             label: `${s.label} (${count(s.value)})`,
@@ -149,7 +157,7 @@ const NewsTab = ({ onEdit }) => {
         <Select
           value={category}
           onChange={setCategory}
-          style={{ minWidth: 200 }}
+          className="pfm-news-list-category"
           aria-label="Category"
           options={[
             { value: "all", label: "All categories" },
@@ -161,22 +169,12 @@ const NewsTab = ({ onEdit }) => {
         </Button>
       </div>
 
-      <Table
-        rowKey="id"
+      <AdminTable
         columns={columns}
         dataSource={shown}
         loading={articles.isLoading}
-        pagination={{ pageSize: 10, hideOnSinglePage: true }}
-        scroll={{ x: "max-content" }}
-        locale={{
-          emptyText: (
-            <Empty
-              image={Empty.PRESENTED_IMAGE_SIMPLE}
-              description={all.length ? "No articles match these filters" : "No articles yet"}
-            />
-          ),
-        }}
-        className="pfm-admin-table"
+        pageSize={10}
+        emptyText={all.length ? "No articles match these filters" : "No articles yet"}
       />
     </div>
   );

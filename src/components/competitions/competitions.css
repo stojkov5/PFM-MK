@@ -1,5 +1,5 @@
 /* src/components/competitions/competitions.css
-   Competition calendar (swimming calendar page, calendar hub) and the
+   Competition calendar (swimming calendar page, /calendar) and the
    competition submission form. */
 
 .pfm-compcal {
@@ -379,41 +379,6 @@
   .pfm-comp-cta svg {
     transition: none;
   }
-}
-
-/* --- Upcoming list (calendar hub) ---------------------------------------- */
-
-.pfm-comp-upcoming {
-  margin-top: 46px;
-}
-
-.pfm-comp-upcoming-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px 16px;
-  margin-bottom: 16px;
-}
-
-.pfm-comp-upcoming-head .pfm-hub-group-title {
-  margin-top: 0;
-}
-
-.pfm-comp-upcoming .pfm-comp-list {
-  margin-top: 14px;
-}
-
-.pfm-comp-upcoming .pfm-compcal-empty {
-  padding: 28px 0;
-}
-
-.pfm-comp-upcoming-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: #38bdf8 !important;
-  font-weight: 700;
 }
 
 /* --- Submission form ----------------------------------------------------- */

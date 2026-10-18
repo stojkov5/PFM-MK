@@ -1,9 +1,11 @@
 // src/pages/Admin/ApplicationsTab.jsx
 import React, { useState } from "react";
-import { App as AntApp, Button, Empty, Popconfirm, Segmented, Table, Tag } from "antd";
+import { App as AntApp, Button, Popconfirm, Tag } from "antd";
 import { FiExternalLink } from "react-icons/fi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAdminApi } from "./useAdminApi.js";
+import AdminTable from "./AdminTable.jsx";
+import StatusSwitch from "./StatusSwitch.jsx";
 
 const STATUSES = [
   { value: "pending", label: "Pending" },
@@ -39,12 +41,20 @@ const ApplicationsTab = ({ counts }) => {
     {
       title: "Applicant",
       key: "applicant",
-      render: (_, a) => <span className="pfm-admin-strong">{a.lastName} {a.firstName}</span>,
+      primary: true,
+      render: (a) => (
+        <div>
+          <div className="pfm-admin-strong">
+            {a.lastName} {a.firstName}
+          </div>
+          <div className="pfm-admin-dim">Submitted {formatDate(a.createdAt)}</div>
+        </div>
+      ),
     },
     {
       title: "Target record",
       key: "target",
-      render: (_, a) => (
+      render: (a) => (
         <div>
           <div className="pfm-admin-strong">{a.discipline}</div>
           <div className="pfm-admin-dim">
@@ -54,28 +64,26 @@ const ApplicationsTab = ({ counts }) => {
       ),
     },
     {
-      title: "Claimed time",
-      dataIndex: "time",
+      title: status === "pending" ? "Claimed / current" : "Claimed / record now",
       key: "time",
-      render: (v) => <Tag color="green">{v}</Tag>,
-    },
-    {
-      title: status === "pending" ? "Current record" : "Record now",
-      key: "current",
-      render: (_, a) =>
-        a.currentRecord ? (
-          <div>
-            <Tag>{a.currentRecord.time}</Tag>
-            <div className="pfm-admin-dim">{a.currentRecord.athlete}</div>
-          </div>
-        ) : (
-          <Tag color="gold">none</Tag>
-        ),
+      width: 190,
+      render: (a) => (
+        <div className="pfm-admin-times">
+          <Tag color="green">{a.time}</Tag>
+          {a.currentRecord ? (
+            <div className="pfm-admin-dim">
+              now <span className="pfm-admin-time-now">{a.currentRecord.time}</span> · {a.currentRecord.athlete}
+            </div>
+          ) : (
+            <div className="pfm-admin-dim">no record yet</div>
+          )}
+        </div>
+      ),
     },
     {
       title: "Competition",
       key: "competition",
-      render: (_, a) => (
+      render: (a) => (
         <div>
           {a.competition && <div className="pfm-admin-strong">{a.competition}</div>}
           {a.location && <div className="pfm-admin-dim">{a.location}</div>}
@@ -85,21 +93,18 @@ const ApplicationsTab = ({ counts }) => {
         </div>
       ),
     },
-    {
-      title: "Submitted",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      render: formatDate,
-    },
     status === "pending"
       ? {
           title: "Actions",
           key: "actions",
-          render: (_, a) => (
+          actions: true,
+          width: 130,
+          render: (a) => (
             <div className="pfm-admin-actions">
               <Popconfirm
                 title="Approve and replace the current record?"
                 okText="Approve"
+                placement="topRight"
                 onConfirm={() => act.mutateAsync({ id: a.id, action: "approve" }).catch(() => {})}
               >
                 <Button type="primary" size="small">Approve</Button>
@@ -108,6 +113,7 @@ const ApplicationsTab = ({ counts }) => {
                 title="Deny this application?"
                 okText="Deny"
                 okButtonProps={{ danger: true }}
+                placement="topRight"
                 onConfirm={() => act.mutateAsync({ id: a.id, action: "deny" }).catch(() => {})}
               >
                 <Button danger size="small">Deny</Button>
@@ -118,7 +124,8 @@ const ApplicationsTab = ({ counts }) => {
       : {
           title: "Reviewed",
           key: "reviewed",
-          render: (_, a) => (
+          width: 150,
+          render: (a) => (
             <div>
               <div>{formatDate(a.reviewedAt)}</div>
               <div className="pfm-admin-dim">{a.reviewerName ?? "—"}</div>
@@ -129,30 +136,23 @@ const ApplicationsTab = ({ counts }) => {
 
   return (
     <div className="pfm-admin-section">
-      <Segmented
-        value={status}
-        onChange={setStatus}
-        options={STATUSES.map((s) => ({
-          value: s.value,
-          label: counts ? `${s.label} (${counts[s.value]})` : s.label,
-        }))}
-      />
-      <Table
-        rowKey="id"
+      <div className="pfm-admin-toolbar">
+        <StatusSwitch
+          value={status}
+          onChange={setStatus}
+          label="Status"
+          options={STATUSES.map((s) => ({
+            value: s.value,
+            label: counts ? `${s.label} (${counts[s.value]})` : s.label,
+          }))}
+        />
+      </div>
+      <AdminTable
         columns={columns}
         dataSource={apps.data ?? []}
         loading={apps.isLoading}
-        pagination={{ pageSize: 10, hideOnSinglePage: true }}
-        scroll={{ x: "max-content" }}
-        locale={{
-          emptyText: (
-            <Empty
-              image={Empty.PRESENTED_IMAGE_SIMPLE}
-              description={status === "pending" ? "No applications waiting for review" : `No ${status} applications`}
-            />
-          ),
-        }}
-        className="pfm-admin-table"
+        pageSize={10}
+        emptyText={status === "pending" ? "No applications waiting for review" : `No ${status} applications`}
       />
     </div>
   );

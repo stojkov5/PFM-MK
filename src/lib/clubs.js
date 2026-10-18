@@ -12,10 +12,4 @@ export const useClubs = () =>
 
 // Choices for the "type" field of a club signing up (the server accepts any
 // short text).
-export const CLUB_TYPES = [
-  "Пливачки клуб",
-  "Пливачки ватерполо клуб",
-  "Ватерполо клуб",
-  "Пливачки спортски клуб",
-  "Клуб за далечинско пливање",
-];
+export const CLUB_TYPES = ["Пливачки клуб", "Ватерполо клуб"];

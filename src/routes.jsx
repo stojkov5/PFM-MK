@@ -10,7 +10,6 @@ import HomePage from "./pages/Home/HomePage.jsx";
 import SwimmingLayout from "./pages/Swimming/SwimmingLayout.jsx";
 import SwimmingHome from "./pages/Swimming/SwimmingHome.jsx";
 import SwimmingCalendarNational from "./pages/Swimming/CalendarNational.jsx";
-import SwimmingCalendarInternational from "./pages/Swimming/CalendarInternational.jsx";
 import SwimmingRecords from "./pages/Swimming/Records.jsx";
 import SwimmingCriteria from "./pages/Swimming/Criteria.jsx";
 import RecordApplication from "./pages/Swimming/RecordApplication.jsx";
@@ -51,7 +50,8 @@ export const router = createBrowserRouter([
           { path: "calendar-national", element: <SwimmingCalendarNational /> },
           // Clubs register competitions here (and fix them via their emailed edit link).
           { path: "calendar-national/submit", element: <CompetitionSubmit /> },
-          { path: "calendar-international", element: <SwimmingCalendarInternational /> },
+          // The international calendar was removed; old links land on the season calendar.
+          { path: "calendar-international", loader: () => redirect("/swimming/calendar-national") },
           { path: "records", element: <SwimmingRecords /> },
           { path: "criteria", element: <SwimmingCriteria /> },
           { path: "record-application", element: <RecordApplication /> },

@@ -86,7 +86,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  min-width: 180px;
+  min-width: 0;
 }
 
 .pfm-news-list-thumb {
@@ -99,14 +99,15 @@
 }
 
 .pfm-news-list-bar {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
+  justify-content: flex-start;
 }
 
 .pfm-news-list-bar > :last-child {
   margin-left: auto;
+}
+
+.pfm-news-list-category {
+  min-width: 200px;
 }
 
 /* ---------- Editor shell ---------- */
