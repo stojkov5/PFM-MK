@@ -115,7 +115,7 @@ export const adminRouter = (db, auth, { allowedOrigins = [], mailer } = {}) => {
   });
 
   router.use("/team", teamRouter(auth, { allowedOrigins }));
-  router.use("/news", adminNewsRouter(db));
+  router.use("/news", adminNewsRouter(db, { auth, mailer, allowedOrigins }));
   router.use("/media", adminMediaRouter(db));
   router.use("/competitions", adminCompetitionsRouter(db, { mailer, allowedOrigins }));
   router.use("/clubs", adminClubsRouter(db, auth, { mailer, allowedOrigins }));

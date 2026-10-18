@@ -98,6 +98,11 @@ export const createFakeMailer = () => {
       sent.push({ ...mail, to: [mail.to].flat() });
       return true;
     },
+    sendEach: async (to, mail) => {
+      const recipients = [to].flat();
+      for (const addr of recipients) sent.push({ ...mail, to: [addr] });
+      return recipients.length;
+    },
   };
 };
 

@@ -8,6 +8,9 @@ import { createApp } from "./app.js";
 import { createPrisma } from "./db/client.js";
 import { ensureClubs } from "./lib/clubs.js";
 import { ensureCriteria } from "./lib/criteria.js";
+import { clerkClient } from "@clerk/express";
+import { createMailer } from "./lib/mailer.js";
+import { sendPendingNewsEmails } from "./lib/newsEmails.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -59,6 +62,24 @@ if (process.env.NODE_ENV === "production") {
     });
   }
 }
+
+// "New article" emails for articles scheduled for a later date (and any a
+// restart interrupted): checked now and every 5 minutes.
+const newsSite = (
+  process.env.SITE_URL ||
+  (process.env.CLIENT_ORIGIN ?? "").split(",")[0].trim() ||
+  "https://npf.mk"
+).replace(/\/$/, "");
+const newsMailer = createMailer();
+const sendNewsEmails = () =>
+  sendPendingNewsEmails(db, clerkClient, newsMailer, newsSite).catch((err) =>
+    console.error(
+      "[pfm] news emails failed (if the email_status column is missing, run `npm run db:push`):",
+      err.message
+    )
+  );
+sendNewsEmails();
+setInterval(sendNewsEmails, 5 * 60 * 1000);
 
 const port = Number(process.env.PORT) || 3001;
 app.listen(port, () => console.log(`[pfm] API listening on :${port}`));

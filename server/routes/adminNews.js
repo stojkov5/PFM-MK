@@ -1,6 +1,8 @@
 // server/routes/adminNews.js
 import { Router } from "express";
 import { ARTICLE_CATEGORIES, ARTICLE_STATUSES, slugify, validateArticle } from "../lib/news.js";
+import { sendPendingNewsEmails } from "../lib/newsEmails.js";
+import { siteUrl } from "./competitions.js";
 
 const listFields = {
   id: true,
@@ -10,6 +12,7 @@ const listFields = {
   status: true,
   coverImage: true,
   publishedAt: true,
+  emailStatus: true,
   createdAt: true,
   updatedAt: true,
   authorName: true,
@@ -25,8 +28,17 @@ const uniqueSlug = async (db, title, ignoreId) => {
   }
 };
 
-export const adminNewsRouter = (db) => {
+export const adminNewsRouter = (db, { auth, mailer, allowedOrigins = [] } = {}) => {
   const router = Router();
+
+  // Sends the "new article" email for anything that just went live, without
+  // holding up the response. Scheduled articles are sent by the timer instead.
+  const sendNewsEmails = (req) => {
+    if (!auth || !mailer) return;
+    sendPendingNewsEmails(db, auth.client, mailer, siteUrl(req, allowedOrigins)).catch((err) =>
+      console.error("[pfm] news emails failed:", err)
+    );
+  };
 
   router.get("/", async (req, res) => {
     const where = {};
@@ -58,9 +70,12 @@ export const adminNewsRouter = (db) => {
         publishedAt: publishedAt ?? (data.status === "published" ? new Date() : null),
         authorId: req.admin.id,
         authorName: req.admin.name ?? req.admin.email,
+        // Published straight away: every registered account gets an email.
+        emailStatus: data.status === "published" ? "pending" : null,
       },
     });
     res.status(201).json(article);
+    sendNewsEmails(req);
   });
 
   router.put("/:id", async (req, res) => {
@@ -86,9 +101,16 @@ export const adminNewsRouter = (db) => {
         slug,
         publishedAt:
           publishedAt ?? existing.publishedAt ?? (data.status === "published" ? new Date() : null),
+        // First publish of a draft: every registered account gets an email.
+        // Articles that were already emailed (or published before emails
+        // existed) don't send again.
+        ...(data.status === "published" && existing.status !== "published" && !existing.emailStatus
+          ? { emailStatus: "pending" }
+          : {}),
       },
     });
     res.json(article);
+    sendNewsEmails(req);
   });
 
   router.delete("/:id", async (req, res) => {

@@ -137,6 +137,13 @@ trailing slash), or the frontend and API using keys from different Clerk instanc
   `npf.mk` domain must be verified in Resend (DNS records). Without the key nothing is
   emailed: the actions still work and the admin panel warns that the email failed.
   Locally the emails are printed to the server console instead.
+- **News emails:** the first time an article is published (any category), every
+  registered Clerk account — clubs and athletes — gets an email with its title, summary,
+  cover image and a link. Scheduled articles are emailed when their publish date arrives
+  (the API checks every 5 minutes). This added the `articles.email_status` column: run
+  `npm run db:push` once **before** deploying this code, or the news pages stop working.
+  Articles published before this change are never emailed. The cover image uses the
+  API's public URL (`RAILWAY_PUBLIC_DOMAIN`, set by Railway; override with `API_URL`).
 
 ## Database commands
 | Command | What it does |

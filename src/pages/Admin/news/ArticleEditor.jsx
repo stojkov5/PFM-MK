@@ -67,12 +67,14 @@ const ArticleForm = ({ initial, onClose }) => {
       queryClient.invalidateQueries({ queryKey: ["admin-news"] });
       queryClient.invalidateQueries({ queryKey: ["news"] });
       const state = articleStatus(article).key;
+      // This save queued the "new article" email to every registered account.
+      const emailing = article.emailStatus === "pending" && !saved.emailStatus;
       message.success(
         status === "draft"
           ? "Saved as draft — not visible on the site."
           : state === "scheduled"
-            ? "Saved — it will appear on the site at the publish date."
-            : "Published — it's live on the site."
+            ? `Saved — it will appear on the site at the publish date.${emailing ? " Registered users will be emailed then." : ""}`
+            : `Published — it's live on the site.${emailing ? " Registered users are being emailed about it." : ""}`
       );
     },
     onError: (err) => message.error(err.message),

@@ -29,10 +29,12 @@ const summaryLines = (c) => [
 ];
 
 // Builds { subject, text, html } from paragraphs. A paragraph is a string or
-// { quote } for the admin's own words, or { link, label }.
+// { quote } for the admin's own words, { link, label }, or { image, alt }
+// (shown only in the HTML version).
 export const compose = (subject, paragraphs) => {
   const all = [...paragraphs, `Поздрав,\n${SIGNATURE}`];
   const text = all
+    .filter((p) => !p.image)
     .map((p) =>
       typeof p === "string" ? p : p.quote ? p.quote : `${p.label}: ${p.link}`
     )
@@ -40,6 +42,9 @@ export const compose = (subject, paragraphs) => {
   const html = all
     .map((p) => {
       if (typeof p === "string") return `<p>${escapeHtml(p).replace(/\n/g, "<br>")}</p>`;
+      if (p.image) {
+        return `<p><img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.alt)}" style="display:block;max-width:100%;height:auto;border-radius:8px"></p>`;
+      }
       if (p.quote) {
         return `<blockquote style="margin:0;padding:10px 14px;border-left:3px solid #38bdf8;background:#f1f5f9">${escapeHtml(p.quote).replace(/\n/g, "<br>")}</blockquote>`;
       }

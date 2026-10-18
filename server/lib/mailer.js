@@ -59,4 +59,57 @@ export const createMailer = (settings = mailSettings()) => ({
       return false;
     }
   },
+
+  /**
+   * sendEach(recipients, { subject, text, html }) sends the same email to each
+   * address separately (nobody sees the other recipients), in batches of 100
+   * through Resend's batch API. Resolves to the number of addresses it reached.
+   * Never throws.
+   */
+  async sendEach(to, { subject, text, html }) {
+    const recipients = [...new Set([to].flat().filter(Boolean))];
+    if (recipients.length === 0) return 0;
+
+    if (!settings.apiKey) {
+      console.log(
+        `[pfm] email (not sent, RESEND_API_KEY unset) to ${recipients.length} addresses: ${subject}\n${text}`
+      );
+      return process.env.NODE_ENV !== "production" ? recipients.length : 0;
+    }
+
+    const BATCH = 100;
+    let delivered = 0;
+    for (let i = 0; i < recipients.length; i += BATCH) {
+      const chunk = recipients.slice(i, i + BATCH);
+      // Resend allows 2 requests a second by default.
+      if (i > 0) await new Promise((r) => setTimeout(r, 600));
+      try {
+        const res = await fetch("https://api.resend.com/emails/batch", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${settings.apiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(
+            chunk.map((addr) => ({
+              from: settings.from,
+              to: [addr],
+              reply_to: settings.replyTo,
+              subject,
+              text,
+              html,
+            }))
+          ),
+        });
+        if (!res.ok) {
+          console.error(`[pfm] batch email (${chunk.length}) failed: ${res.status} ${await res.text()}`);
+          continue;
+        }
+        delivered += chunk.length;
+      } catch (err) {
+        console.error(`[pfm] batch email (${chunk.length}) failed:`, err);
+      }
+    }
+    return delivered;
+  },
 });
