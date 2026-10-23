@@ -10,6 +10,6 @@ export const useClubs = () =>
     staleTime: 5 * 60_000,
   });
 
-// Choices for the "type" field of a club signing up (the server accepts any
-// short text).
-export const CLUB_TYPES = ["Пливачки клуб", "Ватерполо клуб"];
+// Choices for a club's "type" (club sign-up and the admin panel; the server
+// accepts any short text). The type puts the club in a tab on the Clubs page.
+export const CLUB_TYPES = ["Пливачки клуб", "Пливачки ватерполо клуб", "Ватерполо клуб"];

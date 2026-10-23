@@ -19,20 +19,26 @@ import "./Clubs.css";
 // Clubs are listed by their own name, without the club-type prefix.
 const TYPE_PREFIX = /^(ПВК|ПСК|ПК|PK)\s+/i;
 
-// The club's "type" (edited in the admin panel) decides: "Ватерполо клуб" is
-// water polo, anything else is swimming. Only a club without a type falls
-// back to its name's prefix (ПВК = water polo).
-const isWaterpoloClub = (club) => {
-  if (club.type?.trim()) return /ватерполо/i.test(club.type);
-  return club.name.trim().match(TYPE_PREFIX)?.[1].toUpperCase() === "ПВК";
+// The club's sport: "swimming", "waterpolo" or "both". Its "type" (edited in
+// the admin panel) decides: "Пливачки ватерполо клуб" is both, "Ватерполо
+// клуб" is water polo, anything else is swimming. Only a club without a type
+// falls back to its name's prefix (ПВК = пливачки ватерполо клуб).
+const clubSport = (club) => {
+  const type = club.type?.trim() ?? "";
+  if (!type) {
+    return club.name.trim().match(TYPE_PREFIX)?.[1].toUpperCase() === "ПВК" ? "both" : "swimming";
+  }
+  if (!/ватерполо/i.test(type)) return "swimming";
+  return /пливач/i.test(type) ? "both" : "waterpolo";
 };
 const displayName = (club) => club.name.trim().replace(TYPE_PREFIX, "");
 // Leading quotes (e.g. „ВАРДАР“) must not affect the alphabetical order.
 const sortKey = (name) => name.replace(/^[^\p{L}\p{N}]+/u, "");
 
+// A swimming and water polo club ("both") is listed under both tabs.
 const GROUPS = [
-  { key: "swimming", icon: <TbSwimming />, test: (club) => !isWaterpoloClub(club) },
-  { key: "waterpolo", icon: <TbWaterpolo />, test: isWaterpoloClub },
+  { key: "swimming", icon: <TbSwimming />, sports: ["swimming", "both"] },
+  { key: "waterpolo", icon: <TbWaterpolo />, sports: ["waterpolo", "both"] },
 ];
 
 const DETAILS = [
@@ -146,7 +152,7 @@ const Clubs = () => {
   }, [clubs, q, city]);
 
   const groups = useMemo(
-    () => GROUPS.map((group) => ({ ...group, clubs: filtered.filter(group.test) })),
+    () => GROUPS.map((group) => ({ ...group, clubs: filtered.filter((c) => group.sports.includes(clubSport(c))) })),
     [filtered]
   );
 
