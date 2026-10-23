@@ -539,6 +539,18 @@
       }
     }
   },
+  "newsletter": {
+    "unsubscribe": {
+      "title": "Unsubscribe from the newsletter",
+      "text": "Click below and you won't get the federation's news by email any more.",
+      "button": "Unsubscribe",
+      "doneTitle": "You're unsubscribed",
+      "doneText": "{{email}} won't get the federation's news any more. You can sign up again at the bottom of the page.",
+      "goneTitle": "Already unsubscribed",
+      "goneText": "This link no longer works — the address is already off the newsletter.",
+      "home": "Back to home"
+    }
+  },
   "footer": {
     "contact": "Contact",
     "email": "Email",
@@ -549,12 +561,11 @@
     "rights": "All rights reserved.",
     "newsletter": {
       "title": "Newsletter",
-      "text": "Sign up and be the first to hear about the federation's news, competitions and events.",
+      "text": "Sign up and hear about all our latest news, competitions and events.",
       "placeholder": "Enter your email",
-      "subscribe": "Subscribe",
-      "hint": "We'll ask you to sign in or create an account.",
-      "subscribed": "Subscribed as {{email}}",
-      "unsubscribe": "Unsubscribe",
+      "subscribe": "Sign up",
+      "done": "Thank you! Our news will arrive at {{email}}.",
+      "invalid": "Please enter a valid email address.",
       "error": "That didn't work, please try again."
     },
     "backToTop": "Back to top"

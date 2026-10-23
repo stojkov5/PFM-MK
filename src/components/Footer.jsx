@@ -1,14 +1,13 @@
 // src/components/Footer.jsx
-// Full-width site footer: the newsletter band, brand + socials, then contact
-// (left) and the federation's documents (right, from data/documents.js), then
-// the copyright bar.
+// Full-width site footer: the brand, then three columns — contact, the
+// federation's documents (from data/documents.js), and the newsletter with
+// the social links — then the copyright bar.
 import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FiArrowRight, FiArrowUp, FiExternalLink, FiMail, FiMapPin, FiPhone } from "react-icons/fi";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
 import { DOCUMENTS } from "../data/documents.js";
-import { CLERK_PUBLISHABLE_KEY } from "../lib/clerk.js";
 import FooterNewsletter from "./FooterNewsletter.jsx";
 import "./Footer.css";
 
@@ -58,31 +57,12 @@ const Footer = () => {
   return (
     <footer className="pfm-footer">
       <div className="max-w-6xl mx-auto px-4 md:px-6">
-        {CLERK_PUBLISHABLE_KEY && <FooterNewsletter />}
-
-        {/* Brand + socials */}
+        {/* Brand */}
         <div className="pfm-footer-top">
           <Link to="/" className="pfm-footer-brand" aria-label={t("navbar.actions.goHome")}>
             <img src="/LOGO.png" alt={t("navbar.brand.logoAlt")} className="pfm-footer-logo" />
             <span className="pfm-footer-brand-name">{t("navbar.brand.fullName")}</span>
           </Link>
-
-          <div className="pfm-footer-socials">
-            <span className="pfm-footer-label">{t("footer.follow")}</span>
-            {SOCIALS.map((social) => (
-              <a
-                key={social.key}
-                className="pfm-footer-social"
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={social.label}
-                title={social.label}
-              >
-                <social.Icon />
-              </a>
-            ))}
-          </div>
         </div>
 
         <div className="pfm-footer-grid">
@@ -95,7 +75,8 @@ const Footer = () => {
               <ContactItem
                 icon={<FiMail />}
                 label={t("footer.email")}
-                value={CONTACT.email}
+                // Wraps before the "@" in the narrow column, not mid-word.
+                value={CONTACT.email.replace("@", "​@")}
                 href={`mailto:${CONTACT.email}`}
               />
               <ContactItem
@@ -135,6 +116,8 @@ const Footer = () => {
               ))}
             </ul>
           </section>
+
+          <FooterNewsletter socials={SOCIALS} />
         </div>
       </div>
 

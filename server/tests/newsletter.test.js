@@ -1,5 +1,6 @@
 // server/tests/newsletter.test.js
-// Newsletter subscriptions and who gets the "new article" email.
+// Newsletter subscriptions (no account needed) and who gets the
+// "new article" email.
 import { describe, it, expect, beforeAll } from "vitest";
 import request from "supertest";
 import { createTestApp } from "./helpers.js";
@@ -40,46 +41,60 @@ beforeAll(async () => {
 });
 
 describe("newsletter subscription", () => {
-  it("requires a signed-in account", async () => {
-    expect((await request(app).post("/api/account/newsletter").send({ subscribed: true })).status).toBe(401);
+  it("lets anyone subscribe, without an account", async () => {
+    const res = await request(app).post("/api/newsletter").send({ email: "  Fan@Example.com " });
+    expect(res.body).toEqual({ ok: true });
+    expect(await db.newsletterSubscriber.findUnique({ where: { email: "fan@example.com" } })).toBeTruthy();
   });
 
-  it("subscribes and unsubscribes", async () => {
-    expect((await as("user_regular").get("/api/account")).body.newsletter).toBe(false);
-
-    const on = await as("user_regular").post("/api/account/newsletter", { subscribed: true });
-    expect(on.body).toEqual({ newsletter: true });
-    expect((await as("user_regular").get("/api/account")).body.newsletter).toBe(true);
-
-    await as("user_club").post("/api/account/newsletter", { subscribed: true });
-    await as("user_club").post("/api/account/newsletter", { subscribed: false });
-    expect((await as("user_club").get("/api/account")).body.newsletter).toBe(false);
+  it("accepts the same address twice without a duplicate", async () => {
+    await request(app).post("/api/newsletter").send({ email: "twice@example.com" });
+    expect((await request(app).post("/api/newsletter").send({ email: "TWICE@example.com" })).status).toBe(200);
+    expect(await db.newsletterSubscriber.count({ where: { email: "twice@example.com" } })).toBe(1);
   });
 
-  it("rejects anything but true / false", async () => {
-    expect((await as("user_regular").post("/api/account/newsletter", { subscribed: "yes" })).status).toBe(400);
+  it("rejects invalid addresses", async () => {
+    expect((await request(app).post("/api/newsletter").send({ email: "not-an-email" })).status).toBe(400);
+    expect((await request(app).post("/api/newsletter").send({})).status).toBe(400);
   });
 
-  it("lists registered accounts with their subscription for admins", async () => {
+  it("unsubscribes with the token from the email", async () => {
+    await request(app).post("/api/newsletter").send({ email: "leaving@example.com" });
+    const { token } = await db.newsletterSubscriber.findUnique({ where: { email: "leaving@example.com" } });
+    const res = await request(app).post("/api/newsletter/unsubscribe").send({ token });
+    expect(res.body).toEqual({ ok: true, email: "leaving@example.com" });
+    expect((await request(app).post("/api/newsletter/unsubscribe").send({ token })).status).toBe(404);
+    expect((await request(app).post("/api/newsletter/unsubscribe").send({})).status).toBe(404);
+  });
+
+  it("lists accounts and subscribers for admins", async () => {
+    await request(app).post("/api/newsletter").send({ email: "regular@example.com" });
     expect((await as("user_regular").get("/api/admin/news/recipients")).status).toBe(403);
     const res = await admin().get("/api/admin/news/recipients");
     expect(res.status).toBe(200);
-    expect(res.body).toContainEqual({ email: "regular@example.com", name: "user_regular", subscribed: true });
-    expect(res.body).toContainEqual({ email: "delfin@example.com", name: "user_club", subscribed: false });
+    expect(res.body).toContainEqual({ email: "regular@example.com", name: "user_regular", account: true, subscribed: true });
+    expect(res.body).toContainEqual({ email: "delfin@example.com", name: "user_club", account: true, subscribed: false });
+    expect(res.body).toContainEqual({ email: "fan@example.com", name: null, account: false, subscribed: true });
   });
 });
 
 describe("who gets the new-article email", () => {
-  it("defaults to the subscribers", async () => {
+  it("defaults to the subscribers, each with their own unsubscribe link", async () => {
     const a = article();
     const res = await admin().post("/api/admin/news", a);
     expect(res.body.emailAudience).toBe("subscribers");
-    expect(await emailedTo(a.title)).toEqual(["regular@example.com"]);
+    expect(await emailedTo(a.title)).toEqual(["fan@example.com", "regular@example.com", "twice@example.com"]);
+
+    const { token } = await db.newsletterSubscriber.findUnique({ where: { email: "fan@example.com" } });
+    const mail = mailer.sent.find((m) => m.subject === `Нова вест: ${a.title}` && m.to[0] === "fan@example.com");
+    expect(mail.text).toContain(`/newsletter/unsubscribe?token=${token}`);
   });
 
   it("can go to every registered account", async () => {
     const a = article({ emailAudience: "all" });
     await admin().post("/api/admin/news", a);
+    const mail = mailer.sent.find((m) => m.subject === `Нова вест: ${a.title}`);
+    expect(mail.text).not.toContain("unsubscribe");
     expect(await emailedTo(a.title)).toEqual([
       "admin@example.com",
       "delfin@example.com",

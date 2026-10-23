@@ -61,14 +61,17 @@ export const createMailer = (settings = mailSettings()) => ({
   },
 
   /**
-   * sendEach(recipients, { subject, text, html }) sends the same email to each
-   * address separately (nobody sees the other recipients), in batches of 100
-   * through Resend's batch API. Resolves to the number of addresses it reached.
-   * Never throws.
+   * sendEach(recipients, mail) sends an email to each address separately
+   * (nobody sees the other recipients), in batches of 100 through Resend's
+   * batch API. `mail` is { subject, text, html }, or a function of the address
+   * returning one (e.g. for a personal unsubscribe link). Resolves to the
+   * number of addresses it reached. Never throws.
    */
-  async sendEach(to, { subject, text, html }) {
+  async sendEach(to, mail) {
     const recipients = [...new Set([to].flat().filter(Boolean))];
     if (recipients.length === 0) return 0;
+    const mailFor = typeof mail === "function" ? mail : () => mail;
+    const { subject, text } = mailFor(recipients[0]);
 
     if (!settings.apiKey) {
       console.log(
@@ -95,9 +98,7 @@ export const createMailer = (settings = mailSettings()) => ({
               from: settings.from,
               to: [addr],
               reply_to: settings.replyTo,
-              subject,
-              text,
-              html,
+              ...mailFor(addr),
             }))
           ),
         });

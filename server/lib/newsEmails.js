@@ -1,13 +1,14 @@
 // server/lib/newsEmails.js
 // When an article is published for the first time, an email about it goes to
 // the audience the admin picked for it (article.emailAudience): every
-// registered account, the newsletter subscribers, or a hand-picked list of
-// addresses. Written in Macedonian, like the other emails.
+// registered account, the newsletter subscribers (lib/newsletter.js), or a
+// hand-picked list of addresses. Written in Macedonian, like the other emails.
 //
 // The route only marks the article emailStatus "pending"; sendPendingNewsEmails
 // sends it once the article is live. It runs right after a save and on a timer
 // (server/index.js), so articles scheduled for a later date go out on that date.
 import { compose } from "./competitionEmails.js";
+import { unsubscribeUrl } from "./newsletter.js";
 
 // Keep in sync with news.categories in public/locales/mk/translation.json.
 const CATEGORY_LABELS = {
@@ -28,12 +29,12 @@ const apiBase = () => {
 // The last line of the email: why this person got it.
 const REASONS = {
   all: "Оваа порака ја добивате затоа што имате регистрирана сметка на страницата на федерацијата.",
-  subscribers:
-    "Оваа порака ја добивате затоа што сте претплатени на билтенот на федерацијата. Претплатата може да ја откажете во дното на страницата, кога сте најавени.",
+  subscribers: "Оваа порака ја добивате затоа што сте пријавени на билтенот на федерацијата.",
   manual: "Оваа порака ви ја испрати Националната пливачка федерација.",
 };
 
-export const newArticleEmail = (article, site, api = apiBase()) => {
+// `unsubscribe` is the subscriber's own unsubscribe link (subscribers only).
+export const newArticleEmail = (article, site, { unsubscribe = null, api = apiBase() } = {}) => {
   const label = CATEGORY_LABELS[article.category] ?? CATEGORY_LABELS.other;
   return compose(`Нова вест: ${article.title}`, [
     "Почитувани,",
@@ -43,15 +44,12 @@ export const newArticleEmail = (article, site, api = apiBase()) => {
     ...(article.excerpt ? [{ quote: article.excerpt }] : []),
     { link: `${site}/news/${article.slug}`, label: "Прочитај ја веста" },
     REASONS[article.emailAudience] ?? REASONS.all,
+    ...(unsubscribe ? [{ link: unsubscribe, label: "Откажи го билтенот" }] : []),
   ]);
 };
 
-// A signed-in user subscribes on the site (footer); the flag lives in their
-// Clerk public metadata, which only the server can write.
-export const isSubscribed = (user) => user?.publicMetadata?.newsletter === true;
-
 // Every Clerk account that isn't banned or locked and has an email address:
-// [{ email, name, subscribed }].
+// [{ email, name }].
 export const registeredAccounts = async (clerk) => {
   const accounts = new Map();
   const limit = 500;
@@ -65,7 +63,6 @@ export const registeredAccounts = async (clerk) => {
       accounts.set(email.toLowerCase(), {
         email: email.toLowerCase(),
         name: [user.firstName, user.lastName].filter(Boolean).join(" ") || null,
-        subscribed: isSubscribed(user),
       });
     }
     if (data.length < limit) break;
@@ -73,18 +70,20 @@ export const registeredAccounts = async (clerk) => {
   return [...accounts.values()];
 };
 
-// The addresses an article's email goes to. loadAccounts() (Clerk) is only
-// called when the audience needs it.
-export const recipientsFor = async (article, loadAccounts) => {
+// Who an article's email goes to: { email: unsubscribeToken | null }.
+// loadAccounts() (Clerk) is only called when the audience needs it.
+export const recipientsFor = async (db, article, loadAccounts) => {
   switch (article.emailAudience) {
     case "manual":
-      return article.emailRecipients ?? [];
+      return Object.fromEntries((article.emailRecipients ?? []).map((e) => [e, null]));
     case "all":
-      return (await loadAccounts()).map((a) => a.email);
+      return Object.fromEntries((await loadAccounts()).map((a) => [a.email, null]));
     case "none":
-      return [];
-    default:
-      return (await loadAccounts()).filter((a) => a.subscribed).map((a) => a.email);
+      return {};
+    default: {
+      const subscribers = await db.newsletterSubscriber.findMany({ select: { email: true, token: true } });
+      return Object.fromEntries(subscribers.map((s) => [s.email, s.token]));
+    }
   }
 };
 
@@ -113,8 +112,13 @@ export const sendPendingNewsEmails = async (db, clerk, mailer, site) => {
     });
     if (claimed.count !== 1) continue;
 
-    const recipients = await recipientsFor(article, loadAccounts);
-    const reached = await mailer.sendEach(recipients, newArticleEmail(article, site));
+    const tokens = await recipientsFor(db, article, loadAccounts);
+    const recipients = Object.keys(tokens);
+    const reached = await mailer.sendEach(recipients, (email) =>
+      newArticleEmail(article, site, {
+        unsubscribe: tokens[email] ? unsubscribeUrl(site, tokens[email]) : null,
+      })
+    );
     // Nothing went out at all (e.g. the email service is down): try again on
     // the next run. A partial send counts as sent, so nobody gets it twice.
     const failed = recipients.length > 0 && reached === 0;

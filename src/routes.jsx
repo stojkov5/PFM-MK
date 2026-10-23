@@ -34,6 +34,7 @@ import AboutPage from "./pages/About/AboutPage.jsx";
 import StructurePage from "./pages/About/StructurePage.jsx";
 import PartnersPage from "./pages/About/PartnersPage.jsx";
 import Documents from "./components/Documents.jsx";
+import Unsubscribe from "./pages/Newsletter/Unsubscribe.jsx";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -115,7 +116,9 @@ export const router = createBrowserRouter([
       // After sign-up: choose swimmer / player or club (see SIGN_UP_REDIRECT).
       { path: "welcome", element: <Welcome /> },
       // DOCUMENTS
-      { path: "documents", element: <Documents /> }
+      { path: "documents", element: <Documents /> },
+      // The unsubscribe link in newsletter emails.
+      { path: "newsletter/unsubscribe", element: <Unsubscribe /> }
     ],
   },
 ]);

@@ -67,7 +67,7 @@ const EmailAudience = ({ form, set, emailStatus }) => {
         onChange={(e) => set({ emailAudience: e.target.value })}
         options={[
           { value: "subscribers", label: `${AUDIENCE_LABELS.subscribers}${count(list.filter((a) => a.subscribed).length)}` },
-          { value: "all", label: `${AUDIENCE_LABELS.all}${count(list.length)}` },
+          { value: "all", label: `${AUDIENCE_LABELS.all}${count(list.filter((a) => a.account).length)}` },
           { value: "manual", label: AUDIENCE_LABELS.manual },
           { value: "none", label: "Don't send an email" },
         ]}
@@ -85,7 +85,7 @@ const EmailAudience = ({ form, set, emailStatus }) => {
           options={list.map((a) => ({
             value: a.email,
             search: `${a.name ?? ""} ${a.email}`,
-            label: a.name ? `${a.name} — ${a.email}` : a.email,
+            label: a.name ? `${a.name} — ${a.email}` : a.account ? a.email : `${a.email} (subscriber)`,
           }))}
         />
       )}

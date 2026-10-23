@@ -3,7 +3,7 @@
 // account is for: "athlete" (swimmer / water polo player — nothing more to
 // do yet) or "club", which sends the club's details for an admin to approve.
 // The choice is stored in Clerk public metadata (see auth/clerk.js), which
-// only the server can write — and so is the newsletter subscription.
+// only the server can write.
 import { Router } from "express";
 import { CLUB_ACCOUNT, clubLinkOf, clubMetadata, toAdminDto } from "../auth/clerk.js";
 import {
@@ -14,7 +14,6 @@ import {
   validateClubApplication,
 } from "../lib/clubs.js";
 import { clubApplicationEmail, clubApplicationReceivedEmail } from "../lib/clubEmails.js";
-import { isSubscribed } from "../lib/newsEmails.js";
 import { siteUrl } from "./competitions.js";
 
 export const ATHLETE_ACCOUNT = "athlete";
@@ -36,28 +35,14 @@ export const accountRouter = (db, auth, { mailer, allowedOrigins = [], writeLimi
 
   const accountTypeOf = (user) => user.publicMetadata?.accountType ?? null;
 
-  // { accountType, club, newsletter } — club is the account's club with its
-  // status, or null; newsletter is whether the account gets news by email.
+  // { accountType, club } — club is the account's club with its status, or null.
   router.get("/", async (req, res) => {
     const link = clubLinkOf(req.user);
     const club = link ? await findClub(db, link.clubId) : null;
     res.json({
       accountType: accountTypeOf(req.user),
       club: club ? { ...toFullClub(club), accountStatus: link.status } : null,
-      newsletter: isSubscribed(req.user),
     });
-  });
-
-  // Subscribe ({ subscribed: true }) or unsubscribe from news emails.
-  router.post("/newsletter", async (req, res) => {
-    if (typeof req.body?.subscribed !== "boolean") {
-      return res.status(400).json({ error: "subscribed must be true or false" });
-    }
-    // null removes the key from Clerk's metadata.
-    await auth.client.users.updateUserMetadata(req.user.id, {
-      publicMetadata: { newsletter: req.body.subscribed || null },
-    });
-    res.json({ newsletter: req.body.subscribed });
   });
 
   router.post("/athlete", writeLimit, async (req, res) => {

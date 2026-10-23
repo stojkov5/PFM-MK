@@ -53,12 +53,21 @@ export const adminNewsRouter = (db, { auth, mailer, allowedOrigins = [] } = {}) 
     res.json(articles);
   });
 
-  // Registered accounts for the editor's "Email to" picker: who can be chosen
-  // by hand, and how many "All" / "Subscribers" would reach.
+  // Everyone the editor's "Email to" picker knows: registered accounts and
+  // newsletter subscribers, [{ email, name, account, subscribed }]. Gives the
+  // "All" / "Subscribers" counts and the addresses to pick by hand.
   router.get("/recipients", async (req, res) => {
-    if (!auth) return res.json([]);
-    const accounts = await registeredAccounts(auth.client);
-    res.json(accounts.sort((a, b) => a.email.localeCompare(b.email)));
+    const [accounts, subscribers] = await Promise.all([
+      auth ? registeredAccounts(auth.client) : [],
+      db.newsletterSubscriber.findMany({ select: { email: true } }),
+    ]);
+    const people = new Map(
+      accounts.map((a) => [a.email, { ...a, account: true, subscribed: false }])
+    );
+    for (const { email } of subscribers) {
+      people.set(email, { email, name: null, account: false, ...people.get(email), subscribed: true });
+    }
+    res.json([...people.values()].sort((a, b) => a.email.localeCompare(b.email)));
   });
 
   router.get("/:id", async (req, res) => {

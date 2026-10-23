@@ -24,7 +24,7 @@
   opacity: 0.6;
 }
 
-/* --- Brand + socials ----------------------------------------------------- */
+/* --- Brand --------------------------------------------------------------- */
 
 .pfm-footer-top {
   display: flex;
@@ -72,10 +72,6 @@
   gap: 10px;
 }
 
-.pfm-footer-socials .pfm-footer-label {
-  margin-right: 6px;
-}
-
 .pfm-footer-social {
   width: 36px;
   height: 36px;
@@ -96,12 +92,12 @@
   transform: translateY(-2px);
 }
 
-/* --- Contact | Documents ------------------------------------------------- */
+/* --- Contact | Documents | Newsletter ------------------------------------ */
 
 .pfm-footer-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 28px 80px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 0.9fr);
+  gap: 28px 56px;
   padding: 24px 0 30px;
 }
 
@@ -229,32 +225,18 @@ a.pfm-footer-row:hover .pfm-footer-ico {
   color: var(--ft-accent);
 }
 
-/* --- Newsletter (top band, see FooterNewsletter.jsx) -------------------- */
-
-.pfm-footer-news {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 400px);
-  align-items: center;
-  gap: 6px 40px;
-  padding: 24px 0 22px;
-  border-bottom: 1px solid var(--ft-line);
-}
-
-.pfm-footer-news .pfm-footer-heading {
-  margin-bottom: 4px;
-}
+/* --- Newsletter + socials (third column, see FooterNewsletter.jsx) ------- */
 
 .pfm-footer-news-text {
-  margin: 0;
-  max-width: 46ch;
+  margin: 0 0 14px;
   color: var(--ft-muted);
   font-size: 0.88rem;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 .pfm-footer-news-form {
   display: flex;
-  height: 40px;
+  height: 42px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 10px;
   overflow: hidden;
@@ -281,17 +263,13 @@ a.pfm-footer-row:hover .pfm-footer-ico {
   color: rgba(255, 255, 255, 0.4);
 }
 
-.pfm-footer-news-input[readonly] {
-  color: rgba(255, 255, 255, 0.7);
-}
-
 .pfm-footer-news-btn {
   flex-shrink: 0;
   padding: 0 18px;
   border: 0;
   background: var(--ft-accent);
   color: #04101f;
-  font-size: 0.84rem;
+  font-size: 0.86rem;
   font-weight: 800;
   cursor: pointer;
   transition: background 160ms ease;
@@ -308,43 +286,29 @@ a.pfm-footer-row:hover .pfm-footer-ico {
 
 .pfm-footer-news-done {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px 6px;
+  align-items: flex-start;
+  gap: 8px;
   margin: 0;
   color: #86efac;
   font-size: 0.88rem;
   font-weight: 700;
+  line-height: 1.5;
   overflow-wrap: anywhere;
 }
 
-.pfm-footer-news-link {
-  margin-left: 6px;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--ft-muted);
-  font: inherit;
-  font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: pointer;
-}
-
-.pfm-footer-news-link:hover {
-  color: #ffffff;
-}
-
-.pfm-footer-news-hint,
-.pfm-footer-news-error {
-  grid-column: 2;
-  margin: 0;
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 0.76rem;
+.pfm-footer-news-done svg {
+  flex-shrink: 0;
+  margin-top: 4px;
 }
 
 .pfm-footer-news-error {
+  margin: 8px 0 0;
   color: #fca5a5;
+  font-size: 0.8rem;
+}
+
+.pfm-footer-follow {
+  margin-top: 26px;
 }
 
 /* --- Copyright bar ------------------------------------------------------- */
@@ -397,28 +361,23 @@ a.pfm-footer-row:hover .pfm-footer-ico {
   outline-offset: 3px;
 }
 
-/* Tablet: same two columns, tighter */
+/* Tablet: contact and documents side by side, the newsletter under them */
 @media (max-width: 1023px) {
   .pfm-footer-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 36px 40px;
+  }
+
+  .pfm-footer-news {
+    grid-column: 1 / -1;
+    max-width: 460px;
   }
 }
 
 /* Phone: everything stacks */
 @media (max-width: 639px) {
-  /* Logo and social buttons share one line */
   .pfm-footer-top {
-    flex-wrap: nowrap;
-    gap: 12px;
     padding: 20px 0 16px;
-  }
-
-  .pfm-footer-socials .pfm-footer-label {
-    display: none;
-  }
-
-  .pfm-footer-socials {
-    gap: 8px;
   }
 
   .pfm-footer-logo {
@@ -442,18 +401,6 @@ a.pfm-footer-row:hover .pfm-footer-ico {
   .pfm-footer-bottom-inner {
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .pfm-footer-news {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 20px 0;
-  }
-
-  .pfm-footer-news-hint,
-  .pfm-footer-news-error {
-    grid-column: 1;
-    margin-top: -6px;
   }
 }
 

@@ -79,6 +79,18 @@ model Article {
   @@map("articles")
 }
 
+// Newsletter subscribers: anyone can subscribe from the site's footer, no
+// account needed. Articles emailed to "subscribers" go to these addresses,
+// each with an unsubscribe link carrying the subscriber's token.
+model NewsletterSubscriber {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  token     String   @unique
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  @@map("newsletter_subscribers")
+}
+
 // Images and PDFs uploaded from the article editor, served by /api/media/<id>.
 model Media {
   id         String   @id

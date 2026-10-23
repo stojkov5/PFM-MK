@@ -145,11 +145,11 @@ trailing slash), or the frontend and API using keys from different Clerk instanc
   `npm run db:push` once **before** deploying this code, or the news pages stop working.
   Articles published before this change are never emailed. The cover image uses the
   API's public URL (`RAILWAY_PUBLIC_DOMAIN`, set by Railway; override with `API_URL`).
-- **Newsletter:** signed-in users subscribe in the footer; the flag is stored in their
-  Clerk public metadata (`newsletter: true`), so there is nothing to set up. The **Email
-  to** choice added the `articles.email_audience` and `articles.email_recipients`
-  columns: run `npm run db:push` once **before** deploying this code, or the news pages
-  stop working. It only adds the two columns.
+- **Newsletter:** anyone can subscribe in the footer, no account needed. Subscribers live
+  in the `newsletter_subscribers` table; every newsletter email has a personal unsubscribe
+  link (`/newsletter/unsubscribe?token=…`). That table, and the `articles.email_audience`
+  / `articles.email_recipients` columns behind **Email to**, were added after the first
+  deploy: run `npm run db:push` once **before** deploying this code. It only adds them.
 
 ## Database commands
 | Command | What it does |
