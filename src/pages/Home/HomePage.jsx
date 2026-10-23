@@ -12,6 +12,7 @@ import { ArticleCard } from "../News/News.jsx";
 import { useCompetitions } from "../../components/competitions/hooks.js";
 import { apiGet } from "../../lib/api.js";
 import { formatRange, todayString } from "../../lib/competitions.js";
+import { PARTNERS } from "../../data/partners.js";
 import "../News/News.css";
 import "./Home.css";
 
@@ -52,6 +53,55 @@ const SectionHead = ({ title, link, linkText }) => (
   </div>
 );
 
+// The partner logos, scrolling endlessly along the bottom of the hero. The
+// track holds the list twice per half (five logos are narrower than the
+// screen), and slides by exactly one half so the loop has no seam.
+const PartnerMarquee = () => {
+  const { t } = useTranslation();
+  const half = [...PARTNERS, ...PARTNERS];
+
+  return (
+    <div className="pfm-home-marquee max-w-6xl mx-auto px-4 md:px-6" role="region" aria-label={t("home.hero.partners")}>
+      <div className="pfm-home-marquee-viewport">
+        <div className="pfm-home-marquee-track">
+          {[0, 1].map((copy) => (
+            <ul key={copy} className="pfm-home-marquee-list" aria-hidden={copy === 1 || undefined}>
+              {half.map((p, i) => {
+                const name = t(`about.partners.items.${p.key}`);
+                const Tag = p.url ? "a" : "span";
+                const linkProps = p.url
+                  ? { href: p.url, target: "_blank", rel: "noopener noreferrer", title: name }
+                  : { title: name };
+                // Only the first copy of each logo is reachable by keyboard.
+                const hidden = copy === 1 || i >= PARTNERS.length;
+                return (
+                  <li key={i}>
+                    <Tag
+                      className="pfm-home-marquee-logo"
+                      style={{ background: p.bg }}
+                      tabIndex={hidden && p.url ? -1 : undefined}
+                      {...linkProps}
+                    >
+                      <img
+                        src={`/Partners/${encodeURIComponent(p.file)}`}
+                        alt={hidden ? "" : name}
+                        style={{
+                          objectFit: p.fit ?? "contain",
+                          transform: p.zoom ? `scale(${p.zoom})` : undefined,
+                        }}
+                      />
+                    </Tag>
+                  </li>
+                );
+              })}
+            </ul>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Hero = () => {
   const { t } = useTranslation();
   const reduceMotion = useReducedMotion();
@@ -85,6 +135,7 @@ const Hero = () => {
           </div>
         </Reveal>
       </div>
+      <PartnerMarquee />
     </section>
   );
 };

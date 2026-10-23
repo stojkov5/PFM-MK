@@ -1,19 +1,27 @@
 // src/components/Footer.jsx
-// Full-width site footer: brand + socials, then contact (left) and the
-// federation's documents (right, from data/documents.js), then the copyright bar.
+// Full-width site footer: the newsletter band, brand + socials, then contact
+// (left) and the federation's documents (right, from data/documents.js), then
+// the copyright bar.
 import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FiArrowRight, FiArrowUp, FiExternalLink, FiMail, FiMapPin, FiPhone } from "react-icons/fi";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
 import { DOCUMENTS } from "../data/documents.js";
+import { CLERK_PUBLISHABLE_KEY } from "../lib/clerk.js";
+import FooterNewsletter from "./FooterNewsletter.jsx";
 import "./Footer.css";
 
-// ✅ Replace with real info later
+// The address from the federation's bank-account details. The email shown
+// here is the federation's current mailbox; the site itself still sends from
+// info@npf.mk. Switch this once the npf.mk mailboxes are live.
 const CONTACT = {
-  email: "info@npf.mk",
-  phone: "+389 XX XXX XXX",
+  email: "nacionalnaplivackafederacija@yahoo.com",
+  phone: "078 270 372",
+  phoneHref: "tel:+38978270372",
 };
+
+const FOOTER_DOCUMENTS = DOCUMENTS.filter((doc) => doc.key !== "structure");
 
 const SOCIALS = [
   { key: "facebook", label: "Facebook", href: "https://www.facebook.com/profile.php?id=61574990019250", Icon: FaFacebookF },
@@ -50,6 +58,8 @@ const Footer = () => {
   return (
     <footer className="pfm-footer">
       <div className="max-w-6xl mx-auto px-4 md:px-6">
+        {CLERK_PUBLISHABLE_KEY && <FooterNewsletter />}
+
         {/* Brand + socials */}
         <div className="pfm-footer-top">
           <Link to="/" className="pfm-footer-brand" aria-label={t("navbar.actions.goHome")}>
@@ -92,13 +102,14 @@ const Footer = () => {
                 icon={<FiPhone />}
                 label={t("footer.phone")}
                 value={CONTACT.phone}
-                href={`tel:${CONTACT.phone.replace(/\s/g, "")}`}
+                href={CONTACT.phoneHref}
               />
               <ContactItem icon={<FiMapPin />} label={t("footer.location")} value={t("footer.address")} />
             </ul>
           </section>
 
-          {/* Documents: every PDF from the /documents page */}
+          {/* Documents: the PDFs from the /documents page (the organisational
+              structure has its own page under "More") */}
           <section aria-labelledby="pfm-footer-docs">
             <h2 id="pfm-footer-docs" className="pfm-footer-heading">
               <Link to="/documents" className="pfm-footer-heading-link">
@@ -106,7 +117,7 @@ const Footer = () => {
               </Link>
             </h2>
             <ul className="pfm-footer-list">
-              {DOCUMENTS.map((doc) => (
+              {FOOTER_DOCUMENTS.map((doc) => (
                 <li key={doc.key}>
                   <a
                     className="pfm-footer-row pfm-footer-doc"

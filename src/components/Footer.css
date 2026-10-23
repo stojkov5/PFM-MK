@@ -229,6 +229,124 @@ a.pfm-footer-row:hover .pfm-footer-ico {
   color: var(--ft-accent);
 }
 
+/* --- Newsletter (top band, see FooterNewsletter.jsx) -------------------- */
+
+.pfm-footer-news {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 400px);
+  align-items: center;
+  gap: 6px 40px;
+  padding: 24px 0 22px;
+  border-bottom: 1px solid var(--ft-line);
+}
+
+.pfm-footer-news .pfm-footer-heading {
+  margin-bottom: 4px;
+}
+
+.pfm-footer-news-text {
+  margin: 0;
+  max-width: 46ch;
+  color: var(--ft-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.pfm-footer-news-form {
+  display: flex;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+  transition: border-color 160ms ease;
+}
+
+.pfm-footer-news-form:focus-within {
+  border-color: var(--ft-accent);
+}
+
+.pfm-footer-news-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0 14px;
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+  font-size: 0.88rem;
+  outline: none;
+}
+
+.pfm-footer-news-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.pfm-footer-news-input[readonly] {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.pfm-footer-news-btn {
+  flex-shrink: 0;
+  padding: 0 18px;
+  border: 0;
+  background: var(--ft-accent);
+  color: #04101f;
+  font-size: 0.84rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+
+.pfm-footer-news-btn:hover {
+  background: #7dd3fc;
+}
+
+.pfm-footer-news-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.pfm-footer-news-done {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+  margin: 0;
+  color: #86efac;
+  font-size: 0.88rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.pfm-footer-news-link {
+  margin-left: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ft-muted);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.pfm-footer-news-link:hover {
+  color: #ffffff;
+}
+
+.pfm-footer-news-hint,
+.pfm-footer-news-error {
+  grid-column: 2;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.76rem;
+}
+
+.pfm-footer-news-error {
+  color: #fca5a5;
+}
+
 /* --- Copyright bar ------------------------------------------------------- */
 
 .pfm-footer-bottom {
@@ -324,6 +442,18 @@ a.pfm-footer-row:hover .pfm-footer-ico {
   .pfm-footer-bottom-inner {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .pfm-footer-news {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 20px 0;
+  }
+
+  .pfm-footer-news-hint,
+  .pfm-footer-news-error {
+    grid-column: 1;
+    margin-top: -6px;
   }
 }
 

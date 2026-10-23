@@ -50,6 +50,12 @@
   gap: 6px;
 }
 
+.pfm-article-audience {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
 .pfm-article-label {
   font-size: 0.82rem;
   font-weight: 700;

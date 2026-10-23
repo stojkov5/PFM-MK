@@ -65,10 +65,15 @@ model Article {
   // Clerk user id + display name of the admin who created it.
   authorId    String?   @map("author_id")
   authorName  String?   @map("author_name")
-  // Email to every registered account about this article: null = never queued
+  // Email about this article: null = never queued
   // (drafts, and articles from before this feature), "pending" = goes out once
   // the article is live, "sending", "sent". Only the first publish queues it.
   emailStatus String?   @map("email_status")
+  // Who gets that email (EMAIL_AUDIENCES in server/lib/news.js): "all"
+  // registered accounts, newsletter "subscribers", the "manual" list in
+  // emailRecipients, or "none".
+  emailAudience   String   @default("subscribers") @map("email_audience")
+  emailRecipients String[] @default([]) @map("email_recipients")
 
   @@index([status, publishedAt])
   @@map("articles")

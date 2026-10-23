@@ -13,7 +13,7 @@ export const STRUCTURE = {
     nodes: {
       assembly: ["Собрание"],
       board: ["Управен одбор"],
-      president: ["Претседател", "Сашо Лазаревски"],
+      president: ["Претседател", "Сашо Лазаровски"],
       supervisory: ["Надзорен одбор"],
       other: ["Други тела и функции", "комисии"],
       disciplinary: ["Дисциплинска комисија"],
@@ -28,7 +28,7 @@ export const STRUCTURE = {
       pr: ["PR и медиумски координатор"],
       vpSwim: ["Пливање", "VP Мартин Стефановски"],
       vpOpen: ["Пливање – отворени води", "VP Александар Филипчев"],
-      vpPolo: ["Ватерполо", "VP Александар Георгиевски"],
+      vpPolo: ["Ватерполо", "VP Александар Ѓорѓевски"],
       selector: ["Селектор на национална селекција"],
       expert: ["Стручни тела и одбори", "SW · OWS · WP"],
       techdir: ["Технички директор / секретар"],
@@ -84,6 +84,18 @@ export const STRUCTURE = {
               "Извршен орган на Федерацијата",
               "Број на членови: 5–11",
               "Се избира од страна на Собранието",
+              [
+                "Членови:",
+                [
+                  "Сашо Лазаровски – Претседател",
+                  "Мартин Стефановски – Член на УО",
+                  "Александар Ѓорѓевски – Член на УО",
+                  "Наташа Стаменова – Член на УО",
+                  "Персида Отовиќ-Стојановска – Член на УО",
+                  "Искра Бојаџиева – Член на УО",
+                  "Александар Филипчев – Член на УО",
+                ],
+              ],
               [
                 "Надлежности:",
                 [
@@ -309,7 +321,7 @@ export const STRUCTURE = {
     nodes: {
       assembly: ["Assembly"],
       board: ["Executive Board"],
-      president: ["President", "Sasho Lazarevski"],
+      president: ["President", "Sasho Lazarovski"],
       supervisory: ["Supervisory Board"],
       other: ["Other bodies and functions", "commissions"],
       disciplinary: ["Disciplinary Commission"],
@@ -324,7 +336,7 @@ export const STRUCTURE = {
       pr: ["PR and Media Coordinator"],
       vpSwim: ["Swimming", "VP Martin Stefanovski"],
       vpOpen: ["Open Water Swimming", "VP Aleksandar Filipchev"],
-      vpPolo: ["Water Polo", "VP Aleksandar Georgievski"],
+      vpPolo: ["Water Polo", "VP Aleksandar Gjorgjevski"],
       selector: ["National Team Selector"],
       expert: ["Technical bodies and committees", "SW · OWS · WP"],
       techdir: ["Technical Director / Secretary"],
@@ -380,6 +392,18 @@ export const STRUCTURE = {
               "The executive body of the Federation",
               "Number of members: 5–11",
               "Elected by the Assembly",
+              [
+                "Members:",
+                [
+                  "Sasho Lazarovski – President",
+                  "Martin Stefanovski – Board member",
+                  "Aleksandar Gjorgjevski – Board member",
+                  "Natasha Stamenova – Board member",
+                  "Persida Otovikj-Stojanovska – Board member",
+                  "Iskra Bojadzieva – Board member",
+                  "Aleksandar Filipchev – Board member",
+                ],
+              ],
               [
                 "Competences:",
                 [

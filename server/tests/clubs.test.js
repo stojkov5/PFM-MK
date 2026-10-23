@@ -56,7 +56,7 @@ describe("account type", () => {
       accountType: "club",
       club: { id: 14, name: "ПК Делфин Скопје", status: "approved", accountStatus: "approved" },
     });
-    expect((await as("user_regular").get("/api/account")).body).toEqual({ accountType: null, club: null });
+    expect((await as("user_regular").get("/api/account")).body).toEqual({ accountType: null, club: null, newsletter: false });
   });
 
   it("can be set to athlete once", async () => {

@@ -3,6 +3,10 @@
 // Keep in sync with src/lib/news.js (the labels live in the translation files).
 export const ARTICLE_CATEGORIES = ["swimming", "waterpolo", "distance-swimming", "other"];
 export const ARTICLE_STATUSES = ["draft", "published"];
+// Who is emailed when an article is first published (see lib/newsEmails.js).
+export const EMAIL_AUDIENCES = ["all", "subscribers", "manual", "none"];
+const MAX_EMAIL_RECIPIENTS = 500;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const MEDIA_PATH_RE = /^\/api\/media\/[a-f0-9-]{36}$/;
 
@@ -75,6 +79,23 @@ export const validateArticle = (body = {}) => {
     if (Number.isNaN(publishedAt.getTime())) errors.push("publishedAt");
   }
 
+  const emailAudience = body.emailAudience ?? "subscribers";
+  if (!EMAIL_AUDIENCES.includes(emailAudience)) errors.push("emailAudience");
+
+  // The "manual" list: any addresses, not only registered accounts.
+  const rawRecipients = body.emailRecipients ?? [];
+  const emailRecipients = Array.isArray(rawRecipients)
+    ? [...new Set(rawRecipients.map((e) => String(e).trim().toLowerCase()).filter(Boolean))]
+    : null;
+  if (
+    !emailRecipients ||
+    emailRecipients.length > MAX_EMAIL_RECIPIENTS ||
+    emailRecipients.some((e) => !EMAIL_RE.test(e)) ||
+    (emailAudience === "manual" && status === "published" && emailRecipients.length === 0)
+  ) {
+    errors.push("emailRecipients");
+  }
+
   if (errors.length > 0) return { ok: false, errors };
   return {
     ok: true,
@@ -86,6 +107,8 @@ export const validateArticle = (body = {}) => {
       excerpt: excerpt || excerptFromHtml(content),
       coverImage,
       publishedAt,
+      emailAudience,
+      emailRecipients,
     },
   };
 };

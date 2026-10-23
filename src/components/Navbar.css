@@ -70,9 +70,9 @@
   transform: scale(1.04);
 }
 
+/* Always two lines: the federation's name, then "of N. Macedonia". */
 .pfm-nav-brand-name {
   display: none;
-  max-width: 190px;
   padding-left: 14px;
   border-left: 1px solid rgba(255, 255, 255, 0.2);
   font-size: 0.68rem;
@@ -86,6 +86,11 @@
 @media (min-width: 640px) {
   .pfm-nav-brand-name {
     display: block;
+  }
+
+  .pfm-nav-brand-name > span {
+    display: block;
+    white-space: nowrap;
   }
 }
 

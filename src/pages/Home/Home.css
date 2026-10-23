@@ -8,7 +8,7 @@
   min-height: min(88vh, 820px);
   display: flex;
   align-items: center;
-  padding: 120px 0 88px;
+  padding: 120px 0 168px;
 }
 
 /* The photo with a dark wash so the title reads. It fades out at the bottom
@@ -35,6 +35,81 @@
   position: relative;
   z-index: 2;
   width: 100%;
+}
+
+/* --- Partner marquee (bottom of the hero) -------------------------------- */
+
+.pfm-home-marquee {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 28px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.pfm-home-marquee-viewport {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.pfm-home-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: pfm-marquee 40s linear infinite;
+}
+
+.pfm-home-marquee-viewport:hover .pfm-home-marquee-track,
+.pfm-home-marquee-viewport:focus-within .pfm-home-marquee-track {
+  animation-play-state: paused;
+}
+
+.pfm-home-marquee-list {
+  display: flex;
+  gap: 16px;
+  margin: 0;
+  padding: 0 16px 0 0;
+  list-style: none;
+}
+
+.pfm-home-marquee-logo {
+  display: block;
+  width: 132px;
+  height: 60px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+  transition: transform 200ms ease, border-color 200ms ease;
+}
+
+.pfm-home-marquee-logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+a.pfm-home-marquee-logo:hover,
+a.pfm-home-marquee-logo:focus-visible {
+  transform: translateY(-3px);
+  border-color: rgba(125, 211, 252, 0.6);
+}
+
+@keyframes pfm-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pfm-home-marquee-track {
+    animation: none;
+  }
 }
 
 .pfm-home-kicker {
@@ -395,7 +470,16 @@
 @media (max-width: 640px) {
   .pfm-home-hero {
     min-height: 0;
-    padding: 112px 0 64px;
+    padding: 112px 0 120px;
+  }
+
+  .pfm-home-marquee {
+    bottom: 20px;
+  }
+
+  .pfm-home-marquee-logo {
+    width: 108px;
+    height: 50px;
   }
 
   /* The text spans the full width on phones: darken the whole photo evenly. */

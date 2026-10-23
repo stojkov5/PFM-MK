@@ -174,7 +174,10 @@ const Navbar = () => {
           {/* Brand */}
           <Link to="/" className="pfm-nav-brand" aria-label={t("navbar.actions.goHome")}>
             <img src="/LOGO.png" alt={t("navbar.brand.logoAlt")} className="pfm-nav-brand-logo" />
-            <span className="pfm-nav-brand-name">{t("navbar.brand.fullName")}</span>
+            <span className="pfm-nav-brand-name">
+              <span>{t("navbar.brand.navLine1")}</span>
+              <span>{t("navbar.brand.navLine2")}</span>
+            </span>
           </Link>
 
           {/* Desktop links */}

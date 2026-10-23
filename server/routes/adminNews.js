@@ -1,7 +1,7 @@
 // server/routes/adminNews.js
 import { Router } from "express";
 import { ARTICLE_CATEGORIES, ARTICLE_STATUSES, slugify, validateArticle } from "../lib/news.js";
-import { sendPendingNewsEmails } from "../lib/newsEmails.js";
+import { registeredAccounts, sendPendingNewsEmails } from "../lib/newsEmails.js";
 import { siteUrl } from "./competitions.js";
 
 const listFields = {
@@ -13,6 +13,7 @@ const listFields = {
   coverImage: true,
   publishedAt: true,
   emailStatus: true,
+  emailAudience: true,
   createdAt: true,
   updatedAt: true,
   authorName: true,
@@ -52,6 +53,14 @@ export const adminNewsRouter = (db, { auth, mailer, allowedOrigins = [] } = {}) 
     res.json(articles);
   });
 
+  // Registered accounts for the editor's "Email to" picker: who can be chosen
+  // by hand, and how many "All" / "Subscribers" would reach.
+  router.get("/recipients", async (req, res) => {
+    if (!auth) return res.json([]);
+    const accounts = await registeredAccounts(auth.client);
+    res.json(accounts.sort((a, b) => a.email.localeCompare(b.email)));
+  });
+
   router.get("/:id", async (req, res) => {
     const article = await db.article.findUnique({ where: { id: Number(req.params.id) || 0 } });
     if (!article) return res.status(404).json({ error: "Not found" });
@@ -70,8 +79,8 @@ export const adminNewsRouter = (db, { auth, mailer, allowedOrigins = [] } = {}) 
         publishedAt: publishedAt ?? (data.status === "published" ? new Date() : null),
         authorId: req.admin.id,
         authorName: req.admin.name ?? req.admin.email,
-        // Published straight away: every registered account gets an email.
-        emailStatus: data.status === "published" ? "pending" : null,
+        // Published straight away: the chosen audience gets an email.
+        emailStatus: data.status === "published" && data.emailAudience !== "none" ? "pending" : null,
       },
     });
     res.status(201).json(article);
@@ -101,10 +110,13 @@ export const adminNewsRouter = (db, { auth, mailer, allowedOrigins = [] } = {}) 
         slug,
         publishedAt:
           publishedAt ?? existing.publishedAt ?? (data.status === "published" ? new Date() : null),
-        // First publish of a draft: every registered account gets an email.
+        // First publish of a draft: the chosen audience gets an email.
         // Articles that were already emailed (or published before emails
         // existed) don't send again.
-        ...(data.status === "published" && existing.status !== "published" && !existing.emailStatus
+        ...(data.status === "published" &&
+        existing.status !== "published" &&
+        !existing.emailStatus &&
+        data.emailAudience !== "none"
           ? { emailStatus: "pending" }
           : {}),
       },

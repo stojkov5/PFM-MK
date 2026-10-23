@@ -16,12 +16,16 @@ import { useClubs } from "../../lib/clubs.js";
 import Reveal from "../../components/fx/Reveal.jsx";
 import "./Clubs.css";
 
-// ПВК = water polo club; everything else (ПК / PK / ПСК) is a swimming club.
-const isWaterpoloClub = (club) =>
-  /^ПВК(\s|$)/i.test(club.name.trim()) || /ватерполо/i.test(club.type || "");
-
 // Clubs are listed by their own name, without the club-type prefix.
 const TYPE_PREFIX = /^(ПВК|ПСК|ПК|PK)\s+/i;
+
+// The club's "type" (edited in the admin panel) decides: "Ватерполо клуб" is
+// water polo, anything else is swimming. Only a club without a type falls
+// back to its name's prefix (ПВК = water polo).
+const isWaterpoloClub = (club) => {
+  if (club.type?.trim()) return /ватерполо/i.test(club.type);
+  return club.name.trim().match(TYPE_PREFIX)?.[1].toUpperCase() === "ПВК";
+};
 const displayName = (club) => club.name.trim().replace(TYPE_PREFIX, "");
 // Leading quotes (e.g. „ВАРДАР“) must not affect the alphabetical order.
 const sortKey = (name) => name.replace(/^[^\p{L}\p{N}]+/u, "");

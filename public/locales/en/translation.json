@@ -2,6 +2,8 @@
   "navbar": {
     "brand": {
       "fullName": "National Swimming Federation of Macedoniа",
+      "navLine1": "National Swimming Federation",
+      "navLine2": "of N. Macedonia",
       "logoAlt": "PFM Logo"
     },
     "items": {
@@ -542,9 +544,19 @@
     "email": "Email",
     "phone": "Phone",
     "location": "Location",
-    "address": "Skopje, Republic of North Macedonia",
+    "address": "Gradski Park, KK Rabotnichki Hall, Skopje – Centar",
     "follow": "Follow us",
     "rights": "All rights reserved.",
+    "newsletter": {
+      "title": "Newsletter",
+      "text": "Sign up and be the first to hear about the federation's news, competitions and events.",
+      "placeholder": "Enter your email",
+      "subscribe": "Subscribe",
+      "hint": "We'll ask you to sign in or create an account.",
+      "subscribed": "Subscribed as {{email}}",
+      "unsubscribe": "Unsubscribe",
+      "error": "That didn't work, please try again."
+    },
     "backToTop": "Back to top"
   },
   "clubAccount": {
@@ -628,7 +640,8 @@
       "title": "Swimming Federation of Macedonia",
       "text": "Swimming, water polo and distance swimming — news, competition calendars, records and criteria in one place.",
       "news": "Latest news",
-      "calendar": "Calendar"
+      "calendar": "Calendar",
+      "partners": "Partners & sponsors"
     },
     "sports": {
       "title": "Sports",

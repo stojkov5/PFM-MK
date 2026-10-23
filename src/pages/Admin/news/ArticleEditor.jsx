@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useBlocker } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { App as AntApp, Button, DatePicker, Input, Result, Select, Spin, Tag } from "antd";
+import { App as AntApp, Button, DatePicker, Input, Radio, Result, Select, Spin, Tag } from "antd";
 import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
 import { FiArrowLeft, FiExternalLink, FiImage, FiTrash2 } from "react-icons/fi";
@@ -24,6 +24,76 @@ const EMPTY = {
   content: "",
   status: "draft",
   publishedAt: null,
+  emailAudience: "subscribers",
+  emailRecipients: [],
+};
+
+const AUDIENCE_LABELS = {
+  subscribers: "Newsletter subscribers",
+  all: "All registered accounts",
+  manual: "Chosen emails",
+  none: "Nobody",
+};
+
+// Who gets the "new article" email: the choice is used when the article is
+// first published; after that it's sent and can't be sent again.
+const EmailAudience = ({ form, set, emailStatus }) => {
+  const api = useAdminApi();
+  const accounts = useQuery({
+    queryKey: ["admin-news-recipients"],
+    queryFn: () => api.get("/api/admin/news/recipients"),
+    staleTime: 60_000,
+  });
+
+  // (Articles from before this choice existed were emailed to everyone, so
+  // the stored audience isn't shown here.)
+  if (emailStatus) {
+    return (
+      <span className="pfm-admin-dim">
+        {emailStatus === "sent"
+          ? "The email about this article has been sent. It isn't sent again."
+          : "The email about this article goes out when it's live. It isn't sent again."}
+      </span>
+    );
+  }
+
+  const list = accounts.data ?? [];
+  const count = (n) => (accounts.data ? ` (${n})` : "");
+  return (
+    <>
+      <Radio.Group
+        className="pfm-article-audience"
+        value={form.emailAudience}
+        onChange={(e) => set({ emailAudience: e.target.value })}
+        options={[
+          { value: "subscribers", label: `${AUDIENCE_LABELS.subscribers}${count(list.filter((a) => a.subscribed).length)}` },
+          { value: "all", label: `${AUDIENCE_LABELS.all}${count(list.length)}` },
+          { value: "manual", label: AUDIENCE_LABELS.manual },
+          { value: "none", label: "Don't send an email" },
+        ]}
+      />
+      {form.emailAudience === "manual" && (
+        <Select
+          mode="tags"
+          aria-label="Email recipients"
+          placeholder="Pick accounts or type any email address"
+          value={form.emailRecipients}
+          onChange={(emails) => set({ emailRecipients: emails.map((e) => e.trim().toLowerCase()) })}
+          tokenSeparators={[",", ";", " "]}
+          loading={accounts.isPending}
+          optionFilterProp="search"
+          options={list.map((a) => ({
+            value: a.email,
+            search: `${a.name ?? ""} ${a.email}`,
+            label: a.name ? `${a.name} — ${a.email}` : a.email,
+          }))}
+        />
+      )}
+      <span className="pfm-admin-dim">
+        Sent once, when the article is published (or on its publish date if scheduled).
+      </span>
+    </>
+  );
 };
 
 const ArticleForm = ({ initial, onClose }) => {
@@ -39,9 +109,10 @@ const ArticleForm = ({ initial, onClose }) => {
   const [coverBusy, setCoverBusy] = useState(false);
   const set = (patch) => setForm((f) => ({ ...f, ...patch }));
 
-  const dirty = ["title", "category", "excerpt", "coverImage", "content", "publishedAt"].some(
-    (k) => (form[k] ?? "") !== (saved[k] ?? "")
-  );
+  const dirty =
+    ["title", "category", "excerpt", "coverImage", "content", "publishedAt", "emailAudience"].some(
+      (k) => (form[k] ?? "") !== (saved[k] ?? "")
+    ) || (form.emailRecipients ?? []).join() !== (saved.emailRecipients ?? []).join();
 
   const upload = (file) => api.upload("/api/admin/media", file);
 
@@ -54,6 +125,8 @@ const ArticleForm = ({ initial, onClose }) => {
         coverImage: form.coverImage,
         content: form.content,
         publishedAt: form.publishedAt,
+        emailAudience: form.emailAudience,
+        emailRecipients: form.emailRecipients,
         status,
       };
       return saved.id
@@ -67,14 +140,15 @@ const ArticleForm = ({ initial, onClose }) => {
       queryClient.invalidateQueries({ queryKey: ["admin-news"] });
       queryClient.invalidateQueries({ queryKey: ["news"] });
       const state = articleStatus(article).key;
-      // This save queued the "new article" email to every registered account.
+      // This save queued the "new article" email to the chosen audience.
       const emailing = article.emailStatus === "pending" && !saved.emailStatus;
+      const who = AUDIENCE_LABELS[article.emailAudience];
       message.success(
         status === "draft"
           ? "Saved as draft — not visible on the site."
           : state === "scheduled"
-            ? `Saved — it will appear on the site at the publish date.${emailing ? " Registered users will be emailed then." : ""}`
-            : `Published — it's live on the site.${emailing ? " Registered users are being emailed about it." : ""}`
+            ? `Saved — it will appear on the site at the publish date.${emailing ? ` ${who} will be emailed then.` : ""}`
+            : `Published — it's live on the site.${emailing ? ` Emailing ${who.toLowerCase()}.` : ""}`
       );
     },
     onError: (err) => message.error(err.message),
@@ -83,6 +157,14 @@ const ArticleForm = ({ initial, onClose }) => {
   const submit = (status) => {
     if (!form.title.trim()) return message.warning("Give the article a title first.");
     if (!form.category) return message.warning("Choose a category first.");
+    if (
+      status === "published" &&
+      !saved.emailStatus &&
+      form.emailAudience === "manual" &&
+      form.emailRecipients.length === 0
+    ) {
+      return message.warning("Add at least one email address, or choose who else to email.");
+    }
     save.mutate(status);
   };
 
@@ -282,6 +364,11 @@ const ArticleForm = ({ initial, onClose }) => {
               The date shown on the article. A date in the future schedules it: it appears on
               the site by itself at that time.
             </span>
+          </div>
+
+          <div className="pfm-article-field">
+            <span className="pfm-article-label">Email to</span>
+            <EmailAudience form={form} set={set} emailStatus={saved.emailStatus} />
           </div>
         </aside>
       </div>
