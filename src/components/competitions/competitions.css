@@ -66,6 +66,11 @@
   color: rgba(255, 255, 255, 0.8);
 }
 
+/* /calendar stacks one banner per sport. */
+.pfm-comp-banner + .pfm-comp-banner {
+  margin-top: 10px;
+}
+
 .pfm-comp-banner p {
   flex: 1 1 260px;
   margin: 0;

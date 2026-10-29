@@ -1,6 +1,7 @@
 // src/pages/Swimming/CompetitionSubmit.jsx
-// Clubs register a competition for the calendar here (/swimming/calendar-national/submit)
-// while the registration window is open. Only approved club accounts can use
+// Clubs register a competition for the calendar here while that sport's
+// registration window is open: /swimming/calendar-national/submit or
+// /waterpolo/calendar/submit (the `sport` prop). Only approved club accounts can use
 // it, and the organizer is always the signed-in club. ?edit=<id> opens one of
 // the club's own competitions (linked from "My club") to fix it when the
 // federation asks for changes.
@@ -28,7 +29,7 @@ import { useRegistrationWindow } from "../../components/competitions/hooks.js";
 import { useAuthedApi } from "../../lib/useAuthedApi.js";
 import { antDarkTheme } from "../../lib/antDarkTheme.js";
 import { CLERK_PUBLISHABLE_KEY, SIGN_UP_REDIRECT } from "../../lib/clerk.js";
-import { COURSES } from "../../lib/competitions.js";
+import { COURSES, hasCourse, sportPaths } from "../../lib/competitions.js";
 import { formatLongDate } from "../../lib/dates.js";
 import { useMyAccount } from "../../lib/useMyAccount.js";
 import "../../components/competitions/competitions.css";
@@ -37,15 +38,15 @@ const DAY = "YYYY-MM-DD";
 const fmtWindow = (iso, locale) => formatLongDate(iso, locale);
 
 // Form values ⇄ API body (no clubId: the server uses the signed-in club)
-const toBody = (v) => ({
-  sport: "swimming",
+const toBody = (v, sport) => ({
+  sport,
   name: v.name,
   startDate: v.dates[0].format(DAY),
   endDate: v.dates[1].format(DAY),
   startTime: v.startTime ? v.startTime.format("HH:mm") : null,
   city: v.city,
   venue: v.venue ?? "",
-  course: v.course,
+  course: hasCourse(sport) ? v.course : "",
   entryDeadline: v.entryDeadline ? v.entryDeadline.format(DAY) : null,
   criteria: v.criteria,
   description: v.description ?? "",
@@ -74,8 +75,8 @@ const toValues = (c) => ({
 // Server field names → form field names
 const FIELD_OF = { startDate: "dates", endDate: "dates" };
 
-const BackLink = ({ children }) => (
-  <Link to="/swimming/calendar-national">
+const BackLink = ({ sport, children }) => (
+  <Link to={sportPaths(sport).calendar}>
     <Button>{children}</Button>
   </Link>
 );
@@ -88,7 +89,7 @@ const MyClubLink = ({ children }) => (
 
 // Only approved club accounts get past this; children receive the club
 // (from /api/account) and the account's email.
-const ClubGate = ({ children }) => {
+const ClubGate = ({ sport, children }) => {
   const { t } = useTranslation();
   const { isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
@@ -105,7 +106,7 @@ const ClubGate = ({ children }) => {
           <SignInButton key="signin" mode="modal" signUpForceRedirectUrl={SIGN_UP_REDIRECT}>
             <Button type="primary">{t("competitions.form.clubOnly.signIn")}</Button>
           </SignInButton>,
-          <BackLink key="back">{t("competitions.form.back")}</BackLink>,
+          <BackLink key="back" sport={sport}>{t("competitions.form.back")}</BackLink>,
         ]}
       />
     );
@@ -121,7 +122,7 @@ const ClubGate = ({ children }) => {
         status="warning"
         title={t("clubAccount.notClub.title")}
         subTitle={t("clubAccount.notClub.text")}
-        extra={<BackLink>{t("competitions.form.back")}</BackLink>}
+        extra={<BackLink sport={sport}>{t("competitions.form.back")}</BackLink>}
       />
     );
   }
@@ -131,14 +132,14 @@ const ClubGate = ({ children }) => {
         status="info"
         title={t("clubAccount.pending.badge")}
         subTitle={t("clubAccount.pending.text")}
-        extra={<BackLink>{t("competitions.form.back")}</BackLink>}
+        extra={<BackLink sport={sport}>{t("competitions.form.back")}</BackLink>}
       />
     );
   }
   return children({ club, accountEmail: user.primaryEmailAddress?.emailAddress ?? club.email });
 };
 
-const CompetitionForm = ({ club, accountEmail, initial, editId, onDone }) => {
+const CompetitionForm = ({ sport, club, accountEmail, initial, editId, onDone }) => {
   const { t } = useTranslation();
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
@@ -152,8 +153,8 @@ const CompetitionForm = ({ club, accountEmail, initial, editId, onDone }) => {
   const mutation = useMutation({
     mutationFn: (values) =>
       editId
-        ? api.put(`/api/competitions/mine/${editId}`, toBody(values))
-        : api.post("/api/competitions", toBody(values)),
+        ? api.put(`/api/competitions/mine/${editId}`, toBody(values, sport))
+        : api.post("/api/competitions", toBody(values, sport)),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["club-competitions"] });
       onDone();
@@ -180,12 +181,14 @@ const CompetitionForm = ({ club, accountEmail, initial, editId, onDone }) => {
       <Form.Item name="name" label={t("competitions.form.fields.name")} rules={[required, { max: 200 }]}>
         <Input placeholder={t("competitions.form.fields.namePlaceholder")} />
       </Form.Item>
-      <Form.Item name="course" label={t("competitions.form.fields.course")} rules={[required]}>
-        <Radio.Group
-          optionType="button"
-          options={COURSES.map((c) => ({ value: c, label: t(`competitions.courses.${c}`) }))}
-        />
-      </Form.Item>
+      {hasCourse(sport) && (
+        <Form.Item name="course" label={t("competitions.form.fields.course")} rules={[required]}>
+          <Radio.Group
+            optionType="button"
+            options={COURSES.map((c) => ({ value: c, label: t(`competitions.courses.${c}`) }))}
+          />
+        </Form.Item>
+      )}
 
       <h3 className="pfm-compform-section">{t("competitions.form.sections.when")}</h3>
       <div className="pfm-compform-grid">
@@ -215,7 +218,14 @@ const CompetitionForm = ({ club, accountEmail, initial, editId, onDone }) => {
         label={t("competitions.form.fields.criteria")}
         rules={[required, { max: 3000 }]}
       >
-        <Input.TextArea rows={4} placeholder={t("competitions.form.fields.criteriaPlaceholder")} />
+        <Input.TextArea
+          rows={4}
+          placeholder={
+            sport === "waterpolo"
+              ? t("waterpolo.calendar.criteriaPlaceholder")
+              : t("competitions.form.fields.criteriaPlaceholder")
+          }
+        />
       </Form.Item>
       <div className="pfm-compform-grid">
         <Form.Item
@@ -357,6 +367,7 @@ const EditSubmission = ({ id, club, accountEmail }) => {
       </div>
       {canEdit && (
         <CompetitionForm
+          sport={c.sport}
           club={club}
           accountEmail={accountEmail}
           initial={c}
@@ -368,12 +379,12 @@ const EditSubmission = ({ id, club, accountEmail }) => {
   );
 };
 
-const NewSubmission = ({ club, accountEmail }) => {
+const NewSubmission = ({ sport, club, accountEmail }) => {
   const { t, i18n } = useTranslation();
   const locale = i18n.resolvedLanguage ?? "mk";
   const [done, setDone] = useState(false);
   const [formKey, setFormKey] = useState(0);
-  const { data: w, isLoading } = useRegistrationWindow();
+  const { data: w, isLoading } = useRegistrationWindow(sport);
 
   if (isLoading) return <Spin />;
   if (done) {
@@ -411,13 +422,14 @@ const NewSubmission = ({ club, accountEmail }) => {
               })
             : t("competitions.form.closed.text")
         }
-        extra={<BackLink>{t("competitions.form.back")}</BackLink>}
+        extra={<BackLink sport={sport}>{t("competitions.form.back")}</BackLink>}
       />
     );
   }
   return (
     <CompetitionForm
       key={formKey}
+      sport={sport}
       club={club}
       accountEmail={accountEmail}
       onDone={() => setDone(true)}
@@ -425,14 +437,14 @@ const NewSubmission = ({ club, accountEmail }) => {
   );
 };
 
-const CompetitionSubmit = () => {
+const CompetitionSubmit = ({ sport = "swimming" }) => {
   const { t, i18n } = useTranslation();
   const locale = i18n.resolvedLanguage ?? "mk";
   const [params] = useSearchParams();
   const editParam = params.get("edit");
   // Ids only; links from before club accounts carried a long secret token.
   const editId = /^\d+$/.test(editParam ?? "") ? Number(editParam) : null;
-  const { data: w } = useRegistrationWindow();
+  const { data: w } = useRegistrationWindow(sport);
 
   let body;
   if (!CLERK_PUBLISHABLE_KEY) {
@@ -448,9 +460,13 @@ const CompetitionSubmit = () => {
     );
   } else {
     body = (
-      <ClubGate>
+      <ClubGate sport={sport}>
         {(props) =>
-          editParam ? <EditSubmission id={editId} {...props} /> : <NewSubmission {...props} />
+          editParam ? (
+            <EditSubmission id={editId} {...props} />
+          ) : (
+            <NewSubmission sport={sport} {...props} />
+          )
         }
       </ClubGate>
     );

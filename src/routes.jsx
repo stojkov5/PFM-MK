@@ -49,8 +49,8 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <SwimmingHome /> },
           { path: "calendar-national", element: <SwimmingCalendarNational /> },
-          // Clubs register competitions here (and fix them via their emailed edit link).
-          { path: "calendar-national/submit", element: <CompetitionSubmit /> },
+          // Clubs register competitions here (and fix them from "My club").
+          { path: "calendar-national/submit", element: <CompetitionSubmit sport="swimming" /> },
           // The international calendar was removed; old links land on the season calendar.
           { path: "calendar-international", loader: () => redirect("/swimming/calendar-national") },
           { path: "records", element: <SwimmingRecords /> },
@@ -68,6 +68,8 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <WaterpoloHome /> },
           { path: "calendar", element: <WaterpoloCalendar /> },
+          // Clubs register water polo competitions here (same form as swimming).
+          { path: "calendar/submit", element: <CompetitionSubmit sport="waterpolo" /> },
           // Old pages, kept so existing links still land somewhere useful.
           { path: "calendar-national", loader: () => redirect("/waterpolo/calendar") },
           { path: "calendar-international", loader: () => redirect("/waterpolo/calendar") },

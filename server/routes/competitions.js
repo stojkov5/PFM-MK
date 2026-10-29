@@ -67,7 +67,7 @@ export const competitionsRouter = (
     }
 
     // The organizer is always the signed-in club, whatever the body says.
-    const v = validateCompetition(req.body, { club: req.club });
+    const v = validateCompetition(req.body, { club: req.club, sport });
     if (!v.ok) return res.status(400).json({ error: "Invalid fields", errors: v.errors });
 
     const created = await db.competition.create({
@@ -142,7 +142,8 @@ export const competitionsRouter = (
       return res.status(409).json({ error: "This submission can no longer be edited" });
     }
 
-    const v = validateCompetition(req.body, { club: req.club });
+    // The sport stays what it was submitted for.
+    const v = validateCompetition(req.body, { club: req.club, sport: c.sport });
     if (!v.ok) return res.status(400).json({ error: "Invalid fields", errors: v.errors });
 
     const updated = await db.competition.update({

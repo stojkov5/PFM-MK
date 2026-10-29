@@ -32,8 +32,9 @@ const admin = as("user_admin");
 const club = as("user_club"); // ПК Делфин Скопје (14)
 const club2 = as("user_club2"); // ПК Младост Скопје (8)
 
-const openWindow = () =>
+const openWindow = (sport = "swimming") =>
   admin.put("/api/admin/competitions/window", {
+    sport,
     season: 2027,
     opensAt: new Date(Date.now() - 86_400_000).toISOString(),
     closesAt: new Date(Date.now() + 86_400_000).toISOString(),
@@ -68,6 +69,15 @@ describe("validateCompetition", () => {
     );
     expect(v.ok).toBe(true);
     expect(v.data).toMatchObject({ clubId: null, clubName: "НПФ" });
+  });
+  it("needs a course for swimming only", () => {
+    const club = { id: 14, name: "ПК Делфин Скопје" };
+    expect(validateCompetition(submission({ course: "" }), { club }).errors).toContain("course");
+    const v = validateCompetition(submission({ course: "" }), { club, sport: "waterpolo" });
+    expect(v.ok).toBe(true);
+    expect(v.data.course).toBe("");
+    // A course sent for water polo is dropped.
+    expect(validateCompetition(submission(), { club, sport: "waterpolo" }).data.course).toBe("");
   });
 });
 
@@ -232,6 +242,39 @@ describe("admin review", () => {
     expect((await request(app).get("/api/competitions")).body.competitions[0].endDate).toBe("2027-07-02");
 
     expect((await admin.delete(`/api/admin/competitions/${res.body.id}`)).status).toBe(200);
+    expect((await request(app).get("/api/competitions")).body.competitions).toEqual([]);
+  });
+});
+
+describe("water polo calendar", () => {
+  const waterpolo = (over) => submission({ sport: "waterpolo", course: undefined, ...over });
+
+  it("has its own registration window", async () => {
+    await openWindow("swimming");
+    expect((await club.post("/api/competitions", waterpolo())).status).toBe(403);
+    expect((await request(app).get("/api/competitions/window?sport=waterpolo")).body.status).toBe("none");
+
+    await openWindow("waterpolo");
+    expect((await club.post("/api/competitions", waterpolo())).status).toBe(201);
+    expect(await db.competition.findFirst()).toMatchObject({ sport: "waterpolo", course: "", status: "pending" });
+  });
+
+  it("is reviewed and listed apart from swimming", async () => {
+    await openWindow("swimming");
+    await openWindow("waterpolo");
+    await submit();
+    const { id } = await submit({ sport: "waterpolo", name: "Ватерполо турнир" });
+
+    const pending = await admin.get("/api/admin/competitions?sport=waterpolo&status=pending");
+    expect(pending.body.map((c) => c.id)).toEqual([id]);
+    // Same dates as the swimming one, but only the same sport counts as an overlap.
+    expect(pending.body[0].overlaps).toEqual([]);
+    expect((await admin.get("/api/admin/competitions/counts?sport=waterpolo")).body.pending).toBe(1);
+
+    expect((await admin.post(`/api/admin/competitions/${id}/approve`, {})).status).toBe(200);
+    expect(mailer.sent.at(-1).text).toContain("/waterpolo/calendar");
+    const wp = await request(app).get("/api/competitions?sport=waterpolo");
+    expect(wp.body.competitions).toMatchObject([{ id, sport: "waterpolo", course: "" }]);
     expect((await request(app).get("/api/competitions")).body.competitions).toEqual([]);
   });
 });

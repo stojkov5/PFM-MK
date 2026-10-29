@@ -3,8 +3,11 @@
 import { randomBytes } from "node:crypto";
 import { isValidProofUrl } from "./validate.js";
 
-export const SPORTS = ["swimming"];
+export const SPORTS = ["swimming", "waterpolo"];
 export const COURSES = ["SC", "LC", "OW"];
+// Sports whose competitions have a pool length (course). Water polo has none
+// and stores "".
+const HAS_COURSE = ["swimming"];
 export const STATUSES = ["pending", "changes", "approved", "denied"];
 // Statuses a club (or an admin) can still change before a final decision.
 export const OPEN_STATUSES = ["pending", "changes"];
@@ -38,9 +41,13 @@ const text = (v, max) => {
  * Checks a competition from a club account (`admin: false`) or the admin
  * panel (`admin: true`). `club` is the organizing Club (looked up by the
  * caller): clubs always have one and must give contact details; admins may
- * type any organizer instead and skip the contact fields.
+ * type any organizer instead and skip the contact fields. `sport` decides
+ * whether a course is needed.
  */
-export const validateCompetition = (body = {}, { admin = false, club = null } = {}) => {
+export const validateCompetition = (
+  body = {},
+  { admin = false, club = null, sport = SPORTS[0] } = {}
+) => {
   const errors = [];
   const field = (key, max, required) => {
     const v = text(body[key], max);
@@ -76,7 +83,8 @@ export const validateCompetition = (body = {}, { admin = false, club = null } = 
 
   const city = field("city", 100, true);
   const venue = field("venue", 200, false);
-  if (!COURSES.includes(body.course)) errors.push("course");
+  const hasCourse = HAS_COURSE.includes(sport);
+  if (hasCourse && !COURSES.includes(body.course)) errors.push("course");
   const criteria = field("criteria", 3000, !admin);
   const description = field("description", 3000, false);
 
@@ -106,7 +114,7 @@ export const validateCompetition = (body = {}, { admin = false, club = null } = 
       startTime,
       city,
       venue,
-      course: body.course,
+      course: hasCourse ? body.course : "",
       criteria,
       description,
       entryDeadline,

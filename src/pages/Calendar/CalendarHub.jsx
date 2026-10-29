@@ -32,15 +32,18 @@ const CalendarHub = () => {
   const [openId, setOpenId] = useState(null);
 
   const swimming = useCompetitions("swimming");
+  const waterpolo = useCompetitions("waterpolo");
+  // Sports whose calendars come from the API (distance swimming is still empty).
+  const sources = { swimming, waterpolo };
 
-  // Every competition of every sport, in date order. Only swimming has
-  // competitions so far; water polo and distance swimming are still empty.
+  // Every competition of every sport, in date order.
   const all = useMemo(
     () =>
-      (swimming.data?.competitions ?? [])
-        .map((c) => ({ ...c, sport: "swimming" }))
-        .sort((a, b) => a.startDate.localeCompare(b.startDate)),
-    [swimming.data]
+      [
+        ...(swimming.data?.competitions ?? []).map((c) => ({ ...c, sport: "swimming" })),
+        ...(waterpolo.data?.competitions ?? []).map((c) => ({ ...c, sport: "waterpolo" })),
+      ].sort((a, b) => a.startDate.localeCompare(b.startDate)),
+    [swimming.data, waterpolo.data]
   );
 
   const years = useMemo(
@@ -64,7 +67,10 @@ const CalendarHub = () => {
     SPORTS.map((s) => ({ key: s.key, icon: s.icon, label: sportLabel(s.key) }))
   );
 
-  const loading = swimming.isLoading && (sport === "all" || sport === "swimming");
+  // The sports the current filter shows that have a calendar API.
+  const shown = Object.keys(sources).filter((key) => sport === "all" || sport === key);
+  const loading = shown.some((key) => sources[key].isLoading);
+  const failed = shown.some((key) => sources[key].isError);
 
   return (
     <section className="pfm-calhub">
@@ -108,7 +114,13 @@ const CalendarHub = () => {
           )}
         </div>
 
-        {(sport === "all" || sport === "swimming") && <RegistrationBanner />}
+        {shown.map((key) => (
+          <RegistrationBanner
+            key={key}
+            sport={key}
+            label={sport === "all" ? sportLabel(key) : undefined}
+          />
+        ))}
 
         {selected && (
           <Link to={selected.to} className="pfm-calhub-sportlink">
@@ -147,9 +159,7 @@ const CalendarHub = () => {
           ))
         )}
 
-        {swimming.isError && sport !== "waterpolo" && sport !== "distance" && (
-          <p className="pfm-compcal-empty">{t("competitions.loadFailed")}</p>
-        )}
+        {failed && <p className="pfm-compcal-empty">{t("competitions.loadFailed")}</p>}
       </div>
     </section>
   );

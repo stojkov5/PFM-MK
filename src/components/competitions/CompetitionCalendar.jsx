@@ -1,24 +1,26 @@
-// src/pages/Swimming/CalendarNational.jsx
-// The swimming competition calendar: approved competitions grouped by month,
-// one year at a time. Clubs add competitions through the form linked from the
-// registration banner (while the federation's registration window is open).
+// src/components/competitions/CompetitionCalendar.jsx
+// One sport's competition calendar (swimming, water polo): approved
+// competitions grouped by month, one year at a time. Clubs add competitions
+// through the form linked from the registration banner (while the
+// federation's registration window for that sport is open).
 import React, { useMemo, useState } from "react";
 import { Segmented, Spin } from "antd";
 import { useTranslation } from "react-i18next";
-import Reveal from "../../components/fx/Reveal.jsx";
-import CompetitionCard from "../../components/competitions/CompetitionCard.jsx";
-import RegistrationBanner from "../../components/competitions/RegistrationBanner.jsx";
-import { useCompetitions } from "../../components/competitions/hooks.js";
+import Reveal from "../fx/Reveal.jsx";
+import CompetitionCard from "./CompetitionCard.jsx";
+import RegistrationBanner from "./RegistrationBanner.jsx";
+import { useCompetitions } from "./hooks.js";
 import { groupByMonth, monthName } from "../../lib/competitions.js";
-import "../../components/competitions/competitions.css";
+import "./competitions.css";
 
-const CalendarNational = () => {
+// `title` and `empty` are the page heading and the no-competitions text.
+const CompetitionCalendar = ({ sport = "swimming", title, empty }) => {
   const { t, i18n } = useTranslation();
   const locale = i18n.resolvedLanguage ?? "mk";
   const thisYear = new Date().getFullYear();
   const [year, setYear] = useState(thisYear);
   const [openId, setOpenId] = useState(null);
-  const { data, isLoading, isError } = useCompetitions();
+  const { data, isLoading, isError } = useCompetitions(sport);
 
   const years = useMemo(
     () => [...new Set([...(data?.years ?? []), thisYear])].sort((a, b) => a - b),
@@ -36,7 +38,7 @@ const CalendarNational = () => {
           <div className="pfm-compcal-head">
             <div>
               <div className="pfm-compcal-kicker">{t("competitions.kicker")}</div>
-              <h2 className="pfm-compcal-title">{t("competitions.title")}</h2>
+              <h2 className="pfm-compcal-title">{title}</h2>
             </div>
             {years.length > 1 && (
               <Segmented
@@ -52,7 +54,7 @@ const CalendarNational = () => {
           </div>
         </Reveal>
 
-        <RegistrationBanner />
+        <RegistrationBanner sport={sport} />
 
         {isLoading ? (
           <div className="pfm-compcal-empty">
@@ -61,7 +63,7 @@ const CalendarNational = () => {
         ) : isError ? (
           <p className="pfm-compcal-empty">{t("competitions.loadFailed")}</p>
         ) : months.length === 0 ? (
-          <p className="pfm-compcal-empty">{t("competitions.empty", { year })}</p>
+          <p className="pfm-compcal-empty">{empty ?? t("competitions.empty", { year })}</p>
         ) : (
           months.map((m) => (
             <section className="pfm-compcal-month" key={m.key}>
@@ -86,4 +88,4 @@ const CalendarNational = () => {
   );
 };
 
-export default CalendarNational;
+export default CompetitionCalendar;

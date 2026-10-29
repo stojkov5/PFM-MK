@@ -19,13 +19,17 @@ export const fmtRange = (c) => {
 };
 
 const COURSE = { SC: "25 м базен", LC: "50 м базен", OW: "Отворени води" };
+const SPORT = { swimming: "Пливање", waterpolo: "Ватерполо" };
+// Each sport's public calendar page.
+const CALENDAR_PATH = { swimming: "/swimming/calendar-national", waterpolo: "/waterpolo/calendar" };
 
 const summaryLines = (c) => [
   `Натпревар: ${c.name}`,
+  `Спорт: ${SPORT[c.sport] ?? c.sport}`,
   `Организатор: ${c.clubName}`,
   `Датум: ${fmtRange(c)}${c.startTime ? `, почеток ${c.startTime}` : ""}`,
   `Место: ${[c.venue, c.city].filter(Boolean).join(", ")}`,
-  `Базен: ${COURSE[c.course] ?? c.course}`,
+  ...(c.course ? [`Базен: ${COURSE[c.course] ?? c.course}`] : []),
 ];
 
 // Builds { subject, text, html } from paragraphs. A paragraph is a string or
@@ -92,7 +96,10 @@ export const approvedEmail = (c, site, note) =>
     "Вашиот натпревар е одобрен и објавен во календарот на федерацијата.",
     summaryLines(c).join("\n"),
     ...(note ? [{ quote: note }] : []),
-    { link: `${site}/swimming/calendar-national`, label: "Погледни го календарот" },
+    {
+      link: `${site}${CALENDAR_PATH[c.sport] ?? CALENDAR_PATH.swimming}`,
+      label: "Погледни го календарот",
+    },
   ]);
 
 export const changesEmail = (c, site, note) =>

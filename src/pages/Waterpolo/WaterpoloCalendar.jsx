@@ -1,28 +1,18 @@
 // src/pages/Waterpolo/WaterpoloCalendar.jsx
-// The water polo competition calendar. Empty for now: how water polo
-// competitions get into the calendar is still to be decided.
+// The water polo competition calendar (see CompetitionCalendar). Clubs
+// register water polo competitions the same way as swimming ones.
 import React from "react";
 import { useTranslation } from "react-i18next";
-import Reveal from "../../components/fx/Reveal.jsx";
-import "../../components/competitions/competitions.css";
+import CompetitionCalendar from "../../components/competitions/CompetitionCalendar.jsx";
 
 const WaterpoloCalendar = () => {
   const { t } = useTranslation();
-
   return (
-    <div className="pfm-compcal pt-24">
-      <div className="max-w-6xl mx-auto px-4 md:px-6">
-        <Reveal>
-          <div className="pfm-compcal-head">
-            <div>
-              <div className="pfm-compcal-kicker">{t("competitions.kicker")}</div>
-              <h2 className="pfm-compcal-title">{t("waterpolo.calendar.title")}</h2>
-            </div>
-          </div>
-        </Reveal>
-        <p className="pfm-compcal-empty">{t("waterpolo.calendar.empty")}</p>
-      </div>
-    </div>
+    <CompetitionCalendar
+      sport="waterpolo"
+      title={t("waterpolo.calendar.title")}
+      empty={t("waterpolo.calendar.empty")}
+    />
   );
 };
 

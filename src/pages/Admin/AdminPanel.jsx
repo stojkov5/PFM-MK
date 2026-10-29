@@ -28,8 +28,12 @@ const AdminPanel = ({ me }) => {
     queryFn: () => api.get("/api/admin/applications/counts"),
   });
   const competitionCounts = useQuery({
-    queryKey: ["admin-competition-counts"],
-    queryFn: () => api.get("/api/admin/competitions/counts"),
+    queryKey: ["admin-competition-counts", "swimming"],
+    queryFn: () => api.get("/api/admin/competitions/counts?sport=swimming"),
+  });
+  const waterpoloCounts = useQuery({
+    queryKey: ["admin-competition-counts", "waterpolo"],
+    queryFn: () => api.get("/api/admin/competitions/counts?sport=waterpolo"),
   });
   const clubCounts = useQuery({
     queryKey: ["admin-club-counts"],
@@ -52,7 +56,12 @@ const AdminPanel = ({ me }) => {
     {
       key: "calendar",
       label: tabLabel(<FiCalendar />, "Swimming calendar", competitionCounts.data?.pending),
-      children: <CompetitionsTab counts={competitionCounts.data} />,
+      children: <CompetitionsTab sport="swimming" counts={competitionCounts.data} />,
+    },
+    {
+      key: "waterpolo-calendar",
+      label: tabLabel(<FiCalendar />, "Water polo calendar", waterpoloCounts.data?.pending),
+      children: <CompetitionsTab sport="waterpolo" counts={waterpoloCounts.data} />,
     },
     {
       key: "clubs",
@@ -76,7 +85,7 @@ const AdminPanel = ({ me }) => {
     },
   ];
 
-  // Phones: the six sections don't fit in a tab bar, so pick them from a dropdown.
+  // Phones: the sections don't fit in a tab bar, so pick them from a dropdown.
   const sectionPicker = (props) => (
     <Select
       className="pfm-admin-section-select"

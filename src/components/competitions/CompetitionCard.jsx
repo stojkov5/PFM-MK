@@ -43,9 +43,11 @@ const CompetitionCard = ({ competition: c, open, onToggle, sport }) => {
           </span>
           <span className="pfm-comp-meta">
             <FiMapPin /> {place}
-            <span className={`pfm-comp-course is-${c.course.toLowerCase()}`}>
-              {t(`competitions.courseShort.${c.course}`)}
-            </span>
+            {c.course && (
+              <span className={`pfm-comp-course is-${c.course.toLowerCase()}`}>
+                {t(`competitions.courseShort.${c.course}`)}
+              </span>
+            )}
             {past && <span className="pfm-comp-past">{t("competitions.finished")}</span>}
           </span>
         </span>
@@ -69,7 +71,9 @@ const CompetitionCard = ({ competition: c, open, onToggle, sport }) => {
               </Detail>
               <Detail label={t("competitions.labels.place")}>{place}</Detail>
               <Detail label={t("competitions.labels.organizer")}>{c.clubName}</Detail>
-              <Detail label={t("competitions.labels.course")}>{t(`competitions.courses.${c.course}`)}</Detail>
+              <Detail label={t("competitions.labels.course")}>
+                {c.course && t(`competitions.courses.${c.course}`)}
+              </Detail>
               <Detail label={t("competitions.labels.entryDeadline")}>
                 {c.entryDeadline && formatDay(c.entryDeadline, locale)}
               </Detail>

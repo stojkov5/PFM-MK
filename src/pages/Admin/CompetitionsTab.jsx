@@ -1,5 +1,6 @@
 // src/pages/Admin/CompetitionsTab.jsx
-// Swimming calendar in the admin panel: the clubs' registration window, the
+// One sport's calendar in the admin panel (the Swimming and Water polo
+// calendar tabs, `sport` prop): the clubs' registration window, the
 // submissions to review (approve / ask for changes / deny — each emails the
 // club), and adding or editing competitions directly.
 import React, { useState } from "react";
@@ -25,7 +26,7 @@ import { useAdminApi } from "./useAdminApi.js";
 import { useIsPhone } from "./useIsPhone.js";
 import AdminTable from "./AdminTable.jsx";
 import StatusSwitch from "./StatusSwitch.jsx";
-import { COURSES } from "../../lib/competitions.js";
+import { COURSES, hasCourse } from "../../lib/competitions.js";
 import { useClubs } from "../../lib/clubs.js";
 
 const STATUSES = [
@@ -35,6 +36,7 @@ const STATUSES = [
   { value: "denied", label: "Denied" },
 ];
 const COURSE_LABELS = { SC: "25m", LC: "50m", OW: "Open water" };
+const SPORT_NAMES = { swimming: "swimming", waterpolo: "water polo" };
 const DAY = "YYYY-MM-DD";
 
 const fmtDay = (d) => dayjs(d).format("DD.MM.YYYY");
@@ -57,7 +59,7 @@ const WINDOW_TAGS = {
   none: <Tag>Not set</Tag>,
 };
 
-const WindowCard = () => {
+const WindowCard = ({ sport }) => {
   const api = useAdminApi();
   const isPhone = useIsPhone();
   const { message } = AntApp.useApp();
@@ -65,18 +67,19 @@ const WindowCard = () => {
   const [form] = Form.useForm();
 
   const win = useQuery({
-    queryKey: ["admin-competition-window"],
-    queryFn: () => api.get("/api/admin/competitions/window"),
+    queryKey: ["admin-competition-window", sport],
+    queryFn: () => api.get(`/api/admin/competitions/window?sport=${sport}`),
   });
 
   const afterChange = (w) => {
-    queryClient.setQueryData(["admin-competition-window"], w);
+    queryClient.setQueryData(["admin-competition-window", sport], w);
     queryClient.invalidateQueries({ queryKey: ["competition-window"] });
   };
 
   const save = useMutation({
     mutationFn: ({ season, range }) =>
       api.put("/api/admin/competitions/window", {
+        sport,
         season,
         opensAt: range[0].startOf("day").toISOString(),
         closesAt: range[1].endOf("day").toISOString(),
@@ -89,7 +92,7 @@ const WindowCard = () => {
   });
 
   const close = useMutation({
-    mutationFn: () => api.post("/api/admin/competitions/window/close", {}),
+    mutationFn: () => api.post("/api/admin/competitions/window/close", { sport }),
     onSuccess: (w) => {
       message.success("Registration closed.");
       afterChange(w);
@@ -113,7 +116,7 @@ const WindowCard = () => {
           ? `Clubs can add competitions until ${fmtDateTime(w.closesAt)}.`
           : w?.status === "upcoming"
             ? `Clubs can add competitions from ${fmtDateTime(w.opensAt)} to ${fmtDateTime(w.closesAt)}.`
-            : "While the period is open, the swimming calendar shows an “Add competition” button to everyone. Set the first and last day (e.g. 10–20 January)."}
+            : `While the period is open, the ${SPORT_NAMES[sport]} calendar shows an “Add competition” button to everyone. Set the first and last day (e.g. 10–20 January).`}
       </p>
       {!win.isLoading && (
         <Form
@@ -241,7 +244,7 @@ const ReviewModal = ({ review, onClose }) => {
 
 // --- Add / edit dialog -----------------------------------------------------
 
-const toFormValues = (c) =>
+const toFormValues = (c, sport) =>
   c
     ? {
         organizer: c.clubName,
@@ -259,12 +262,12 @@ const toFormValues = (c) =>
         contactEmail: c.contactEmail,
         contactPhone: c.contactPhone,
       }
-    : { course: "SC", organizer: "Национална пливачка федерација" };
+    : { course: hasCourse(sport) ? "SC" : undefined, organizer: "Национална пливачка федерација" };
 
 // The server links the competition to a club when the organizer is a club's
 // exact name.
-const toBody = (v) => ({
-  sport: "swimming",
+const toBody = (v, sport) => ({
+  sport,
   clubName: v.organizer,
   name: v.name,
   startDate: v.dates[0].format(DAY),
@@ -272,7 +275,7 @@ const toBody = (v) => ({
   startTime: v.startTime ? v.startTime.format("HH:mm") : null,
   city: v.city,
   venue: v.venue ?? "",
-  course: v.course,
+  course: hasCourse(sport) ? v.course : "",
   entryDeadline: v.entryDeadline ? v.entryDeadline.format(DAY) : null,
   criteria: v.criteria ?? "",
   description: v.description ?? "",
@@ -282,7 +285,7 @@ const toBody = (v) => ({
   contactPhone: v.contactPhone ?? "",
 });
 
-const EditModal = ({ competition, onClose }) => {
+const EditModal = ({ sport, competition, onClose }) => {
   const api = useAdminApi();
   const { message } = AntApp.useApp();
   const queryClient = useQueryClient();
@@ -294,8 +297,8 @@ const EditModal = ({ competition, onClose }) => {
   const save = useMutation({
     mutationFn: (values) =>
       isNew
-        ? api.post("/api/admin/competitions", toBody(values))
-        : api.put(`/api/admin/competitions/${competition.id}`, toBody(values)),
+        ? api.post("/api/admin/competitions", toBody(values, sport))
+        : api.put(`/api/admin/competitions/${competition.id}`, toBody(values, sport)),
     onSuccess: () => {
       message.success(isNew ? "Competition added to the calendar." : "Saved.");
       invalidateAll(queryClient);
@@ -325,7 +328,7 @@ const EditModal = ({ competition, onClose }) => {
         form={form}
         layout="vertical"
         requiredMark={false}
-        initialValues={toFormValues(competition)}
+        initialValues={toFormValues(competition, sport)}
         onFinish={(v) => save.mutate(v)}
       >
         <div className="pfm-admin-form-grid">
@@ -350,12 +353,14 @@ const EditModal = ({ competition, onClose }) => {
           <Form.Item name="venue" label="Venue / pool">
             <Input />
           </Form.Item>
-          <Form.Item name="course" label="Pool" rules={[required]}>
-            <Radio.Group
-              optionType="button"
-              options={COURSES.map((c) => ({ value: c, label: COURSE_LABELS[c] }))}
-            />
-          </Form.Item>
+          {hasCourse(sport) && (
+            <Form.Item name="course" label="Pool" rules={[required]}>
+              <Radio.Group
+                optionType="button"
+                options={COURSES.map((c) => ({ value: c, label: COURSE_LABELS[c] }))}
+              />
+            </Form.Item>
+          )}
           <Form.Item name="entryDeadline" label="Entry deadline">
             <DatePicker format="DD.MM.YYYY" style={{ width: "100%" }} />
           </Form.Item>
@@ -434,7 +439,7 @@ const Details = ({ c }) => (
   </div>
 );
 
-const CompetitionsTab = ({ counts }) => {
+const CompetitionsTab = ({ sport = "swimming", counts }) => {
   const api = useAdminApi();
   const { message } = AntApp.useApp();
   const queryClient = useQueryClient();
@@ -443,8 +448,8 @@ const CompetitionsTab = ({ counts }) => {
   const [editing, setEditing] = useState(); // undefined = closed, null = new, object = edit
 
   const list = useQuery({
-    queryKey: ["admin-competitions", status],
-    queryFn: () => api.get(`/api/admin/competitions?status=${status}`),
+    queryKey: ["admin-competitions", sport, status],
+    queryFn: () => api.get(`/api/admin/competitions?sport=${sport}&status=${status}`),
   });
 
   const remove = useMutation({
@@ -505,7 +510,8 @@ const CompetitionsTab = ({ counts }) => {
       render: (c) => (
         <div>
           <div className="pfm-admin-strong">
-            {c.name} <Tag className="pfm-admin-inline-tag">{COURSE_LABELS[c.course]}</Tag>
+            {c.name}{" "}
+            {c.course && <Tag className="pfm-admin-inline-tag">{COURSE_LABELS[c.course]}</Tag>}
           </div>
           <div className="pfm-admin-dim">{c.clubName}</div>
           <div className="pfm-admin-dim">{[c.venue, c.city].filter(Boolean).join(", ")}</div>
@@ -575,7 +581,7 @@ const CompetitionsTab = ({ counts }) => {
 
   return (
     <div className="pfm-admin-section">
-      <WindowCard />
+      <WindowCard sport={sport} />
 
       <div className="pfm-admin-toolbar">
         <StatusSwitch value={status} onChange={setStatus} options={statusOptions} label="Status" />
@@ -593,7 +599,9 @@ const CompetitionsTab = ({ counts }) => {
       />
 
       {review && <ReviewModal key={`${review.action}-${review.competition.id}`} review={review} onClose={() => setReview(null)} />}
-      {editing !== undefined && <EditModal competition={editing} onClose={() => setEditing(undefined)} />}
+      {editing !== undefined && (
+        <EditModal sport={sport} competition={editing} onClose={() => setEditing(undefined)} />
+      )}
     </div>
   );
 };

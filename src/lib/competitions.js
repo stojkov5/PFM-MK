@@ -4,6 +4,15 @@
 import { formatLongDate, monthLong, monthShort } from "./dates.js";
 export const COURSES = ["SC", "LC", "OW"];
 
+// Sports with a club-run calendar, and their public pages.
+export const CALENDAR_SPORTS = {
+  swimming: { calendar: "/swimming/calendar-national", submit: "/swimming/calendar-national/submit" },
+  waterpolo: { calendar: "/waterpolo/calendar", submit: "/waterpolo/calendar/submit" },
+};
+export const sportPaths = (sport) => CALENDAR_SPORTS[sport] ?? CALENDAR_SPORTS.swimming;
+// Only swimming competitions have a pool length (25m / 50m / open water).
+export const hasCourse = (sport) => sport === "swimming";
+
 // Club-type prefix (ПВК / ПСК / ПК) left out where space is short.
 const TYPE_PREFIX = /^(ПВК|ПСК|ПК|PK)\s+/i;
 export const shortClubName = (name = "") => name.trim().replace(TYPE_PREFIX, "");

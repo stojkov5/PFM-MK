@@ -291,7 +291,8 @@
     },
     "calendar": {
       "title": "Season calendar",
-      "empty": "There are no competitions in the water polo calendar yet."
+      "empty": "There are no competitions in the water polo calendar yet.",
+      "criteriaPlaceholder": "Age categories, number of teams, competition format…"
     }
   },
   "distance": {

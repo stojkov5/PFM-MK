@@ -122,12 +122,13 @@ export const adminCompetitionsRouter = (db, { mailer, allowedOrigins = [] } = {}
     (await findClub(db, body?.clubId)) ?? (await findClubByName(db, body?.clubName));
 
   router.post("/", async (req, res) => {
-    const v = validateCompetition(req.body, { admin: true, club: await organizerClub(req.body) });
+    const sport = pickSport(req.body?.sport);
+    const v = validateCompetition(req.body, { admin: true, club: await organizerClub(req.body), sport });
     if (!v.ok) return res.status(400).json({ error: "Invalid fields", errors: v.errors });
     const created = await db.competition.create({
       data: {
         ...v.data,
-        sport: pickSport(req.body?.sport),
+        sport,
         status: "approved",
         source: "admin",
         editToken: newEditToken(),
@@ -140,7 +141,11 @@ export const adminCompetitionsRouter = (db, { mailer, allowedOrigins = [] } = {}
   router.put("/:id", async (req, res) => {
     const c = await find(req);
     if (!c) return res.status(404).json({ error: "Not found" });
-    const v = validateCompetition(req.body, { admin: true, club: await organizerClub(req.body) });
+    const v = validateCompetition(req.body, {
+      admin: true,
+      club: await organizerClub(req.body),
+      sport: c.sport,
+    });
     if (!v.ok) return res.status(400).json({ error: "Invalid fields", errors: v.errors });
     await db.competition.update({ where: { id: c.id }, data: v.data });
     res.json({ ok: true });

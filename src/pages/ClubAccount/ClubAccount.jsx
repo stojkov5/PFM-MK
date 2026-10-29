@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 import Reveal from "../../components/fx/Reveal.jsx";
 import { CLERK_PUBLISHABLE_KEY, SIGN_UP_REDIRECT } from "../../lib/clerk.js";
 import { useMyAccount } from "../../lib/useMyAccount.js";
-import { formatDay } from "../../lib/competitions.js";
+import { CALENDAR_SPORTS, formatDay, sportPaths } from "../../lib/competitions.js";
 import { useAuthedApi } from "../../lib/useAuthedApi.js";
 import "../Clubs/Clubs.css";
 import "./ClubAccount.css";
@@ -77,7 +77,7 @@ const ClubCompetitions = () => {
               <div className="pfm-clubacc-comp-main">
                 <div className="pfm-clubacc-comp-name">{c.name}</div>
                 <div className="pfm-clubacc-comp-meta">
-                  {dateRange(c, locale)} · {c.city}
+                  {t(`navbar.sports.${c.sport}.title`)} · {dateRange(c, locale)} · {c.city}
                 </div>
                 {c.messages[0] && (
                   <p className="pfm-clubacc-comp-msg">
@@ -89,7 +89,7 @@ const ClubCompetitions = () => {
                 {t(`competitions.form.status.${c.status}`)}
               </span>
               <Link
-                to={`/swimming/calendar-national/submit?edit=${c.id}`}
+                to={`${sportPaths(c.sport).submit}?edit=${c.id}`}
                 className="pfm-clubacc-btn is-small"
               >
                 {c.canEdit ? <FiEdit2 /> : <FiEye />}{" "}
@@ -178,9 +178,11 @@ const ClubAccountInner = () => {
       <p className="pfm-clubacc-badge">{t("clubAccount.approvedBadge")}</p>
 
       <div className="pfm-clubacc-actions">
-        <Link to="/swimming/calendar-national/submit" className="pfm-clubacc-btn is-primary">
-          <FiCalendar /> {t("clubAccount.submitCompetition")}
-        </Link>
+        {Object.entries(CALENDAR_SPORTS).map(([sport, paths]) => (
+          <Link key={sport} to={paths.submit} className="pfm-clubacc-btn is-primary">
+            <FiCalendar /> {t("clubAccount.submitCompetition")} — {t(`navbar.sports.${sport}.title`)}
+          </Link>
+        ))}
         <button type="button" className="pfm-clubacc-btn" onClick={() => openUserProfile()}>
           <FiKey /> {t("clubAccount.changePassword")}
         </button>
